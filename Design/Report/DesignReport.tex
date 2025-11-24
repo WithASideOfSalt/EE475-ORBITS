@@ -1,0 +1,87 @@
+\documentclass[a4paper,12pt,titlepage]{report}
+\usepackage{titling}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage[left=20mm,right=20mm,top=15mm,bottom=15mm]{geometry}
+\usepackage{caption}
+\usepackage{siunitx} % For clean units formatting
+\usepackage{appendix}
+\usepackage{titlepic}
+
+\usepackage{chngcntr}
+\counterwithout{figure}{chapter}
+\counterwithout{table}{chapter}
+\counterwithout{equation}{chapter}
+
+\usepackage{listings}
+\usepackage{xcolor}
+
+\counterwithout{figure}{chapter}
+\counterwithout{table}{chapter}
+\counterwithout{equation}{chapter}
+
+% --- Title Info ---
+\title{EE475 - ORBITS Design}
+\author{Scott McBride --- 202215222}
+\titlepic{\includegraphics[width=0.9\textwidth]{./Images/ORBITS_Logo.png}}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\chapter{Report Content}
+\section{Introduction}
+The Outreach and Research Build for Interactively Teaching Satellites, referred to as ORBITS herein, is a emulation system for a 1U CubeSat. This document outlines the initial design and component research of the ORBITS system.
+
+The ORBITS project is looking to develop a class based learning material that pupils, students, teachers and lecturers are able to gain hands on experience with to experiment, learn and research into CubeSat development. The ORBITS system looks to have modularity at the forefront of its design, allowing users to swap out components and subsystems to learn about different aspects of a CubeSat system. The system looks to be comprised of Commercial Off The Shelf (COTS) components where possible to keep costs low and allow for easy replacement of faulty parts.
+
+Where applicable SysML diagrams have been used to represent the design of the ORBITS system. 
+
+\section{Design Overview}
+
+The system has been developed using a top down approachm starting with the high level requirements and breaking these down into smaller subsystems. Shown within Figure \ref{fig:ORBITS_Requirements} are the high level system requirements for the ORBITS system.
+\begin{figure}
+    \centering
+    \includegraphics[width=1\textwidth]{./Images/ORBITS_Requirements.png}
+    \caption{High Level ORBITS System Requirements}
+    \label{fig:ORBITS_Requirements}
+\end{figure}
+
+The main subsystems of the ORBITS system can then be derived from these requirements. These subsystems are listed below:
+\begin{itemize}
+    \item On-Board Computer (OBC)
+    \item Power Management and Distribution Subsystem (PMAD)
+    \item Communications Subystem
+    \item Attitude Determination and Control Subsystem (ADCS)
+    \item Payload
+    \item Platform Structure
+    \item Ground Station
+\end{itemize}
+
+To visualise this breakdown a SysML Block Definition Diagram (BDD) has been created, shown in Figure \ref{fig:ORBITS_BDD}.
+\begin{figure}
+    \centering
+    \includegraphics[width=1\textwidth]{./Images/ORBITS_Logical_Structure.png}
+    \caption{ORBITS System Block Definition Diagram}
+    \label{fig:ORBITS_BDD}
+\end{figure}
+
+How each of these subsystems interact with each other is shown in the SysML Internal Block Diagram (IBD) in Figure \ref{fig:ORBITS_IBD}.
+\begin{figure}
+    \centering
+    \includegraphics[width=1\textwidth]{./Images/ORBITS_Logical_Boundary.png}
+    \caption{ORBITS System Internal Block Diagram}
+    \label{fig:ORBITS_IBD}
+\end{figure}
+Defining the system in this way creates a clear strcture as to how the system should behave allowing for easier development of each subsystem while ensuring that relevant learning materials are able to be created covering each aspect of the system.
+\section{Subsystem Designs}
+Taking these general design choices into account, each subsystem has been researched and designed to meet the overall system requirements. Each subsystem design is outlined in the following sections.
+\subsection{On-Board Computer}
+\subsection{Communications Subsystem}
+\subsection{Power Management and Distribution Subsystem (PMAD)}\subsection{Platform Structure}
+\subsection{Attitude Determination and Control Subsystem (ADCS)}
+\subsection{Payload}
+\subsection{Ground Station}
+\section{Miscellaneous Details}
+\end{document}
