@@ -4493,7 +4493,7 @@ association {
 </SysML:BlockItem>
 <SysML:Block id="17308b48-c6eb-11f0-985a-049226c0be5c">
 <name>
-<val>Central Processing System</val>
+<val>On-Board Computer</val>
 </name>
 <ownedAttribute>
 <reflist>
