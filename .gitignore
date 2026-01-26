@@ -16,6 +16,9 @@ lerna-debug.log*
 node_modules
 *.local
 
+# Unneeded generated files
+DemoDevelopment/UPDATES.md
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
