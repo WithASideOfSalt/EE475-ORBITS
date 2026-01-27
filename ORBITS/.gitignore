@@ -1,9 +1,3 @@
- Ignore all files inside Design/Report but allow specific files/folders
-Design/Report/*
-!Design/Report/DesignReport.tex
-!Design/Report/Images/
-!Design/Report/Images/*
-
 # Logs
 logs
 *.log
@@ -18,9 +12,6 @@ dist
 dist-ssr
 *.local
 
-# Unneeded generated files
-DemoDevelopment/UPDATES.md
-
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -31,3 +22,4 @@ DemoDevelopment/UPDATES.md
 *.njsproj
 *.sln
 *.sw?
+venv/
