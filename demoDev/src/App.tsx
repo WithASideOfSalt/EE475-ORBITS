@@ -10,6 +10,10 @@ import {
   QuestionCircleOutlined,
 } from '@ant-design/icons';
 
+import Dashboard from './pages/Dashboard.tsx';
+import CodeEditor from './pages/CodeEditor.tsx';
+import Help from './pages/Help.tsx';
+
 const {Header, Content, Footer, Sider} = Layout;
 
 
@@ -35,24 +39,35 @@ const items: MenuItem[] = [
   getItem('Help', '3', <QuestionCircleOutlined />),
 ];
 
+const renderContent = (activeMenu: string) => {
+  switch (activeMenu) {
+    case '1':
+      return <Dashboard />;
+    case '2':
+      return <CodeEditor />;
+    case '3':
+      return <Help />;
+    default:
+      return null;
+  }
+};
+
 const App = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const [activeMenu, setActiveMenu] = useState('1');
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
   const handleMenuClick: MenuProps['onClick'] = (e) => {
-    console.log('Clicked Menu item ', e);
+    setActiveMenu(e.key as string);
 
     if (e.key === '1') {
       // Handle Dashboard click
-      console.log('Navigate to Dashboard');
     } else if (e.key === '2') {
       // Handle Code Editor click
-      console.log('Navigate to Code Editor');
     } else if (e.key === '3') {
       // Handle Help click
-      console.log('Navigate to Help');
     }
   }
 
@@ -62,16 +77,16 @@ const App = () => {
         <div className="logo">
           <Image src="src/assets/OrbitLineIcon.png" preview={false} />
         </div>
-        <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} onClick={handleMenuClick}/>
+        <Menu theme="dark" selectedKeys={[activeMenu]} mode="inline" items={items} onClick={handleMenuClick}/>
 
       </Sider>
 
       <Layout>
-        <Header style={{ padding: 0, background: colorBgContainer }} >
+        <Header style={{ padding: 10, background: colorBgContainer }} >
           <Typography.Title id='title'>O<span className="titleDots">.</span>R<span className="titleDots">.</span>B<span className="titleDots">.</span>I<span className="titleDots">.</span>T<span className="titleDots">.</span>S<span className="titleDots">.</span> Development Suite</Typography.Title>
         </Header>
         <Content style={{ margin: '0 16px ' }}>
-          
+          {renderContent(activeMenu)}
         </Content>
         <Footer id = "finalFooter">
           ORBITS @{new Date().getFullYear()} CREATED BY SCOTT MCBRIDE
