@@ -31,6 +31,11 @@ function App() {
     socket.on('disconnect', onDisconnect)
     socket.on('time_update', timeUpdate)
 
+    return () => {
+      socket.off('connect', onConnect)
+      socket.off('disconnect',onDisconnect)
+      socket.off('time_update', timeUpdate)
+    }
     
   },[]);
   return (
@@ -50,7 +55,7 @@ function App() {
         </button>
         <p>Single instance time is {new Date(currentTime * 1000).toLocaleString()}.</p>
         <p>Connected to api {isConnected}</p>
-        <p>SocketIO time is {new Date(rollingTime * 1000).toLocaleString}</p>
+        <p>SocketIO time is {new Date(rollingTime * 1000).toLocaleString()}</p>
         <p>
           Edit <code>src/App.jsx</code> and save to test HMR
         </p>
