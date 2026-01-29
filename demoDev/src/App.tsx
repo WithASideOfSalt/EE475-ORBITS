@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import './App.css'
 // import Ant Design components
 
-import { Layout, Menu, theme, Typography, Image } from 'antd';
+import { Layout, Menu, Typography, Image, ConfigProvider} from 'antd';
 import type { MenuProps } from 'antd';
 import {
   CodeOutlined,
@@ -13,6 +13,8 @@ import {
 import Dashboard from './pages/Dashboard.tsx';
 import CodeEditor from './pages/CodeEditor.tsx';
 import Help from './pages/Help.tsx';
+
+import { theme } from './theme.tsx'
 
 const {Header, Content, Footer, Sider} = Layout;
 
@@ -55,44 +57,37 @@ const renderContent = (activeMenu: string) => {
 const App = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [activeMenu, setActiveMenu] = useState('1');
-  const {
-    token: { colorBgContainer, borderRadiusLG },
-  } = theme.useToken();
 
   const handleMenuClick: MenuProps['onClick'] = (e) => {
     setActiveMenu(e.key as string);
-
-    if (e.key === '1') {
-      // Handle Dashboard click
-    } else if (e.key === '2') {
-      // Handle Code Editor click
-    } else if (e.key === '3') {
-      // Handle Help click
-    }
   }
 
   return (
-    <Layout style={{ minHeight: '100vh' }}>
-      <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
-        <div className="logo">
-          <Image src="src/assets/OrbitLineIcon.png" preview={false} />
-        </div>
-        <Menu theme="dark" selectedKeys={[activeMenu]} mode="inline" items={items} onClick={handleMenuClick}/>
+    <ConfigProvider
+    theme={theme}>
+      <Layout style={{ minHeight: '100vh' }}>
+        <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
+          <div className="logo">
+            <Image src="src/assets/OrbitLineIcon.png" preview={false} />
+          </div>
+          <Menu theme='dark' selectedKeys={[activeMenu]} mode="inline" items={items} onClick={handleMenuClick}/>
 
-      </Sider>
+        </Sider>
 
-      <Layout>
-        <Header style={{ padding: 10, background: colorBgContainer }} >
-          <Typography.Title id='title'>O<span className="titleDots">.</span>R<span className="titleDots">.</span>B<span className="titleDots">.</span>I<span className="titleDots">.</span>T<span className="titleDots">.</span>S<span className="titleDots">.</span> Development Suite</Typography.Title>
-        </Header>
-        <Content style={{ margin: '0 16px ' }}>
-          {renderContent(activeMenu)}
-        </Content>
-        <Footer id = "finalFooter">
-          ORBITS @{new Date().getFullYear()} CREATED BY SCOTT MCBRIDE
-        </Footer>
+        <Layout style={{minHeight: '100vh'}}>
+            <Header style={{ display: 'flex', alignItems:'center', justifyContent: 'center'}} >
+              <Typography.Title level={1} id='title'>O<span className="titleDots">.</span>R<span className="titleDots">.</span>B<span className="titleDots">.</span>I<span className="titleDots">.</span>T<span className="titleDots">.</span>S<span className="titleDots">.</span></Typography.Title>
+            </Header>
+            <Content style={{ flex: 1}}>
+              {renderContent(activeMenu)}
+            </Content>
+            <Footer style={{textAlign: 'center'}}>
+              ORBITS @{new Date().getFullYear()} CREATED BY SCOTT MCBRIDE
+            </Footer>
+          
+        </Layout>
       </Layout>
-    </Layout>
+    </ConfigProvider>
   );
 };
 
