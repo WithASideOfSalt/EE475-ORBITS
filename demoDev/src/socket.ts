@@ -1,6 +1,6 @@
 import { io } from 'socket.io-client';
 
-const URL = 'http://orbitsground:8000';
+const URL = 'http://localhost:5000';
 
 console.log('Socket.IO URL:', URL);
 console.log('Environment:', import.meta.env.MODE);

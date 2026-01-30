@@ -21,6 +21,10 @@ dist-ssr
 # Unneeded generated files
 DemoDevelopment/UPDATES.md
 
+demoDev/api/venv
+demoDev/api/venv
+demoDev/api/__pycache__
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

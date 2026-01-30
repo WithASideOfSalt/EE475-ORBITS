@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Col, Layout, Row, Typography, Card } from 'antd';
 import { Content, Header } from 'antd/es/layout/layout';
 import { socket } from '../socket.ts'
+import '../Styleing/Dashboard.css'
 
 interface TimeUpdateData{
   timestamp: number;
