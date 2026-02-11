@@ -5,7 +5,7 @@ from flask_socketio import SocketIO, emit
 import threading
 
 app = Flask(__name__)
-socketio = SocketIO(app, cors_allowed_origins="*")
+socketio = SocketIO(app, cors_allowed_origins="*", async_mode="gevent")
 
 @app.route('/time')
 def get_current_time():
@@ -31,7 +31,7 @@ def broadcast_time():
 
         time.sleep(0.5)
 
-threading.Thread(target=broadcast_time, daemon=True).start()
+socketio.start_background_task(broadcast_time)
 
 if __name__ == '__main__':
     print('Starting SocketIO')

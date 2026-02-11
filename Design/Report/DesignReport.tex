@@ -30,23 +30,26 @@
 \begin{document}
 \maketitle
 \tableofcontents
-\chapter{Report Content}
-\section{Introduction}
-The Outreach and Research Build for Interactively Teaching Satellites, referred to as ORBITS herein, is a emulation system for a 1U CubeSat. This document outlines the initial design and component research of the ORBITS system.
+\chapter{Abstract}
+The Outreach and Research Build for Interactively Teaching Satellites, referred to as ORBITS herein, is a emulation system for a 1U CubeSat launch ecosystem including both a ground communication station and a physical ORBITS unit.
 
 The ORBITS project is looking to develop a class based learning material that pupils, students, teachers and lecturers are able to gain hands on experience with to experiment, learn and research into CubeSat development. The ORBITS system looks to have modularity at the forefront of its design, allowing users to swap out components and subsystems to learn about different aspects of a CubeSat system. The system looks to be comprised of Commercial Off The Shelf (COTS) components where possible to keep costs low and allow for easy replacement of faulty parts.
 
-Where applicable SysML diagrams have been used to represent the design of the ORBITS system. 
+Where applicable SysML diagrams have been used to represent the design of the ORBITS system to describe and provide an alternative method of understanding for users to reference.
 
+\chapter{Design}
 \section{Design Overview}
 
-The system has been developed using a top down approachm starting with the high level requirements and breaking these down into smaller subsystems. Shown within Figure \ref{fig:ORBITS_Requirements} are the high level system requirements for the ORBITS system.
-\begin{figure}
+The system has been developed using a top down approach starting with the high level requirements and breaking these down into smaller subsystems. Shown within Figure \ref{fig:ORBITS_Requirements} are the high level system requirements for the ORBITS system.
+
+\begin{figure}[h]
     \centering
     \includegraphics[width=1\textwidth]{./Images/ORBITS_Requirements.png}
     \caption{High Level ORBITS System Requirements}
     \label{fig:ORBITS_Requirements}
 \end{figure}
+
+These requirements have been refined through several iterative rounds all looking to provide some atomic metric that the system needs to achieve to be successful and set itself apart from other products currently available on the market.
 
 The main subsystems of the ORBITS system can then be derived from these requirements. These subsystems are listed below:
 \begin{itemize}
@@ -60,14 +63,16 @@ The main subsystems of the ORBITS system can then be derived from these requirem
 \end{itemize}
 
 To visualise this breakdown a SysML Block Definition Diagram (BDD) has been created, shown in Figure \ref{fig:ORBITS_BDD}.
-\begin{figure}
+\begin{figure}[h]
     \centering
     \includegraphics[width=1\textwidth]{./Images/ORBITS_Logical_Structure.png}
     \caption{ORBITS System Block Definition Diagram}
     \label{fig:ORBITS_BDD}
 \end{figure}
 
-How each of these subsystems interact with each other is shown in the SysML Internal Block Diagram (IBD) in Figure \ref{fig:ORBITS_IBD}.
+Each of these subsystems are required in order to satisfy one or more of the above requirements.
+
+How each of these subsystems interact with each other is shown in the Internal Block Diagram (IBD) in Figure \ref{fig:ORBITS_IBD}.
 \begin{figure}
     \centering
     \includegraphics[width=1\textwidth]{./Images/ORBITS_Logical_Boundary.png}
@@ -77,11 +82,27 @@ How each of these subsystems interact with each other is shown in the SysML Inte
 Defining the system in this way creates a clear strcture as to how the system should behave allowing for easier development of each subsystem while ensuring that relevant learning materials are able to be created covering each aspect of the system.
 \section{Subsystem Designs}
 Taking these general design choices into account, each subsystem has been researched and designed to meet the overall system requirements. Each subsystem design is outlined in the following sections.
+\subsection{Ground Station}
+
 \subsection{On-Board Computer}
+The onboard computer selected was the ESP32-S3-WROOM-1U,
 \subsection{Communications Subsystem}
-\subsection{Power Management and Distribution Subsystem (PMAD)}\subsection{Platform Structure}
+Communications are integral for the operations of this emulatory system. Implemented within the system are 2 forms of inter-device communication. WiFi is included with both the ground station and OBC with the ground station being able to generate its own hotspot that the OBC can connect to.
+
+However, within CubeSat development WiFi is not used. To give an alternative communication method more in line with a CubeSat a wireless RF transceiver module has been included with both the ground station and ORBITS unit.
+
+The NRF24L01, shown in figure \ref{fig:NRF24L01}, is a low cost, low power RF transceiver that fits the requirements needed by the ORBITS system. 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{./Images/NRF24L01.jpg}
+    \caption{NRF24L01 RF Transceiver Module}
+    \label{fig:NRF24L01}
+\end{figure}
+The 2.4GHz frequency band is a completely unlicensed band that allows for easy communication without the need for a license. The NRF24L01 is able to achieve data rates of up to 2Mbps which is more than sufficient for the needs of the ORBITS system. The module also has a range of up to 100m in open space which is more than enough for a classroom environment. 
+
+\subsection{Power Management and Distribution Subsystem (PMAD)}
+\subsection{Platform Structure}
 \subsection{Attitude Determination and Control Subsystem (ADCS)}
 \subsection{Payload}
-\subsection{Ground Station}
 \section{Miscellaneous Details}
 \end{document}
