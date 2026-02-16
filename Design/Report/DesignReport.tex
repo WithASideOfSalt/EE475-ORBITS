@@ -31,9 +31,9 @@
 \maketitle
 \tableofcontents
 \chapter{Abstract}
-The Outreach and Research Build for Interactively Teaching Satellites, referred to as ORBITS herein, is a emulation system for a 1U CubeSat launch ecosystem including both a ground communication station and a physical ORBITS unit.
+The Outreach and Research Build for Interactively Teaching Satellites, referred to as ORBITS herein, is a emulation system for a 1U CubeSat ecosystem including both a ground communication station and a physical ORBITS unit that provides a learning environment for both software and hardware concepts.
 
-The ORBITS project is looking to develop a class based learning material that pupils, students, teachers and lecturers are able to gain hands on experience with to experiment, learn and research into CubeSat development. The ORBITS system looks to have modularity at the forefront of its design, allowing users to swap out components and subsystems to learn about different aspects of a CubeSat system. The system looks to be comprised of Commercial Off The Shelf (COTS) components where possible to keep costs low and allow for easy replacement of faulty parts.
+The ORBITS project is looking to develop a class based learning material that pupils, students, teachers and lecturers are able to gain hands on experience with to experiment, learn and research into CubeSat development. The ORBITS system looks to have modularity at the forefront of its design, allowing users to create thier own payloads to interact with a stock unit to learn about different aspects of a CubeSat system and development. The system looks to be comprised of Commercial Off The Shelf (COTS) components where possible to keep costs low and allow for easy replacement of faulty parts.
 
 Where applicable SysML diagrams have been used to represent the design of the ORBITS system to describe and provide an alternative method of understanding for users to reference.
 
@@ -70,10 +70,8 @@ To visualise this breakdown a SysML Block Definition Diagram (BDD) has been crea
     \label{fig:ORBITS_BDD}
 \end{figure}
 
-Each of these subsystems are required in order to satisfy one or more of the above requirements.
-
 How each of these subsystems interact with each other is shown in the Internal Block Diagram (IBD) in Figure \ref{fig:ORBITS_IBD}.
-\begin{figure}
+\begin{figure}[h]
     \centering
     \includegraphics[width=1\textwidth]{./Images/ORBITS_Logical_Boundary.png}
     \caption{ORBITS System Internal Block Diagram}
@@ -83,13 +81,14 @@ Defining the system in this way creates a clear strcture as to how the system sh
 \section{Subsystem Designs}
 Taking these general design choices into account, each subsystem has been researched and designed to meet the overall system requirements. Each subsystem design is outlined in the following sections.
 \subsection{Ground Station}
+To allow for the software and development environment to be as accessbible as possible the ground station had been selected to interface with any standard laptop or desktop environment. A Raspberry Pi Zero 2 W was selected for this role. 
 
 \subsection{On-Board Computer}
 The onboard computer selected was the ESP32-S3-WROOM-1U,
 \subsection{Communications Subsystem}
-Communications are integral for the operations of this emulatory system. Implemented within the system are 2 forms of inter-device communication. WiFi is included with both the ground station and OBC with the ground station being able to generate its own hotspot that the OBC can connect to.
+Communications are integral for the operations of this emulatory system. Implemented within the system are 2 forms of inter-device communication. WiFi, being one of them, is included with both the ground station and OBC with the ground station being able to generate its own hotspot that the OBC can connect to.
 
-However, within CubeSat development WiFi is not used. To give an alternative communication method more in line with a CubeSat a wireless RF transceiver module has been included with both the ground station and ORBITS unit.
+However, within CubeSat development WiFi is not the best analog for space communication. To give an alternative communication method more in line with a CubeSat a wireless RF transceiver module has been included with both the ground station and ORBITS unit.
 
 The NRF24L01, shown in figure \ref{fig:NRF24L01}, is a low cost, low power RF transceiver that fits the requirements needed by the ORBITS system. 
 \begin{figure}[h]
@@ -104,5 +103,4 @@ The 2.4GHz frequency band is a completely unlicensed band that allows for easy c
 \subsection{Platform Structure}
 \subsection{Attitude Determination and Control Subsystem (ADCS)}
 \subsection{Payload}
-\section{Miscellaneous Details}
 \end{document}
