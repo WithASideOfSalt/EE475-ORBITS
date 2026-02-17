@@ -2,15 +2,14 @@
 import time
 from flask import Flask, request
 from flask_socketio import SocketIO, emit
+import paho.mqtt.client as mqtt
 import threading
 
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*", async_mode="gevent")
 
-@app.route('/time')
-def get_current_time():
-    print('Accessed get_current_time')
-    return {'time': time.time()}
+# MQTT Client Setup to communicate with ESP32
+mqtt_client = mqtt.Client()
 
 @socketio.on('connect')
 def handle_connet():
