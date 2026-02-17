@@ -6,15 +6,29 @@
 #include <ArduinoJson.h>
 #include <WiFi.h>
 
+//Wifi Credentials
+
 const char* ssid = "ORBITSground";
 const char* password = "ORBITSLaunch";
 const char* hostname = "ORBITSUnit00";
 
+//Internal I2C Bus for sensor communications
 TwoWire internalI2CBus = TwoWire(0);
 unsigned long lastTime = 0;
 
+WiFiClient espClient;
+PubSubClient mqtt(espClient);
+
+//MQTT Broker Info
+const char* mqtt_server = "orbitsground.local";
+const int mqtt_port = 1883;
+
 
 Adafruit_LSM6DSOX sox;
+
+void reconnect_mqtt();
+void send_imu_data();
+
 void setup(void) {
   Serial.begin(115200);
 
@@ -48,8 +62,10 @@ void setup(void) {
   Serial.print("RRSI: ");
   Serial.println(WiFi.RSSI());
 
-  //Just Use Default Sensor Settings for now, can be changed as needed
+  mqtt.setServer(mqtt_server, mqtt_port);
 
+  //Just Use Default Sensor Settings for now, can be changed as needed
+  reconnect_mqtt();
 }
 
 void loop() {
@@ -57,15 +73,22 @@ void loop() {
   unsigned long currentMillis = millis();
   if(currentMillis - lastTime >= 10000) {
     lastTime = currentMillis;
-
-
-
+    send_imu_data();
   }
 }
 
 void reconnect_mqtt(){
   while(!mqtt.connected()){
     Serial.print("Connecting to MQTT...");
+    if(mqtt.connect(hostname)) {
+      Serial.println("connected");
+    } 
+    else {
+      Serial.print("failed with state ");
+      Serial.print(mqtt.state());
+      Serial.print("\n");
+      delay(2000);
+    }
   }
 }
 
@@ -84,4 +107,14 @@ void send_imu_data(){
   doc["gyro_x"] = gyro.gyro.x;
   doc["gyro_y"] = gyro.gyro.y;
   doc["gyro_z"] = gyro.gyro.z;
+
+  //print the JSON document to the serial monitor for debugging
+  serializeJson(doc, Serial);
+  //send the JSON document to the MQTT broker
+  if(!mqtt.connected()){
+    reconnect_mqtt();
+  }
+  char buffer[256];
+  serializeJson(doc, buffer);
+  mqtt.publish("orbits/imu", buffer);
 }
