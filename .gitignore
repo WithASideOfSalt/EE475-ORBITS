@@ -25,6 +25,9 @@ demoDev/api/venv
 demoDev/api/venv
 demoDev/api/__pycache__
 
+ORBITS/.pio
+ORBITS/.vscode
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
