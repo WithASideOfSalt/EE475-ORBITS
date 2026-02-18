@@ -1,4 +1,4 @@
- Ignore all files inside Design/Report but allow specific files/folders
+# Ignore all files inside Design/Report but allow specific files/folders
 Design/Report/*
 !Design/Report/DesignReport.tex
 !Design/Report/Images/
@@ -19,11 +19,11 @@ dist-ssr
 *.local
 
 # Unneeded generated files
-DemoDevelopment/UPDATES.md
+Dashboard/UPDATES.md
 
-demoDev/api/venv
-demoDev/api/venv
-demoDev/api/__pycache__
+Dashboard/api/venv
+Dashboard/api/venv
+Dashboard/api/__pycache__
 
 ORBITS/.pio
 ORBITS/.vscode
