@@ -71,7 +71,7 @@ void setup(void) {
 void loop() {
   //get MPU data and send it to the ground station
   unsigned long currentMillis = millis();
-  if(currentMillis - lastTime >= 10000) {
+  if(currentMillis - lastTime >= 200) {
     lastTime = currentMillis;
     send_imu_data();
   }
@@ -92,8 +92,25 @@ void reconnect_mqtt(){
   }
 }
 
+void mqtt_callback(char* topic, byte* payload, unsigned int length){
+  //Handle incoming MQTT messages here.
+  Serial.print("Message arrived in topic: ");
+  Serial.println(topic);
+
+  JsonDocument doc;
+  DeserializationError error = deserializeJson(doc, payload, length);
+
+  String command = doc["command"];
+  if(command == "Blink"){
+    //Start sending data
+  }
+  else if(command == "Something"){
+    //Stop sending data
+  }
+}
+
 void send_imu_data(){
-  StaticJsonDocument<256> doc;
+  JsonDocument doc;
 
   sensors_event_t accel;
   sensors_event_t gyro;
@@ -110,6 +127,7 @@ void send_imu_data(){
 
   //print the JSON document to the serial monitor for debugging
   serializeJson(doc, Serial);
+  Serial.println();
   //send the JSON document to the MQTT broker
   if(!mqtt.connected()){
     reconnect_mqtt();

@@ -1,7 +1,7 @@
 import { io } from 'socket.io-client';
 
 const URL = import.meta.env.DEV 
-    ? 'http://orbitsground.local:5000' 
+    ? 'http://orbitsground.local:8000' 
     : 'http://orbitsground.local/';
 
 console.log('Socket.IO URL:', URL);

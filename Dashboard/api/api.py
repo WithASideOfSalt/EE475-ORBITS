@@ -20,10 +20,20 @@ def on_mqtt_connect(client, userdata, flags, rc):
 def on_mqtt_message(client, userdata, msg):
     print(f"Received MQTT message on topic {msg.topic}: {msg.payload.decode()}")
     # Broadcast the received MQTT message to all connected SocketIO clients
-    # socketio.emit('mqtt_message', {
-    #     'topic': msg.topic,
-    #     'payload': msg.payload.decode()
-    # })
+    if 'imu' in msg.topic:
+        try:
+            payload = json.loads(msg.payload.decode())
+            socketio.emit('imu_data', {
+                'accel_x': payload.get('accel_x', 0),
+                'accel_y': payload.get('accel_y', 0),
+                'accel_z': payload.get('accel_z', 0),
+                'gyro_x': payload.get('gyro_x', 0),
+                'gyro_y': payload.get('gyro_y', 0),
+                'gyro_z': payload.get('gyro_z', 0),
+                'timestamp': time.time()
+            })
+        except json.JSONDecodeError:
+            print(f"Failed to parse JSON from topic {msg.topic}")
 
 mqtt_client.on_connect = on_mqtt_connect
 mqtt_client.on_message = on_mqtt_message
