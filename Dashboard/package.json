@@ -11,8 +11,11 @@
     "api": "cd api && venv\\Scripts\\flask run --no-debugger"
   },
   "dependencies": {
+    "@monaco-editor/react": "^4.7.0",
     "antd": "^6.2.2",
+    "blockly": "^12.4.1",
     "chart.js": "^4.5.1",
+    "monaco": "^1.201704190613.0",
     "react": "^19.2.0",
     "react-chartjs-2": "^5.3.1",
     "react-dom": "^19.2.0",
