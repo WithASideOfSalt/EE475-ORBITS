@@ -82,7 +82,7 @@ const App = () => {
             <Content style={{ flex: 1}}>
               {renderContent(activeMenu, code, setCode)}
             </Content>
-            <Footer style={{textAlign: 'center'}}>
+            <Footer style={{textAlign: 'center', height : '40px', padding: '10px 50px', background: '#252526', color: '#fff'}}>
               ORBITS @{new Date().getFullYear()} CREATED BY SCOTT MCBRIDE
             </Footer>
           

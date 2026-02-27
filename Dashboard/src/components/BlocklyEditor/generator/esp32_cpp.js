@@ -4,131 +4,131 @@ import { CppGenerator } from "./cpp";
 
 export function registerEsp32Generators() {
 
-    CppGenerator["esp32_setup"] = function (block) {
-        const body = CppGenerator.statementToCode(block, "BODY");
+    CppGenerator.forBlock["esp32_setup"] = function (block, generator) {
+        const body = generator.statementToCode(block, "BODY");
         return `void setup() {\n${body}}\n`;
     };
 
-    CppGenerator["esp32_loop"] = function (block) {
-        const body = CppGenerator.statementToCode(block, "BODY");
+    CppGenerator.forBlock["esp32_loop"] = function (block, generator) {
+        const body = generator.statementToCode(block, "BODY");
         return `void loop() {\n${body}}\n`;
     };
 
-    CppGenerator["esp32_pinmode"] = function (block) {
+    CppGenerator.forBlock["esp32_pinmode"] = function (block, generator) {
         const pin = block.getFieldValue("PIN");
         const mode = block.getFieldValue("MODE");
         return `  pinMode(${pin}, ${mode});\n`;
     };
 
-    CppGenerator["esp32_digitalwrite"] = function (block) {
+    CppGenerator.forBlock["esp32_digitalwrite"] = function (block, generator) {
         const pin = block.getFieldValue("PIN");
         const value = block.getFieldValue("VALUE");
         return `  digitalWrite(${pin}, ${value});\n`;
     };
 
-    CppGenerator["esp32_digitalread"] = function (block) {
+    CppGenerator.forBlock["esp32_digitalread"] = function (block, generator) {
         const pin = block.getFieldValue("PIN");
         return [`digitalRead(${pin})`, CppGenerator.ORDER_ATOMIC];
     };
 
-    CppGenerator["esp32_analogread"] = function (block) {
+    CppGenerator.forBlock["esp32_analogread"] = function (block, generator) {
         const pin = block.getFieldValue("PIN");
         return [`analogRead(${pin})`, CppGenerator.ORDER_ATOMIC];
     };
 
-    CppGenerator["esp32_delay"] = function (block) {
-        const ms = CppGenerator.valueToCode(block, "MS", CppGenerator.ORDER_ATOMIC) || "1000";
+    CppGenerator.forBlock["esp32_delay"] = function (block, generator) {
+        const ms = generator.valueToCode(block, "MS", CppGenerator.ORDER_ATOMIC) || "1000";
         return `  delay(${ms});\n`;
     };
 
-    CppGenerator["esp32_serialprint"] = function (block) {
-        const text = CppGenerator.valueToCode(block, "TEXT", CppGenerator.ORDER_ATOMIC) || '""';
+    CppGenerator.forBlock["esp32_serialprint"] = function (block, generator) {
+        const text = generator.valueToCode(block, "TEXT", CppGenerator.ORDER_ATOMIC) || '""';
         const newline = block.getFieldValue("NEWLINE") === "TRUE";
         return newline
             ? `  Serial.println(${text});\n`
             : `  Serial.print(${text});\n`;
     };
 
-    CppGenerator["esp32_serialbegin"] = function (block) {
+    CppGenerator.forBlock["esp32_serialbegin"] = function (block, generator) {
         const baud = block.getFieldValue("BAUD");
         return `  Serial.begin(${baud});\n`;
     };
 
-    CppGenerator["esp32_var_set"] = function (block) {
+    CppGenerator.forBlock["esp32_var_set"] = function (block, generator) {
         const name = block.getFieldValue("NAME");
-        const value = CppGenerator.valueToCode(block, "VALUE", CppGenerator.ORDER_ATOMIC) || "0";
+        const value = generator.valueToCode(block, "VALUE", CppGenerator.ORDER_ATOMIC) || "0";
         return `  ${name} = ${value};\n`;
     };
 
     // Standard Blockly blocks mapped to C++
-    CppGenerator["math_number"] = function (block) {
+    CppGenerator.forBlock["math_number"] = function (block, generator) {
         const num = block.getFieldValue("NUM");
         return [num, CppGenerator.ORDER_ATOMIC];
     };
 
-    CppGenerator["text"] = function (block) {
+    CppGenerator.forBlock["text"] = function (block, generator) {
         const text = block.getFieldValue("TEXT");
         return [`"${text}"`, CppGenerator.ORDER_ATOMIC];
     };
 
-    CppGenerator["logic_boolean"] = function (block) {
+    CppGenerator.forBlock["logic_boolean"] = function (block, generator) {
         const value = block.getFieldValue("BOOL") === "TRUE" ? "true" : "false";
         return [value, CppGenerator.ORDER_ATOMIC];
     };
 
-    CppGenerator["logic_compare"] = function (block) {
+    CppGenerator.forBlock["logic_compare"] = function (block, generator) {
         const ops = {
             EQ: "==", NEQ: "!=",
             LT: "<", LTE: "<=",
             GT: ">", GTE: ">="
         };
         const op = ops[block.getFieldValue("OP")];
-        const a = CppGenerator.valueToCode(block, "A", CppGenerator.ORDER_RELATIONAL) || "0";
-        const b = CppGenerator.valueToCode(block, "B", CppGenerator.ORDER_RELATIONAL) || "0";
+        const a = generator.valueToCode(block, "A", CppGenerator.ORDER_RELATIONAL) || "0";
+        const b = generator.valueToCode(block, "B", CppGenerator.ORDER_RELATIONAL) || "0";
         return [`${a} ${op} ${b}`, CppGenerator.ORDER_RELATIONAL];
     };
 
-    CppGenerator["logic_operation"] = function (block) {
+    CppGenerator.forBlock["logic_operation"] = function (block, generator) {
         const op = block.getFieldValue("OP") === "AND" ? "&&" : "||";
-        const a = CppGenerator.valueToCode(block, "A", CppGenerator.ORDER_LOGICAL_AND) || "false";
-        const b = CppGenerator.valueToCode(block, "B", CppGenerator.ORDER_LOGICAL_AND) || "false";
+        const a = generator.valueToCode(block, "A", CppGenerator.ORDER_LOGICAL_AND) || "false";
+        const b = generator.valueToCode(block, "B", CppGenerator.ORDER_LOGICAL_AND) || "false";
         return [`${a} ${op} ${b}`, CppGenerator.ORDER_LOGICAL_AND];
     };
 
-    CppGenerator["controls_if"] = function (block) {
+    CppGenerator.forBlock["controls_if"] = function (block, generator) {
         let code = "";
         for (let i = 0; i <= block.elseifCount_; i++) {
-            const condition = CppGenerator.valueToCode(block, `IF${i}`, CppGenerator.ORDER_NONE) || "false";
-            const body = CppGenerator.statementToCode(block, `DO${i}`);
+            const condition = generator.valueToCode(block, `IF${i}`, CppGenerator.ORDER_NONE) || "false";
+            const body = generator.statementToCode(block, `DO${i}`);
             code += i === 0
                 ? `  if (${condition}) {\n${body}  }`
                 : ` else if (${condition}) {\n${body}  }`;
         }
         if (block.elseCount_) {
-            const elseBody = CppGenerator.statementToCode(block, "ELSE");
+            const elseBody = generator.statementToCode(block, "ELSE");
             code += ` else {\n${elseBody}  }`;
         }
         return code + "\n";
     };
 
-    CppGenerator["controls_whileUntil"] = function (block) {
+    CppGenerator.forBlock["controls_whileUntil"] = function (block, generator) {
         const mode = block.getFieldValue("MODE");
-        let condition = CppGenerator.valueToCode(block, "BOOL", CppGenerator.ORDER_NONE) || "false";
+        let condition = generator.valueToCode(block, "BOOL", CppGenerator.ORDER_NONE) || "false";
         if (mode === "UNTIL") condition = `!(${condition})`;
-        const body = CppGenerator.statementToCode(block, "DO");
+        const body = generator.statementToCode(block, "DO");
         return `  while (${condition}) {\n${body}  }\n`;
     };
 
-    CppGenerator["controls_for"] = function (block) {
+    CppGenerator.forBlock["controls_for"] = function (block, generator) {
         const variable = block.getFieldValue("VAR");
-        const from = CppGenerator.valueToCode(block, "FROM", CppGenerator.ORDER_NONE) || "0";
-        const to = CppGenerator.valueToCode(block, "TO", CppGenerator.ORDER_NONE) || "10";
-        const by = CppGenerator.valueToCode(block, "BY", CppGenerator.ORDER_NONE) || "1";
-        const body = CppGenerator.statementToCode(block, "DO");
+        const from = generator.valueToCode(block, "FROM", CppGenerator.ORDER_NONE) || "0";
+        const to = generator.valueToCode(block, "TO", CppGenerator.ORDER_NONE) || "10";
+        const by = generator.valueToCode(block, "BY", CppGenerator.ORDER_NONE) || "1";
+        const body = generator.statementToCode(block, "DO");
         return `  for (int ${variable} = ${from}; ${variable} <= ${to}; ${variable} += ${by}) {\n${body}  }\n`;
     };
 
-    CppGenerator["math_arithmetic"] = function (block) {
+    CppGenerator.forBlock["math_arithmetic"] = function (block, generator) {
         const ops = {
             ADD: ["+", CppGenerator.ORDER_ADDITIVE],
             MINUS: ["-", CppGenerator.ORDER_ADDITIVE],
@@ -136,8 +136,8 @@ export function registerEsp32Generators() {
             DIVIDE: ["/", CppGenerator.ORDER_MULTIPLICATIVE]
         };
         const [op, order] = ops[block.getFieldValue("OP")];
-        const a = CppGenerator.valueToCode(block, "A", order) || "0";
-        const b = CppGenerator.valueToCode(block, "B", order) || "0";
+        const a = generator.valueToCode(block, "A", order) || "0";
+        const b = generator.valueToCode(block, "B", order) || "0";
         return [`${a} ${op} ${b}`, order];
     };
 }

@@ -42,17 +42,29 @@ export default function BlocklyEditor({ onCodeChange }: BlocklyEditorProps) {
                 scaleSpeed: 1.2
             },
             trashcan: true,
-            scrollbars: true,
+            scrollbars: false,
             sounds: false
         });
 
         // Fire C++ generation on every change
         workspaceRef.current.addChangeListener((event: Blockly.Events.Abstract) => {
-            if (event.isUiEvent) return; // ignore UI-only events
+            // Only generate code for meaningful changes (block creation, movement, deletion, field changes)
+            if (event.isUiEvent || 
+                event.type === Blockly.Events.FINISHED_LOADING ||
+                event.type === Blockly.Events.VIEWPORT_CHANGE) {
+                return;
+            }
+            
+            console.log("Blockly event:", event.type, event);
             const raw = CppGenerator.workspaceToCode(workspaceRef.current!);
             const full = wrapInSketch(raw);
+            console.log("Generated code:", full);
             onCodeChange?.(full);
         });
+
+        // Generate initial code
+        const initialCode = wrapInSketch(CppGenerator.workspaceToCode(workspaceRef.current));
+        onCodeChange?.(initialCode);
 
         // Handle resize
         const observer = new ResizeObserver(() => {
