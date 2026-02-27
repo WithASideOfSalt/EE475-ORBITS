@@ -46,7 +46,7 @@ const renderContent = (activeMenu: string, code: string, setCode: React.Dispatch
     case '1':
       return <Dashboard />;
     case '2':
-      return <CodeEditor code={code} setCode={setCode} />;
+      return <CodeEditor/>;
     case '3':
       return <Help />;
     default:
