@@ -1,5 +1,8 @@
 // src/components/BlocklyEditor/blocks/esp32.js
 import * as Blockly from "blockly";
+import { FieldMultilineInput } from "@blockly/field-multilineinput";
+
+Blockly.fieldRegistry.register("field_multilineinput", FieldMultilineInput);
 
 export function defineEsp32Blocks() {
 
@@ -12,8 +15,8 @@ export function defineEsp32Blocks() {
                 .setCheck(null);
             this.setColour(120);
             this.setTooltip("Runs once at startup");
+            this.setDeletable(false);    // ← cannot be deleted
             this.setHelpUrl("");
-            //this.setstyle("esp32_blocks");
             // Hat block — no previous/next connections
         }
     };
@@ -26,6 +29,7 @@ export function defineEsp32Blocks() {
             this.appendStatementInput("BODY")
                 .setCheck(null);
             this.setColour(120);
+            this.setDeletable(false);
             this.setTooltip("Runs repeatedly");
         }
     };
@@ -138,6 +142,27 @@ export function defineEsp32Blocks() {
     };
 
     // If block is built into Blockly, but register ESP32 specific ones below
+    // Variable declare
+    Blockly.Blocks["esp32_var_declare"] = {
+        init: function () {
+            this.appendDummyInput()
+                .appendField("Declare")
+                .appendField(new Blockly.FieldDropdown([
+                    ["int", "int"],
+                    ["float", "float"],
+                    ["bool", "bool"],
+                    ["String", "String"]
+                ]), "TYPE")
+                .appendField(new Blockly.FieldTextInput("myVar"), "NAME")
+                .appendField("=");
+            this.appendValueInput("VALUE")
+                .setCheck(null);
+            this.setPreviousStatement(true, null);
+            this.setNextStatement(true, null);
+            this.setColour(330);
+        }
+    };
+
     // Variable set
     Blockly.Blocks["esp32_var_set"] = {
         init: function () {
@@ -149,6 +174,59 @@ export function defineEsp32Blocks() {
             this.setPreviousStatement(true, null);
             this.setNextStatement(true, null);
             this.setColour(330);
+        }
+    };
+
+    // Variable change by
+    Blockly.Blocks["esp32_var_change"] = {
+        init: function () {
+            this.appendDummyInput()
+                .appendField("Change")
+                .appendField(new Blockly.FieldTextInput("myVar"), "NAME")
+                .appendField("by");
+            this.appendValueInput("DELTA")
+                .setCheck("Number");
+            this.setPreviousStatement(true, null);
+            this.setNextStatement(true, null);
+            this.setColour(330);
+        }
+    };
+
+    // Variable get
+    Blockly.Blocks["esp32_var_get"] = {
+        init: function () {
+            this.appendDummyInput()
+                .appendField("Get variable")
+                .appendField(new Blockly.FieldTextInput("myVar"), "NAME");
+            this.setOutput(true, null);
+            this.setColour(330);
+        }
+    };
+
+    Blockly.Blocks["esp32_script"] = {
+        init: function() {
+            this.appendDummyInput()
+                .appendField("Script")
+                .appendField("Code");
+            this.appendStatementInput("BODY")
+                .setCheck(null);
+            this.setColour(230);
+            this.setPreviousStatement(true, null);
+            this.setNextStatement(true, null);
+            this.setTooltip("Custom script block");
+        }
+    };
+
+    Blockly.Blocks["esp32_script_code"] = {
+        init: function() {
+            this.appendDummyInput()
+                .appendField("Custom Code");
+            this.appendDummyInput()
+                .appendField(new FieldMultilineInput(""), "CODE");
+            this.setColour(200);
+            this.setPreviousStatement(true, null);
+            this.setNextStatement(true, null);
+            this.setTooltip("Custom code block");
         }
     };
 }

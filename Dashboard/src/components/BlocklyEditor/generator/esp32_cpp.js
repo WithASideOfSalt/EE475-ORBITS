@@ -2,6 +2,13 @@
 import * as Blockly from "blockly";
 import { CppGenerator } from "./cpp";
 
+function toIdentifier(name) {
+    const cleaned = String(name || "myVar")
+        .replace(/[^a-zA-Z0-9_]/g, "_")
+        .replace(/^[^a-zA-Z_]+/, "");
+    return cleaned || "myVar";
+}
+
 export function registerEsp32Generators() {
 
     CppGenerator.forBlock["esp32_setup"] = function (block, generator) {
@@ -54,11 +61,73 @@ export function registerEsp32Generators() {
         return `  Serial.begin(${baud});\n`;
     };
 
+    CppGenerator.forBlock["esp32_var_declare"] = function (block, generator) {
+        const type = block.getFieldValue("TYPE") || "int";
+        const name = toIdentifier(block.getFieldValue("NAME"));
+        const defaults = {
+            int: "0",
+            float: "0.0",
+            bool: "false",
+            String: '""'
+        };
+        const value = generator.valueToCode(block, "VALUE", CppGenerator.ORDER_ATOMIC) || defaults[type] || "0";
+        return `  ${type} ${name} = ${value};\n`;
+    };
+
     CppGenerator.forBlock["esp32_var_set"] = function (block, generator) {
-        const name = block.getFieldValue("NAME");
+        const name = toIdentifier(block.getFieldValue("NAME"));
         const value = generator.valueToCode(block, "VALUE", CppGenerator.ORDER_ATOMIC) || "0";
         return `  ${name} = ${value};\n`;
     };
+
+    CppGenerator.forBlock["esp32_var_change"] = function (block, generator) {
+        const name = toIdentifier(block.getFieldValue("NAME"));
+        const delta = generator.valueToCode(block, "DELTA", CppGenerator.ORDER_ADDITIVE) || "1";
+        return `  ${name} += ${delta};\n`;
+    };
+
+    CppGenerator.forBlock["esp32_var_get"] = function (block, generator) {
+        const name = toIdentifier(block.getFieldValue("NAME"));
+        return [name, CppGenerator.ORDER_ATOMIC];
+    };
+
+    CppGenerator.forBlock["esp32_script"] = function (block, generator) {
+        const code = block.getFieldValue("CODE") || "";
+        return `  ${code}\n`;
+    };
+
+    CppGenerator.forBlock["esp32_script_code"] = function (block, generator) {
+        console.log("block properties:", block);
+        const code = block.getFieldValue("CODE") || "";
+        console.log("Generating code for esp32_script_code block:", code);
+        return `  ${code}\n`;
+    };
+
+    //These can be implemented in future, What I need as an MVP is a block for the user to completely add their own lines of code
+/*     CppGenerator.forBlock["esp32_comment"] = function (block, generator) {
+        const comment = block.getFieldValue("COMMENT");
+        return `  // ${comment}\n`;
+    };
+
+    CppGenerator.forBlock["esp32_include"] = function (block, generator) {
+        const header = block.getFieldValue("HEADER");
+        return `#include <${header}>\n`;
+    };
+
+    CppGenerator.forBlock["esp32_function_define"] = function (block, generator) {
+        const name = toIdentifier(block.getFieldValue("NAME"));
+        const params = block.getFieldValue("PARAMS").split(",").map(p => toIdentifier(p.trim())).filter(p => p);
+        const body = generator.statementToCode(block, "BODY");
+        return `void ${name}(${params.map(p => `int ${p}`).join(", ")}) {\n${body}}\n`;
+    };
+
+    CppGenerator.forBlock["esp32_function_call"] = function (block, generator) {
+        const name = toIdentifier(block.getFieldValue("NAME"));
+        const args = block.getFieldValue("ARGS").split(",").map(a => generator.valueToCode(block, `ARG${a.trim()}`, CppGenerator.ORDER_ATOMIC) || "0");
+        return [`${name}(${args.join(", ")})`, CppGenerator.ORDER_ATOMIC];
+    }; */
+
+
 
     // Standard Blockly blocks mapped to C++
     CppGenerator.forBlock["math_number"] = function (block, generator) {

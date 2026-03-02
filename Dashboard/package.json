@@ -11,6 +11,7 @@
     "api": "cd api && venv\\Scripts\\flask run --no-debugger"
   },
   "dependencies": {
+    "@blockly/field-multilineinput": "^6.0.8",
     "@monaco-editor/react": "^4.7.0",
     "antd": "^6.2.2",
     "blockly": "^12.4.1",

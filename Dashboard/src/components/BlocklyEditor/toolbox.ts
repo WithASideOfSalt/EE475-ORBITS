@@ -7,8 +7,8 @@ export const toolbox = {
             name: "ESP32",
             styleName: "esp32_category",
             contents: [
-                { kind: "block", type: "esp32_setup" },
-                { kind: "block", type: "esp32_loop" },
+                //{ kind: "block", type: "esp32_setup" },
+                //{ kind: "block", type: "esp32_loop" },
                 { kind: "block", type: "esp32_pinmode" },
                 { kind: "block", type: "esp32_digitalwrite" },
                 { kind: "block", type: "esp32_digitalread" },
@@ -68,7 +68,29 @@ export const toolbox = {
             name: "Variables",
             styleName: "math_category",
             contents: [
+                { kind: "block", type: "esp32_var_declare" },
                 { kind: "block", type: "esp32_var_set" },
+                { kind: "block", type: "esp32_var_change" },
+                { kind: "block", type: "esp32_var_get" },
+            ]
+        },
+        //Implement in future, for now user can write in custom code block
+        /* {
+            kind: "category",
+            name: "Functions",
+            styleName: "function_category",
+            contents: [
+                { kind: "block", type: "esp32_function_define" },
+                { kind: "block", type: "esp32_function_call" },
+            ]
+        }, */
+        {
+            kind: "category",
+            name: "Custom Code",
+            styleName: "function_category",
+            contents: [
+                { kind: "block", type: "esp32_script" },
+                { kind: "block", type: "esp32_script_code" },
             ]
         }
     ]
