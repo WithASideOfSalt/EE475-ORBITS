@@ -92,6 +92,17 @@ export const toolbox = {
                 { kind: "block", type: "esp32_script" },
                 { kind: "block", type: "esp32_script_code" },
             ]
+        },
+
+        {
+            kind: "category",
+            name: "Functions",
+            styleName: "logic_category",
+            contents: [
+                { kind: "block", type: "function_definition" },
+                { kind: "block", type: "function_call" },
+                { kind: "block", type: "function_return" }
+            ]
         }
     ]
 };

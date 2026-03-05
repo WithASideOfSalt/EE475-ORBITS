@@ -37,6 +37,8 @@ The ORBITS project is looking to develop a class based learning material that pu
 
 Where applicable SysML diagrams have been used to represent the design of the ORBITS system to describe and provide an alternative method of understanding for users to reference.
 
+\chapter{Introduction}
+
 \chapter{Design}
 \section{Design Overview}
 
@@ -66,7 +68,7 @@ To visualise this breakdown a SysML Block Definition Diagram (BDD) has been crea
 \begin{figure}[h]
     \centering
     \includegraphics[width=1\textwidth]{./Images/ORBITS_Logical_Structure.png}
-    \caption{ORBITS System Block Definition Diagram}
+    \caption{ORBITS Unit System Block Definition Diagram}
     \label{fig:ORBITS_BDD}
 \end{figure}
 
@@ -74,14 +76,28 @@ How each of these subsystems interact with each other is shown in the Internal B
 \begin{figure}[h]
     \centering
     \includegraphics[width=1\textwidth]{./Images/ORBITS_Logical_Boundary.png}
-    \caption{ORBITS System Internal Block Diagram}
+    \caption{ORBITS Unit System Internal Block Diagram}
     \label{fig:ORBITS_IBD}
 \end{figure}
-Defining the system in this way creates a clear strcture as to how the system should behave allowing for easier development of each subsystem while ensuring that relevant learning materials are able to be created covering each aspect of the system.
+Defining the system in this way creates a clear structure as to how the dedicated ORBITS unit should behave allowing for easier development of each subsystem while ensuring that relevant learning materials are able to be created covering each aspect of the system.
+
+\smallskip
+the ground station is its own device that provides connectivity to the ORBITS unit from any standard laptop or desktop environment allowing for the development of software and learning materials to be as accessible as possible. 
+
+
 \section{Subsystem Designs}
-Taking these general design choices into account, each subsystem has been researched and designed to meet the overall system requirements. Each subsystem design is outlined in the following sections.
+Taking these general design choices into account, each subsystem has been researched and designed to meet the overall system requirements. Each subsystem design is outlined in the following sections. Each section, where relevant had considered multiple options and comparing against several categories. These categories include:
+\begin{itemize}
+    \item Cost: The monetary cost of the component or subsystem.
+    \item Ecosystem: The availability of learning materials, documentation and community support for the component or subsystem.
+    \item Performance: The performance of the component or subsystem in terms of its capabilities and specifications.
+    \item Price to Performance: The ratio of the cost to the performance of the component or subsystem.
+    \item Availability: The availability of the component or subsystem in the market.
+\end{itemize}
+The components listed within each subsystem are those that were the best fit from these categories resulting in their selection for the ORBITS project.
+
 \subsection{Ground Station}
-To allow for the software and development environment to be as accessbible as possible the ground station had been selected to interface with any standard laptop or desktop environment. A Raspberry Pi Zero 2 W was selected for this role. 
+To allow for the software and development environment to be as accessible as possible the ground station had been selected to interface with any standard laptop or desktop environment. Several devices were considered in researching potential options for the ground station.
 
 \subsection{On-Board Computer}
 The onboard computer selected was the ESP32-S3-WROOM-1U,

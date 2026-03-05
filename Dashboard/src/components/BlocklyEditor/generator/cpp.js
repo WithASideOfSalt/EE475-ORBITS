@@ -25,6 +25,10 @@ CppGenerator.scrub_ = function (block, code, thisOnly) {
 
 // generators/cpp.js - override workspaceToCode
 export function generateSketch(workspace) {
+    const functionBlocks = workspace.getBlocksByType("function_definition", false);
+    const functionCode = functionBlocks
+        .map(block => CppGenerator.blockToCode(block))
+
     // Explicitly find each singleton block by type
     const setupBlocks = workspace.getBlocksByType("esp32_setup", false);
     const loopBlocks = workspace.getBlocksByType("esp32_loop", false);
@@ -39,5 +43,5 @@ export function generateSketch(workspace) {
 
     // Always setup first, loop second, regardless of canvas position
     // Note: This can be expanded for other definitions and such
-    return `${setupCode}\n${loopCode}`;
+    return `${functionCode}\n${setupCode}\n${loopCode}`;
 }

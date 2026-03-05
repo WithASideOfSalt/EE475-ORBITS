@@ -1,13 +1,14 @@
-import { useEffect, useState } from 'react';
-import { Col, Layout, Row, Typography, Card } from 'antd';
+import { useEffect, useState, useMemo } from 'react';
+import { Col, Layout, Row, Typography, Card, Input } from 'antd';
 import { Content, Header } from 'antd/es/layout/layout';
 import { Line } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, animator } from 'chart.js';
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';
 import { socket } from '../socket.ts'
 import { RotatingCube } from '../components/RotatingCube'
 import '../Styleing/Dashboard.css'
+import { Statistic, Badge, Progress, Divider } from 'antd/es';
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Filler, Title, Tooltip, Legend);
 
 interface IMUDataPoint {
   accel_x: number;
@@ -21,6 +22,14 @@ interface IMUDataPoint {
 
 interface TimeUpdateData{
   timestamp: number;
+}
+
+function formatDuration(totalSeconds: number) {
+  const d = Math.floor(totalSeconds / 86400);
+  const h = Math.floor((totalSeconds % 86400) / 3600);
+  const m = Math.floor((totalSeconds % 3600) / 60);
+  const s = Math.floor(totalSeconds % 60);
+  return `${d}d ${h}h ${m}m ${s}s`;
 }
 
 export default function Dashboard() {
@@ -100,6 +109,82 @@ export default function Dashboard() {
     }
   };
 
+  const contentList: Record<string, React.ReactNode> = {
+  Acceleration: (<>
+      <Col xs={24} sm={12} md={8}>
+        <Card title="Acceleration X" size="small">
+          <Line data={createChartData('accel_x', 'Accel X', 'rgb(255, 99, 132)')} options={chartOptions} />
+        </Card>
+      </Col>
+      <Col xs={24} sm={12} md={8}>
+        <Card title="Acceleration Y" size="small">
+          <Line data={createChartData('accel_y', 'Accel Y', 'rgb(54, 162, 235)')} options={chartOptions} />
+        </Card>
+      </Col>
+      <Col xs={24} sm={12} md={8}>
+        <Card title="Acceleration Z" size="small">
+          <Line data={createChartData('accel_z', 'Accel Z', 'rgb(75, 192, 75)')} options={chartOptions} />
+        </Card>
+      </Col>
+        </>),
+  Gyroscope: (<>
+  <Col xs={24} sm={12} md={8}>
+                    <Card title="Gyroscope X" size="small">
+                      <Line data={createChartData('gyro_x', 'Gyro X', 'rgb(255, 206, 86)')} options={chartOptions} />
+                    </Card>
+                  </Col>
+                  <Col xs={24} sm={12} md={8}>
+                    <Card title="Gyroscope Y" size="small">
+                      <Line data={createChartData('gyro_y', 'Gyro Y', 'rgb(153, 102, 255)')} options={chartOptions} />
+                    </Card>
+                  </Col>
+                  <Col xs={24} sm={12} md={8}>
+                    <Card title="Gyroscope Z" size="small">
+                      <Line data={createChartData('gyro_z', 'Gyro Z', 'rgb(255, 159, 64)')} options={chartOptions} />
+                    </Card>
+                  </Col>
+  </>
+  ),
+  };
+
+  const tabList = [
+    {
+      key: 'Acceleration',
+      tab: 'Acceleration',
+    },
+    {
+      key: 'Gyroscope',
+      tab: 'Gyroscope',
+    }
+  ];
+
+  const [activeTabKey, setActiveTabKey] = useState<string>('Acceleration');
+
+  const onTabChange = (key: string) => {
+    setActiveTabKey(key);
+  };
+
+  const systemStats = useMemo(() => {
+    const uptimeSeconds = Math.max(0, Math.floor(rollingTime));
+
+    // Treat socket as Ground Station link.
+    const groundStationActive = isConnected;
+
+    // Treat ORBITS Unit as active if IMU telemetry is arriving recently.
+    const lastImuTimestamp = imuData.length ? imuData[imuData.length - 1].timestamp : null;
+    const orbitsUnitActive =
+      groundStationActive &&
+      lastImuTimestamp !== null &&
+      Math.abs(rollingTime - lastImuTimestamp) <= 5;
+
+    return {
+      uptimeSeconds,
+      lastStateChange: 'TRACKING → SAFE (2026-03-03 14:22:10)',
+      groundStationActive,
+      orbitsUnitActive,
+    };
+  }, [rollingTime, isConnected, imuData]);
+
   return (
     <>
       <Layout style={{height: '100%', overflow: 'hidden'}}>
@@ -109,16 +194,42 @@ export default function Dashboard() {
           </Typography.Title>
         </Header>
         <Content style={{flex: 1, padding: '16px', display: 'flex', overflowY: 'auto'}}>
-          <Row gutter={[8, 8]} style={{flex:1, width: '100%'}}>
-            {/* First Row */}
+          
+          <Row gutter={[2,2]} style={{flex:1, width: '100%'}}>
+            {/* First Col */}
             <Col xs={24} sm={6} md={6} style={{display:'flex'}}>
               <Card style={{width:'100%'}}>
                 Command Centre
               </Card>
             </Col>
             <Col xs={24} sm={12} md={12} style={{display:'flex'}}>
-              <Card style={{width:'100%'}}>
-                System Statistics
+              <Card title="System Statistics" style={{ width: '100%' }} size="small">
+                <Row gutter={[12, 12]}>
+                  <Col>
+                    <div style={{ marginBottom: 4, color: '#8c8c8c' }}>Mission Name</div>
+                    <Input value="ORBITS Demo" style={{ color: '#FFF', fontWeight: 'bold', fontSize: '16px' }} />
+                  </Col>
+                </Row>
+                <Divider style={{ margin: '12px 0' }} />
+                <Row gutter={[12, 12]}>
+                  <Col xs={24} md={12}>
+                    <Statistic title="Uptime" value={formatDuration(systemStats.uptimeSeconds)} />
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <div style={{ marginBottom: 4, color: '#8c8c8c' }}>Connection Status</div>
+                    <Badge status={systemStats.groundStationActive ? 'success' : 'error'} text={systemStats.groundStationActive ? 'Connected' : 'Disconnected'} />
+                  </Col>
+
+                  <Col xs={24}>
+                    <Statistic title="Last State Change" value={systemStats.lastStateChange} />
+                  </Col>
+                </Row>
+
+                <Divider style={{ margin: '12px 0' }} />
+
+                <Row gutter={[12, 12]}>
+                  
+                </Row>
               </Card>
             </Col>
             <Col xs={24} sm={6} md={6} style={{display:'flex'}}>
@@ -135,56 +246,18 @@ export default function Dashboard() {
                 </div>
               </Card>
             </Col>
-            
-            {/* Second Row */}
-            <Col xs={24} sm={6} md={6} style={{display:'flex'}}>
-              <Card style={{width:'100%'}}>
-                Historical Data Downloads
-              </Card>
-            </Col>
-
             {/* Data Visualisation with 6 Charts */}
             <Col xs={24} style={{display:'flex'}}>
-              <Card style={{width:'100%', padding: '16px'}}>
-                <Typography.Title level={4}>Data Visualisation - IMU Sensors</Typography.Title>
+              <Card style={{flex: '0 0 18%', maxWidth: '18%'}}>
+                Historical Data Downloads
+              </Card>
+              <Card title="Data Visualisation - IMU Sensors" tabList={tabList} activeTabKey={activeTabKey} onTabChange={onTabChange} style={{flex: '0 0 64%', maxWidth: '64%', padding: '4px'}}>
                 <Row gutter={[16, 16]}>
-                  <Col xs={24} sm={12} md={8}>
-                    <Card title="Acceleration X" size="small">
-                      <Line data={createChartData('accel_x', 'Accel X', 'rgb(255, 99, 132)')} options={chartOptions} />
-                    </Card>
-                  </Col>
-                  <Col xs={24} sm={12} md={8}>
-                    <Card title="Acceleration Y" size="small">
-                      <Line data={createChartData('accel_y', 'Accel Y', 'rgb(54, 162, 235)')} options={chartOptions} />
-                    </Card>
-                  </Col>
-                  <Col xs={24} sm={12} md={8}>
-                    <Card title="Acceleration Z" size="small">
-                      <Line data={createChartData('accel_z', 'Accel Z', 'rgb(75, 192, 75)')} options={chartOptions} />
-                    </Card>
-                  </Col>
-                  <Col xs={24} sm={12} md={8}>
-                    <Card title="Gyroscope X" size="small">
-                      <Line data={createChartData('gyro_x', 'Gyro X', 'rgb(255, 206, 86)')} options={chartOptions} />
-                    </Card>
-                  </Col>
-                  <Col xs={24} sm={12} md={8}>
-                    <Card title="Gyroscope Y" size="small">
-                      <Line data={createChartData('gyro_y', 'Gyro Y', 'rgb(153, 102, 255)')} options={chartOptions} />
-                    </Card>
-                  </Col>
-                  <Col xs={24} sm={12} md={8}>
-                    <Card title="Gyroscope Z" size="small">
-                      <Line data={createChartData('gyro_z', 'Gyro Z', 'rgb(255, 159, 64)')} options={chartOptions} />
-                    </Card>
-                  </Col>
+                  {contentList[activeTabKey]}
                 </Row>
               </Card>
-            </Col>
-            
-            {/* Third Row */}
-            <Col xs={24} sm={6} md={6} style={{display:'flex'}}>
-              <Card style={{width:'100%'}}>
+              {/* Third Col */}
+              <Card style={{flex: '0 0 18%', maxWidth: '18%'}}>
                 Battery Diagnostics
               </Card>
             </Col>

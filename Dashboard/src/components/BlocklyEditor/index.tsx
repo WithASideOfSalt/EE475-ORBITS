@@ -2,15 +2,19 @@
 import { useEffect, useRef } from "react";
 import * as Blockly from "blockly";
 import { defineEsp32Blocks } from "./blocks/esp32.js";
+import { defineFunctionBlocks } from "./blocks/functions.js";
 import { registerEsp32Generators } from "./generator/esp32_cpp.js";
-import { CppGenerator, generateSketch } from "./generator/cpp.js";
+import { registerFunctionGenerators } from "./generator/functions_cpp.js";
+import { generateSketch } from "./generator/cpp.js";
 import { wrapInSketch } from "./generator/esp32_cpp.js";
 import { OrbitsTheme } from "./theme/index.js";
 import { toolbox } from "./toolbox.js";
 
 // Register everything once
 defineEsp32Blocks();
+defineFunctionBlocks();
 registerEsp32Generators();
+registerFunctionGenerators();
 
 const WORKSPACE_STORAGE_KEY = "orbits_blockly_workspace";
 
@@ -86,9 +90,11 @@ export default function BlocklyEditor({ onCodeChange }: BlocklyEditorProps) {
         workspaceRef.current.addChangeListener((event) => {
             // Only care about blocks being added
             if (event.type !== Blockly.Events.BLOCK_CREATE) return;
+            const workspace = workspaceRef.current;
+            if (!workspace) return;
 
             SINGLETON_BLOCKS.forEach((blockType) => {
-                const allOfType = workspaceRef.current
+                const allOfType = workspace
                     .getBlocksByType(blockType, false);
 
                 // If there's more than one, delete all but the first
