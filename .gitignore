@@ -1,6 +1,7 @@
 # Ignore all files inside Design/Report but allow specific files/folders
 Design/Report/*
 !Design/Report/DesignReport.tex
+!Design/Report/references.bib
 !Design/Report/Images/
 !Design/Report/Images/*
 
