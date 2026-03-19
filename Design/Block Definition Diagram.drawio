@@ -1,6 +1,382 @@
 <mxfile host="65bd71144e">
+    <diagram id="FGqQ-m3O0fgND3uEheZU" name="Block Definition Diagram">
+        <mxGraphModel dx="2690" dy="1142" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-1" value="&lt;p style=&quot;margin:0px;margin-top:4px;margin-left:7px;text-align:left;&quot;&gt;&lt;b&gt;req&lt;/b&gt;  ReqDiagram&lt;/p&gt;" style="html=1;shape=mxgraph.sysml.package;overflow=fill;labelX=110;strokeWidth=2;align=center;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="1" vertex="1">
+                    <mxGeometry x="10" y="40" width="1270" height="680" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-2" value="" style="fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;marginBottom=0;" parent="1" vertex="1">
+                    <mxGeometry x="650" y="70" width="200" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-3" value="&amp;lt;&amp;lt;requirement&amp;gt;&amp;gt;" style="html=1;align=center;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;spacingTop=3;" parent="lvGjzz3AiRhHNWjv0xxc-2" vertex="1">
+                    <mxGeometry width="200" height="16" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-4" value="CubeSat Emulation" style="html=1;align=center;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;fontStyle=1" parent="lvGjzz3AiRhHNWjv0xxc-2" vertex="1">
+                    <mxGeometry y="16" width="200" height="18" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-5" value="" style="line;strokeWidth=0.25;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="lvGjzz3AiRhHNWjv0xxc-2" vertex="1">
+                    <mxGeometry y="34" width="200" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-6" value="The cappabiliteis of the ORBITS unit should mimic that of a 1U cubeSat to the best of its abilities." style="html=1;align=left;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;spacingLeft=10;" parent="lvGjzz3AiRhHNWjv0xxc-2" vertex="1">
+                    <mxGeometry y="42" width="200" height="48" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-19" value="" style="fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;marginBottom=0;" parent="1" vertex="1">
+                    <mxGeometry x="320" y="70" width="110" height="170" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-20" value="&amp;lt;&amp;lt;requirement&amp;gt;&amp;gt;" style="html=1;align=center;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;spacingTop=3;" parent="lvGjzz3AiRhHNWjv0xxc-19" vertex="1">
+                    <mxGeometry width="110" height="16" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-21" value="COTS Components" style="html=1;align=center;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;fontStyle=1" parent="lvGjzz3AiRhHNWjv0xxc-19" vertex="1">
+                    <mxGeometry y="16" width="110" height="18" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-22" value="" style="line;strokeWidth=0.25;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="lvGjzz3AiRhHNWjv0xxc-19" vertex="1">
+                    <mxGeometry y="34" width="110" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-23" value="Where possible the system shall be comprised of COTS components to improve repairability and design revisions" style="html=1;align=left;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;spacingLeft=10;" parent="lvGjzz3AiRhHNWjv0xxc-19" vertex="1">
+                    <mxGeometry y="42" width="110" height="128" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-25" value="" style="fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;marginBottom=0;" parent="1" vertex="1">
+                    <mxGeometry x="140" y="70" width="120" height="150" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-26" value="&amp;lt;&amp;lt;requirement&amp;gt;&amp;gt;" style="html=1;align=center;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;spacingTop=3;" parent="lvGjzz3AiRhHNWjv0xxc-25" vertex="1">
+                    <mxGeometry width="120" height="16" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-27" value="Experimentation Facilitation" style="html=1;align=center;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;fontStyle=1" parent="lvGjzz3AiRhHNWjv0xxc-25" vertex="1">
+                    <mxGeometry y="16" width="120" height="34" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-28" value="" style="line;strokeWidth=0.25;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="lvGjzz3AiRhHNWjv0xxc-25" vertex="1">
+                    <mxGeometry y="50" width="120" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-29" value="The system should facilitate experimental learning for students around the space industry" style="html=1;align=left;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;spacingLeft=10;" parent="lvGjzz3AiRhHNWjv0xxc-25" vertex="1">
+                    <mxGeometry y="58" width="120" height="92" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-30" value="" style="fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;marginBottom=0;" parent="1" vertex="1">
+                    <mxGeometry x="60" y="250" width="90" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-31" value="&amp;lt;&amp;lt;requirement&amp;gt;&amp;gt;" style="html=1;align=center;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;spacingTop=3;" parent="lvGjzz3AiRhHNWjv0xxc-30" vertex="1">
+                    <mxGeometry width="90" height="16" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-32" value="ORBITS Payload" style="html=1;align=center;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;fontStyle=1" parent="lvGjzz3AiRhHNWjv0xxc-30" vertex="1">
+                    <mxGeometry y="16" width="90" height="34" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-33" value="" style="line;strokeWidth=0.25;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="lvGjzz3AiRhHNWjv0xxc-30" vertex="1">
+                    <mxGeometry y="50" width="90" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-34" value="The ORBITS payloads can be configured and replaced." style="html=1;align=left;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;spacingLeft=10;" parent="lvGjzz3AiRhHNWjv0xxc-30" vertex="1">
+                    <mxGeometry y="58" width="90" height="72" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-35" value="" style="fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;marginBottom=0;" parent="1" vertex="1">
+                    <mxGeometry x="180" y="250" width="110" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-36" value="&amp;lt;&amp;lt;requirement&amp;gt;&amp;gt;" style="html=1;align=center;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;spacingTop=3;" parent="lvGjzz3AiRhHNWjv0xxc-35" vertex="1">
+                    <mxGeometry width="110" height="16" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-37" value="Reprogrammable" style="html=1;align=center;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;fontStyle=1" parent="lvGjzz3AiRhHNWjv0xxc-35" vertex="1">
+                    <mxGeometry y="16" width="110" height="18" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-38" value="" style="line;strokeWidth=0.25;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="lvGjzz3AiRhHNWjv0xxc-35" vertex="1">
+                    <mxGeometry y="34" width="110" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-39" value="The system should allow for users to reprogram the unit to investigate new concepts" style="html=1;align=left;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;spacingLeft=10;" parent="lvGjzz3AiRhHNWjv0xxc-35" vertex="1">
+                    <mxGeometry y="42" width="110" height="88" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-45" value="" style="fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;marginBottom=0;" parent="1" vertex="1">
+                    <mxGeometry x="490" y="220" width="100" height="150" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-46" value="&amp;lt;&amp;lt;requirement&amp;gt;&amp;gt;" style="html=1;align=center;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;spacingTop=3;" parent="lvGjzz3AiRhHNWjv0xxc-45" vertex="1">
+                    <mxGeometry width="100" height="16" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-47" value="Power Management System" style="html=1;align=center;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;fontStyle=1" parent="lvGjzz3AiRhHNWjv0xxc-45" vertex="1">
+                    <mxGeometry y="16" width="100" height="44" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-48" value="" style="line;strokeWidth=0.25;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="lvGjzz3AiRhHNWjv0xxc-45" vertex="1">
+                    <mxGeometry y="60" width="100" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-49" value="An onboard power management system should be included" style="html=1;align=left;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;spacingLeft=10;" parent="lvGjzz3AiRhHNWjv0xxc-45" vertex="1">
+                    <mxGeometry y="68" width="100" height="82" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-51" value="" style="fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;marginBottom=0;" parent="1" vertex="1">
+                    <mxGeometry x="640" y="220" width="110" height="156" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-52" value="&amp;lt;&amp;lt;requirement&amp;gt;&amp;gt;" style="html=1;align=center;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;spacingTop=3;" parent="lvGjzz3AiRhHNWjv0xxc-51" vertex="1">
+                    <mxGeometry width="110" height="16" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-53" value="Ground Station Communication" style="html=1;align=center;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;fontStyle=1" parent="lvGjzz3AiRhHNWjv0xxc-51" vertex="1">
+                    <mxGeometry y="16" width="110" height="34" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-54" value="" style="line;strokeWidth=0.25;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="lvGjzz3AiRhHNWjv0xxc-51" vertex="1">
+                    <mxGeometry y="50" width="110" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-55" value="The orbits unit shall facilitate 2 way communication with a ground station" style="html=1;align=left;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;spacingLeft=10;" parent="lvGjzz3AiRhHNWjv0xxc-51" vertex="1">
+                    <mxGeometry y="58" width="110" height="98" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-56" value="" style="fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;marginBottom=0;" parent="1" vertex="1">
+                    <mxGeometry x="910" y="220" width="110" height="140" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-57" value="&amp;lt;&amp;lt;requirement&amp;gt;&amp;gt;" style="html=1;align=center;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;spacingTop=3;" parent="lvGjzz3AiRhHNWjv0xxc-56" vertex="1">
+                    <mxGeometry width="110" height="16" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-58" value="On Board Computer" style="html=1;align=center;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;fontStyle=1" parent="lvGjzz3AiRhHNWjv0xxc-56" vertex="1">
+                    <mxGeometry y="16" width="110" height="18" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-59" value="" style="line;strokeWidth=0.25;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="lvGjzz3AiRhHNWjv0xxc-56" vertex="1">
+                    <mxGeometry y="34" width="110" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-60" value="An on board computer shall be required to operate and monitor the components within the system" style="html=1;align=left;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;spacingLeft=10;" parent="lvGjzz3AiRhHNWjv0xxc-56" vertex="1">
+                    <mxGeometry y="42" width="110" height="98" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-62" value="" style="fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;marginBottom=0;" parent="1" vertex="1">
+                    <mxGeometry x="790" y="220" width="90" height="140" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-63" value="&amp;lt;&amp;lt;requirement&amp;gt;&amp;gt;" style="html=1;align=center;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;spacingTop=3;" parent="lvGjzz3AiRhHNWjv0xxc-62" vertex="1">
+                    <mxGeometry width="90" height="16" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-64" value="Fitness to form" style="html=1;align=center;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;fontStyle=1" parent="lvGjzz3AiRhHNWjv0xxc-62" vertex="1">
+                    <mxGeometry y="16" width="90" height="18" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-65" value="" style="line;strokeWidth=0.25;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="lvGjzz3AiRhHNWjv0xxc-62" vertex="1">
+                    <mxGeometry y="34" width="90" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-66" value="The unit shall conform to the dimensions of a 1U CubeSat (10cm x 10cm x 11.35cm)" style="html=1;align=left;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;spacingLeft=10;" parent="lvGjzz3AiRhHNWjv0xxc-62" vertex="1">
+                    <mxGeometry y="42" width="90" height="98" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-67" value="" style="fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;marginBottom=0;" parent="1" vertex="1">
+                    <mxGeometry x="1060" y="220" width="110" height="176" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-68" value="&amp;lt;&amp;lt;requirement&amp;gt;&amp;gt;" style="html=1;align=center;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;spacingTop=3;" parent="lvGjzz3AiRhHNWjv0xxc-67" vertex="1">
+                    <mxGeometry width="110" height="16" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-69" value="Attitude Determination and Control" style="html=1;align=center;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;fontStyle=1" parent="lvGjzz3AiRhHNWjv0xxc-67" vertex="1">
+                    <mxGeometry y="16" width="110" height="54" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-70" value="" style="line;strokeWidth=0.25;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="lvGjzz3AiRhHNWjv0xxc-67" vertex="1">
+                    <mxGeometry y="70" width="110" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-71" value="The system shall include an Attitude Determinations and Control subsytem" style="html=1;align=left;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;spacingLeft=10;" parent="lvGjzz3AiRhHNWjv0xxc-67" vertex="1">
+                    <mxGeometry y="78" width="110" height="98" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-73" value="" style="fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;marginBottom=0;" parent="1" vertex="1">
+                    <mxGeometry x="70" y="420" width="200" height="102" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-74" value="&amp;lt;&amp;lt;requirement&amp;gt;&amp;gt;" style="html=1;align=center;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;spacingTop=3;" parent="lvGjzz3AiRhHNWjv0xxc-73" vertex="1">
+                    <mxGeometry width="200" height="16" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-75" value="Data Processing and Visualisation" style="html=1;align=center;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;fontStyle=1" parent="lvGjzz3AiRhHNWjv0xxc-73" vertex="1">
+                    <mxGeometry y="16" width="200" height="18" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-76" value="" style="line;strokeWidth=0.25;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="lvGjzz3AiRhHNWjv0xxc-73" vertex="1">
+                    <mxGeometry y="34" width="200" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-77" value="A ground station shall process the data provided by an ORBITS unit and host the data in such a way that allows for visualisation" style="html=1;align=left;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;spacingLeft=10;" parent="lvGjzz3AiRhHNWjv0xxc-73" vertex="1">
+                    <mxGeometry y="42" width="200" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-78" value="" style="fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;marginBottom=0;" parent="1" vertex="1">
+                    <mxGeometry x="70" y="590" width="200" height="102" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-79" value="&amp;lt;&amp;lt;requirement&amp;gt;&amp;gt;" style="html=1;align=center;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;spacingTop=3;" parent="lvGjzz3AiRhHNWjv0xxc-78" vertex="1">
+                    <mxGeometry width="200" height="16" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-80" value="Internal Website Hosting" style="html=1;align=center;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;fontStyle=1" parent="lvGjzz3AiRhHNWjv0xxc-78" vertex="1">
+                    <mxGeometry y="16" width="200" height="18" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-81" value="" style="line;strokeWidth=0.25;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="lvGjzz3AiRhHNWjv0xxc-78" vertex="1">
+                    <mxGeometry y="34" width="200" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-82" value="The ground station shall host a website for viewing the ORBITS data internally" style="html=1;align=left;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;spacingLeft=10;" parent="lvGjzz3AiRhHNWjv0xxc-78" vertex="1">
+                    <mxGeometry y="42" width="200" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-83" value="" style="fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;marginBottom=0;" parent="1" vertex="1">
+                    <mxGeometry x="340" y="410" width="116.5" height="42" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-84" value="&amp;lt;&amp;lt;requirement&amp;gt;&amp;gt;" style="html=1;align=center;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;spacingTop=3;" parent="lvGjzz3AiRhHNWjv0xxc-83" vertex="1">
+                    <mxGeometry width="116.5" height="16" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-85" value="Energy Efficient" style="html=1;align=center;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;fontStyle=1" parent="lvGjzz3AiRhHNWjv0xxc-83" vertex="1">
+                    <mxGeometry y="16" width="116.5" height="18" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-86" value="" style="line;strokeWidth=0.25;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="lvGjzz3AiRhHNWjv0xxc-83" vertex="1">
+                    <mxGeometry y="34" width="116.5" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-89" value="" style="fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;marginBottom=0;" parent="1" vertex="1">
+                    <mxGeometry x="370" y="490" width="160" height="102" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-90" value="&amp;lt;&amp;lt;requirement&amp;gt;&amp;gt;" style="html=1;align=center;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;spacingTop=3;" parent="lvGjzz3AiRhHNWjv0xxc-89" vertex="1">
+                    <mxGeometry width="160" height="16" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-91" value="Power Budget Emulation" style="html=1;align=center;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;fontStyle=1" parent="lvGjzz3AiRhHNWjv0xxc-89" vertex="1">
+                    <mxGeometry y="16" width="160" height="18" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-92" value="" style="line;strokeWidth=0.25;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="lvGjzz3AiRhHNWjv0xxc-89" vertex="1">
+                    <mxGeometry y="34" width="160" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-93" value="The system should facilitate experimental learning for students around the space industry" style="html=1;align=left;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;spacingLeft=10;" parent="lvGjzz3AiRhHNWjv0xxc-89" vertex="1">
+                    <mxGeometry y="42" width="160" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-94" value="" style="fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;marginBottom=0;" parent="1" vertex="1">
+                    <mxGeometry x="550" y="530" width="140" height="102" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-95" value="&amp;lt;&amp;lt;requirement&amp;gt;&amp;gt;" style="html=1;align=center;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;spacingTop=3;" parent="lvGjzz3AiRhHNWjv0xxc-94" vertex="1">
+                    <mxGeometry width="140" height="16" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-96" value="Energy Storage" style="html=1;align=center;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;fontStyle=1" parent="lvGjzz3AiRhHNWjv0xxc-94" vertex="1">
+                    <mxGeometry y="16" width="140" height="18" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-97" value="" style="line;strokeWidth=0.25;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="lvGjzz3AiRhHNWjv0xxc-94" vertex="1">
+                    <mxGeometry y="34" width="140" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-98" value="The system shall include a rechargeable energy storage" style="html=1;align=left;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;spacingLeft=10;" parent="lvGjzz3AiRhHNWjv0xxc-94" vertex="1">
+                    <mxGeometry y="42" width="140" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-99" value="" style="fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;marginBottom=0;" parent="1" vertex="1">
+                    <mxGeometry x="730" y="534" width="150" height="102" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-100" value="&amp;lt;&amp;lt;requirement&amp;gt;&amp;gt;" style="html=1;align=center;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;spacingTop=3;" parent="lvGjzz3AiRhHNWjv0xxc-99" vertex="1">
+                    <mxGeometry width="150" height="16" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-101" value="Wireless Communication" style="html=1;align=center;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;fontStyle=1" parent="lvGjzz3AiRhHNWjv0xxc-99" vertex="1">
+                    <mxGeometry y="16" width="150" height="18" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-102" value="" style="line;strokeWidth=0.25;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="lvGjzz3AiRhHNWjv0xxc-99" vertex="1">
+                    <mxGeometry y="34" width="150" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-103" value="The ground station should wirelessly communicate with the ORBITS Unit" style="html=1;align=left;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;spacingLeft=10;" parent="lvGjzz3AiRhHNWjv0xxc-99" vertex="1">
+                    <mxGeometry y="42" width="150" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-104" value="" style="fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;marginBottom=0;" parent="1" vertex="1">
+                    <mxGeometry x="910" y="534" width="160" height="102" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-105" value="&amp;lt;&amp;lt;requirement&amp;gt;&amp;gt;" style="html=1;align=center;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;spacingTop=3;" parent="lvGjzz3AiRhHNWjv0xxc-104" vertex="1">
+                    <mxGeometry width="160" height="16" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-106" value="Communication Protocol" style="html=1;align=center;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;fontStyle=1" parent="lvGjzz3AiRhHNWjv0xxc-104" vertex="1">
+                    <mxGeometry y="16" width="160" height="18" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-107" value="" style="line;strokeWidth=0.25;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="lvGjzz3AiRhHNWjv0xxc-104" vertex="1">
+                    <mxGeometry y="34" width="160" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-108" value="A communications protocal shall be defined for the system for commands and telemetry data" style="html=1;align=left;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;spacingLeft=10;" parent="lvGjzz3AiRhHNWjv0xxc-104" vertex="1">
+                    <mxGeometry y="42" width="160" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-114" value="" style="fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;marginBottom=0;" parent="1" vertex="1">
+                    <mxGeometry x="1100" y="534" width="160" height="102" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-115" value="&amp;lt;&amp;lt;requirement&amp;gt;&amp;gt;" style="html=1;align=center;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;spacingTop=3;" parent="lvGjzz3AiRhHNWjv0xxc-114" vertex="1">
+                    <mxGeometry width="160" height="16" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-116" value="Logging and Telemetry" style="html=1;align=center;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;fontStyle=1" parent="lvGjzz3AiRhHNWjv0xxc-114" vertex="1">
+                    <mxGeometry y="16" width="160" height="18" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-117" value="" style="line;strokeWidth=0.25;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="lvGjzz3AiRhHNWjv0xxc-114" vertex="1">
+                    <mxGeometry y="34" width="160" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-118" value="The system should facilitate experimental learning for students around the space industry" style="html=1;align=left;spacing=0;verticalAlign=middle;strokeColor=none;fillColor=none;whiteSpace=wrap;spacingLeft=10;" parent="lvGjzz3AiRhHNWjv0xxc-114" vertex="1">
+                    <mxGeometry y="42" width="160" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-119" value="&amp;lt;&amp;lt;deriveReq&amp;gt;&amp;gt;" style="endArrow=open;html=1;edgeStyle=none;endSize=12;dashed=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;rounded=0;curved=0;" parent="1" source="lvGjzz3AiRhHNWjv0xxc-6" target="lvGjzz3AiRhHNWjv0xxc-52" edge="1">
+                    <mxGeometry x="0.5052" y="8" relative="1" as="geometry">
+                        <mxPoint x="959.9999999999998" y="190" as="sourcePoint"/>
+                        <mxPoint x="1080.0000000000002" y="190" as="targetPoint"/>
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-120" value="&amp;lt;&amp;lt;deriveReq&amp;gt;&amp;gt;" style="endArrow=open;html=1;edgeStyle=none;endSize=12;dashed=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;rounded=0;curved=0;" parent="1" source="lvGjzz3AiRhHNWjv0xxc-6" target="lvGjzz3AiRhHNWjv0xxc-63" edge="1">
+                    <mxGeometry x="1" y="22" relative="1" as="geometry">
+                        <mxPoint x="937" y="170" as="sourcePoint"/>
+                        <mxPoint x="854" y="256" as="targetPoint"/>
+                        <mxPoint x="3" y="3" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-121" value="&amp;lt;&amp;lt;deriveReq&amp;gt;&amp;gt;" style="endArrow=open;html=1;edgeStyle=none;endSize=12;dashed=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" parent="1" target="lvGjzz3AiRhHNWjv0xxc-57" edge="1" source="lvGjzz3AiRhHNWjv0xxc-6">
+                    <mxGeometry x="1" y="26" relative="1" as="geometry">
+                        <mxPoint x="930" y="160" as="sourcePoint"/>
+                        <mxPoint x="864" y="266" as="targetPoint"/>
+                        <mxPoint x="14" y="9" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-122" value="&amp;lt;&amp;lt;deriveReq&amp;gt;&amp;gt;" style="endArrow=open;html=1;edgeStyle=none;endSize=12;dashed=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" parent="1" target="lvGjzz3AiRhHNWjv0xxc-68" edge="1" source="lvGjzz3AiRhHNWjv0xxc-6">
+                    <mxGeometry x="1" y="26" relative="1" as="geometry">
+                        <mxPoint x="930" y="160" as="sourcePoint"/>
+                        <mxPoint x="1480" y="240" as="targetPoint"/>
+                        <mxPoint x="14" y="9" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-123" value="&amp;lt;&amp;lt;deriveReq&amp;gt;&amp;gt;" style="endArrow=open;html=1;edgeStyle=none;endSize=12;dashed=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;rounded=0;curved=0;" parent="1" source="lvGjzz3AiRhHNWjv0xxc-6" target="lvGjzz3AiRhHNWjv0xxc-46" edge="1">
+                    <mxGeometry x="0.5052" y="8" relative="1" as="geometry">
+                        <mxPoint x="723" y="160" as="sourcePoint"/>
+                        <mxPoint x="640" y="246" as="targetPoint"/>
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-124" value="&amp;lt;&amp;lt;deriveReq&amp;gt;&amp;gt;" style="endArrow=open;html=1;edgeStyle=none;endSize=12;dashed=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;rounded=0;curved=0;" parent="1" source="lvGjzz3AiRhHNWjv0xxc-60" target="lvGjzz3AiRhHNWjv0xxc-115" edge="1">
+                    <mxGeometry x="0.5052" y="8" relative="1" as="geometry">
+                        <mxPoint x="1573" y="400" as="sourcePoint"/>
+                        <mxPoint x="1490" y="486" as="targetPoint"/>
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-125" value="&amp;lt;&amp;lt;deriveReq&amp;gt;&amp;gt;" style="endArrow=open;html=1;edgeStyle=none;endSize=12;dashed=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;rounded=0;curved=0;" parent="1" source="lvGjzz3AiRhHNWjv0xxc-55" target="lvGjzz3AiRhHNWjv0xxc-105" edge="1">
+                    <mxGeometry x="1" y="22" relative="1" as="geometry">
+                        <mxPoint x="1060" y="348" as="sourcePoint"/>
+                        <mxPoint x="1198" y="434" as="targetPoint"/>
+                        <mxPoint x="3" y="3" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-126" value="&amp;lt;&amp;lt;deriveReq&amp;gt;&amp;gt;" style="endArrow=open;html=1;edgeStyle=none;endSize=12;dashed=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;rounded=0;curved=0;" parent="1" target="lvGjzz3AiRhHNWjv0xxc-100" edge="1" source="lvGjzz3AiRhHNWjv0xxc-55">
+                    <mxGeometry x="1" y="22" relative="1" as="geometry">
+                        <mxPoint x="840" y="348" as="sourcePoint"/>
+                        <mxPoint x="978" y="434" as="targetPoint"/>
+                        <mxPoint x="3" y="3" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-127" value="&amp;lt;&amp;lt;deriveReq&amp;gt;&amp;gt;" style="endArrow=open;html=1;edgeStyle=none;endSize=12;dashed=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;rounded=0;curved=0;" parent="1" target="lvGjzz3AiRhHNWjv0xxc-95" edge="1" source="lvGjzz3AiRhHNWjv0xxc-49">
+                    <mxGeometry x="0.95" y="36" relative="1" as="geometry">
+                        <mxPoint x="620" y="348" as="sourcePoint"/>
+                        <mxPoint x="758" y="434" as="targetPoint"/>
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-128" value="&amp;lt;&amp;lt;deriveReq&amp;gt;&amp;gt;" style="endArrow=open;html=1;edgeStyle=none;endSize=12;dashed=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;rounded=0;curved=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" edge="1" target="lvGjzz3AiRhHNWjv0xxc-90" source="lvGjzz3AiRhHNWjv0xxc-49">
+                    <mxGeometry x="0.3867" y="28" relative="1" as="geometry">
+                        <mxPoint x="620" y="348" as="sourcePoint"/>
+                        <mxPoint x="620" y="410" as="targetPoint"/>
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-129" value="&amp;lt;&amp;lt;deriveReq&amp;gt;&amp;gt;" style="endArrow=open;html=1;edgeStyle=none;endSize=12;dashed=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;rounded=0;curved=0;" parent="1" source="lvGjzz3AiRhHNWjv0xxc-49" target="lvGjzz3AiRhHNWjv0xxc-84" edge="1">
+                    <mxGeometry x="0.9511" y="-9" relative="1" as="geometry">
+                        <mxPoint x="502" y="366" as="sourcePoint"/>
+                        <mxPoint x="640" y="452" as="targetPoint"/>
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-130" value="&amp;lt;&amp;lt;deriveReq&amp;gt;&amp;gt;" style="endArrow=open;html=1;edgeStyle=none;endSize=12;dashed=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;rounded=0;curved=0;" parent="1" target="lvGjzz3AiRhHNWjv0xxc-31" edge="1" source="lvGjzz3AiRhHNWjv0xxc-29">
+                    <mxGeometry x="0.8943" y="-20" relative="1" as="geometry">
+                        <mxPoint x="242" y="182" as="sourcePoint"/>
+                        <mxPoint x="380" y="268" as="targetPoint"/>
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-131" value="&amp;lt;&amp;lt;deriveReq&amp;gt;&amp;gt;" style="endArrow=open;html=1;edgeStyle=none;endSize=12;dashed=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;rounded=0;curved=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" target="lvGjzz3AiRhHNWjv0xxc-36" edge="1" source="lvGjzz3AiRhHNWjv0xxc-29">
+                    <mxGeometry x="1" y="22" relative="1" as="geometry">
+                        <mxPoint x="240" y="182" as="sourcePoint"/>
+                        <mxPoint x="340" y="240" as="targetPoint"/>
+                        <mxPoint x="3" y="3" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="lvGjzz3AiRhHNWjv0xxc-132" value="&amp;lt;&amp;lt;deriveReq&amp;gt;&amp;gt;" style="endArrow=open;html=1;edgeStyle=none;endSize=12;dashed=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;rounded=0;curved=0;" parent="1" source="lvGjzz3AiRhHNWjv0xxc-77" target="lvGjzz3AiRhHNWjv0xxc-79" edge="1">
+                    <mxGeometry x="0.7059" y="40" relative="1" as="geometry">
+                        <mxPoint x="1720" y="172" as="sourcePoint"/>
+                        <mxPoint x="1858" y="258" as="targetPoint"/>
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
     <diagram id="RGU7gwSc0-3nlFhNQeuA" name="ORBITS General Overview">
-        <mxGraphModel dx="1538" dy="801" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+        <mxGraphModel dx="1886" dy="799" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
