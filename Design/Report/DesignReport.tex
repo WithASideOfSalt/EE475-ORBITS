@@ -84,6 +84,10 @@
     \begin{tabular}{|c|c|}
     \hline
     \textbf{Acronym}&\textbf{Meaning}\\
+    ADCS & Attitude Determination and Control Subsystem \\
+    BDD & Block Definition Diagram \\
+    OBC & On-Board Computer \\
+    PMAD & Power Management and Distribution Subsystem \\
     \hline
     \end{tabular}
 \end{table}
@@ -143,11 +147,11 @@ To begin, without a CubeSat emulation device, referred to as an ORBITS unit, the
     \item \textbf{Attitude Determination and Control:} Within space a CubeSat is required to reorient itself to constantly optimise the power gain from the solar panels or provide optimal orientation for data collection from the payload. This then provides students with an introduction to control systems.
 \end{itemize}
 
-Another of the high level requirements is the use of COTS components. Commercial off the shelf, otherwise known as COTS, components are ready made hardware and software solutions that are ready to be integrated into projects. In this case, COTS components can be leveraged to reduce the overall cost of an ORBITS unit by providing this ready made solution. Additionally, by using COTS components design becomes more repairable as direct replacements can be sourced. This is beneficial where only small replacements within a unit are needed to be made rather than a full unit.
+Another of the high level requirements is the use of COTS components. Commercial off the shelf, otherwise known as COTS, components are ready-made hardware and software solutions that are ready to be integrated into projects. In this case, COTS components can be leveraged to reduce the overall cost of an ORBITS unit by providing this ready-made solution. Additionally, by using COTS components design becomes more repairable as direct replacements can be sourced. This is beneficial where only small replacements within a unit are needed to be made rather than a full unit.
 
 Experimentation facilitation was also required when considering the design of the ORBITS system. Without this the teaching capabilities of the system would be severely hindered defeating the purposes of creating ORBITS in the first place. Two main methods can be used to achieve this, both taking a different route. The hardware approach is allowing for a user defined payload to be integrated into the system. This allows for hands on experience that a student can get the satisfaction of building themselves. The software approach is allowing the ORBITS unit to be reprogrammable to allow users to interact with the system in different, unique ways.
 
-Finally, data processing and visualisation is required for this system. Without it the user wouldn't be able to get feedback from the system they have constructed, reducing the effective learning achievable from this system. To enable the data processing and visualisation, the ground station will be a device capable of hosting and sharing its own web based application to allow the user to interact with the system.
+Finally, data processing and visualisation is required for this system. Without it the user wouldn't be able to get feedback from the system they have constructed, reducing the effective learning achievable from this system. To enable the data processing and visualisation, the ground station will be a device capable of hosting and sharing its own web-based application to allow the user to interact with the system.
 
 Together these requirements form the basis of the ORBITS requirement architecture, the full derivation of which is shown in Figure \ref{fig:ORBITS_Requirements} 
 
@@ -161,7 +165,7 @@ Together these requirements form the basis of the ORBITS requirement architectur
   \thispagestyle{empty}  
     \begin{figure}[h]
         \centering
-        \includegraphics[width=1.35\textwidth]{./Images/ORBITS_Requirements.png}
+        \includegraphics[width=1.35\textwidth]{./Images/Block Definition Diagram.png}
         \caption{High Level ORBITS System Requirements}
         \label{fig:ORBITS_Requirements}
     \end{figure}
@@ -171,7 +175,8 @@ Together these requirements form the basis of the ORBITS requirement architectur
   \end{center}
 \end{landscape}
 \restoregeometry
-The main subsystems of the ORBITS system can then be derived from these requirements. These subsystems are listed below:
+
+From these high level requirements the system can be broken down into the separate subsystems that are needed to meet the requirements. These subsystems include:
 \begin{itemize}
     \item On-Board Computer (OBC)
     \item Power Management and Distribution Subsystem (PMAD)
@@ -179,60 +184,55 @@ The main subsystems of the ORBITS system can then be derived from these requirem
     \item Attitude Determination and Control Subsystem (ADCS)
     \item Payload
     \item Platform Structure
-    \item Ground Station
 \end{itemize}
 
-To visualize this breakdown a SysML Block Definition Diagram (BDD) has been created, shown in Figure \ref{fig:ORBITS_BDD}.
+To support experimentation and learning, a ground station is also needed to provide the users an easy way to interact with the ORBITS unit and learning materials. This ground station is a separate device that enables the connection to an ORBITS unit from any standard laptop or desktop environment.
+
+Throughout the design of the ORBITS system the use of the Systems Modelling Language \cite{SysML}, or SysML for short, has been used to provide the visual representation of the system and its components. SysML is a visual modelling language used by systems engineers to model complex systems and has been derived and extended from the Universal Modeling Language (UML). To start a model for both the ORBITS unit and ground station were defined in Figure \ref{fig:ORBITS_BDD}.
 \begin{figure}[h]
     \centering
-    \includegraphics[width=1\textwidth]{./Images/ORBITS_Logical_Structure.png}
-    \caption{ORBITS Unit System Block Definition Diagram}
+    \includegraphics[width=1\textwidth]{./Images/Logical-Structure.png}
+    \caption{ORBITS Unit and Ground Station Block Definition Diagram}
     \label{fig:ORBITS_BDD}
 \end{figure}
 
-How each of these subsystems interact with each other is shown in the Internal Block Diagram (IBD) in Figure \ref{fig:ORBITS_IBD}.
+Each of these subsystems are used to represent what is actually needed for the system to function. In the case of the ground station, each subsystem may not be a physical component but rather a software component for instance the database hosted on the ground station device.
+
+Shown below in Figure \ref{fig:ORBITS_IBD} is the internal block diagram for the ORBITS unit showing the physical connections between the different subsystems. The ground station is not included within this diagram as it is a separate device that connects to the ORBITS unit through wireless communication.
 \begin{figure}[h]
     \centering
-    \includegraphics[width=1\textwidth]{./Images/ORBITS_Logical_Boundary.png}
+    \includegraphics[width=1\textwidth]{./Images/Internal-Block-Diagram-Unit.png}
     \caption{ORBITS Unit System Internal Block Diagram}
     \label{fig:ORBITS_IBD}
 \end{figure}
-Defining the system in this way creates a clear structure as to how the dedicated ORBITS unit should behave allowing for easier development of each subsystem while ensuring that relevant learning materials are able to be created covering each aspect of the system.
+Defining the system in this way creates a clear structure as to how the dedicated ORBITS unit should behave ensuring that relevant learning materials can be developed for each subsystem.
 
-\smallskip
-the ground station is its own device that provides connectivity to the ORBITS unit from any standard laptop or desktop environment allowing for the development of software and learning materials to be as accessible as possible. 
 \section{Hardware Overview}
+This section looks to cover the hardware design of the ORBITS system. The design of the hardware is based on the requirements defined in the previous section and particularly to ensure the repairability of the ORBITS unit and ground station, COTS components have been used where possible. This design principle allows for ready-made hardware solutions to be integrated into the system, reducing overall costs and simplifying maintenance.
 
 \section{Hardware Selection and Subsystem Design}
-Taking these general design choices into account, each subsystem has been researched and designed to meet the overall system requirements. Each subsystem design is outlined in the following sections. Each section, where relevant had considered multiple options and comparing against several categories. These categories include:
-\begin{itemize}
-    \item Cost: The monetary cost of the component or subsystem.
-    \item Ecosystem: The availability of learning materials, documentation and community support for the component or subsystem.
-    \item Performance: The performance of the component or subsystem in terms of its capabilities and specifications.
-    \item Price to Performance: The ratio of the cost to the performance of the component or subsystem.
-    \item Availability: The availability of the component or subsystem in the market.
-\end{itemize}
+Taking these general design choices into account, each subsystem has been researched and designed to meet the overall system requirements. Each subsystem design is outlined in the following sections. Each section, where relevant had considered multiple options and comparing against several categories. Each category also has a relevant weighting when deciding on the final selection. These categories are shown in \ref{tab:selection_criteria_weighting}:
+\begin{table}[h]
+\centering
+\caption{Selection criteria and weighting}
+\label{tab:selection_criteria_weighting}
+\begin{tabular}{|p{4cm}|p{8cm}|c|}
+\hline
+\textbf{Category} & \textbf{Description} & \textbf{Weighting} \\ \hline
+Cost & The monetary cost of the component or subsystem. & 5 \\ \hline
+Performance & The performance of the component or subsystem in terms of its capabilities and specifications. & 4 \\ \hline
+Availability & The availability of the component or subsystem in the market. & 3 \\ \hline
+Price to Performance & The ratio of the cost to the performance of the component or subsystem. & 3 \\ \hline
+Ecosystem & The availability of learning materials, documentation and community support for the component or subsystem. & 2 \\ \hline
+\end{tabular}
+\end{table}
+
 The components listed within each subsystem are those that were the best fit from these categories resulting in their selection for the ORBITS project.
 
 \subsection{Ground Station}
-The ground station is the interface between the user and the ORBITS unit. It provides a platform for users to develop software and interact with the ORBITS unit. The ground station needs to be as accessible as possible for a wide range of different users including pupils, students, teachers and lecturers. To achieve this the ground station should be an add on device with connectivity to any standard laptop or desktop environment. Shown below in Table \ref{tab:ground_station_selected_components} are the selected components for the ground station subsystem.
-\begin{table}[h]
-    \centering
-    \caption{Selected components for the Ground Station}
-    \label{tab:ground_station_selected_components}
-    \begin{tabular}{|p{4cm}|p{4cm}|p{6cm}|}
-    \hline
-    \textbf{Component} & \textbf{Part Number} & \textbf{Key Specifications} \\ \hline
-    Ground Station & Raspberry Pi Zero 2 W & 1~GHz ARM Cortex-A53, 512~MB SDRAM, 2~W active load \\ \hline
-    Communication Module & NRF24L01+ & 2.4~GHz RF band, 250~kbps data rate \\ \hline
-    Housing & 3DRPiHousing & Open-source 3D print~\cite{GroundStationCase} \\ \hline
-    \end{tabular}
-\end{table}
+The ground station is the interface between the user and the ORBITS unit. It provides a platform for users to develop software and interact with the ORBITS unit. The ground station needs to be as accessible as possible for a wide range of different users including students, teachers and lecturers with particular focus on first year undergraduates. To achieve this the ground station should be an add on device with connectivity to any standard laptop or desktop environment.
 
-For the communications of the system more context will be provided in the communications subsystem section \ref{communications_subsystem}.
-
-\smallskip
-Shown below in Table \ref{tab:ground_station_selection_matrix} is the major component selection for the main ground station computer. 
+Shown below in Table \ref{tab:ground_station_selection_matrix} is the major component selection for the main ground station computer. Each component being compared gains a score out of 10, with 1 being the least applicable to the application and 10 being the most. As previously mentioned, each category also has a weighting value to prioritise different characteristics.
 
 \begin{table}[h]
 \centering
@@ -247,33 +247,32 @@ Orange Pi Zero 2 W & 7 & 6 & 6 & 7 & 7 & Rejected \\ \hline
 \end{tabular}
 \end{table}
 
+Shown below in Table \ref{tab:ground_station_selected_components} are the selected components for the ground station subsystem. These components include the Raspberry Pi Zero 2W, a small single-board computer containing an ARM Cortex-A53 clocked at 1GHz with on board Wifi and Bluetooth, acting as the main ground station computer. To support the wireless connectivity already on board and give an analogue for the communication technology on a mission ready CubeSat, the NRF24L01+ module has been included. This 2.4 GHz transceiver is used purely as the connection between the ground station and ORBITS unit during a mission. 
+\begin{table}[h]
+    \centering
+    \caption{Selected components for the Ground Station}
+    \label{tab:ground_station_selected_components}
+    \begin{tabular}{|p{4cm}|p{4cm}|p{6cm}|}
+    \hline
+    \textbf{Component} & \textbf{Part Number} & \textbf{Key Specifications} \\ \hline
+    Ground Station & Raspberry Pi Zero 2 W & 1~GHz ARM Cortex-A53, 512~MB SDRAM, 2~W active load \\ \hline
+    Communication Module & NRF24L01+ & 2.4~GHz RF band, 250~kbps data rate \\ \hline
+    Housing & 3DRPiHousing & Open-source 3D print~\cite{GroundStationCase} \\ \hline
+    \end{tabular}
+\end{table}
+
+For the communications of the system more context will be provided in the communications subsystem section \ref{communications_subsystem} as the unit contained within both the ground station and ORBITS unit are the same, preventing redundant discussion.
+
 Even though the Raspberry Pi Zero 2 W is not the most powerful option available it was selected for its low cost, large ecosystem and high price to performance ratio in comparison to the other options. The availability of the Raspberry Pi Zero 2 W is also very high with the device being available from a wide range of retailers and distributors while being at a price point that helps minimise the overall cost of an ORBITS kit.
 
-\smallskip
-
-Due to the nature of the Raspberry Pi being a fully featured single board computer it allows for the hosting of all the relevant materials needed for the ORBITS system including compiling user generated software. 
+Due to the nature of the Raspberry Pi being a fully featured single board computer it allows for the hosting of all the relevant materials needed for the ORBITS system including compiling user generated software. The Raspberry Pi Zero 2 W provides the following interfaces relevant to the ORBITS system:
 
 \begin{itemize}
-    \item \textbf{Electrical interface:} 5~V input, 2~A max current, overcurrent protection.
-    \item \textbf{Data interface:} USB 2.0 (480~Mbps), 2.4GHz 802.11 wireless LAN, Bluetooth LE 4.2.
-    \item \textbf{Mechanical interface:} 30 mm x 65 mm board, 4 mounting holes, micro-USB power and data port.
-    \item \textbf{Software interface:} Raspberry Pi OS (Linux - Headless Config), USB Gadget mode for host connectivity.
+    \item \textbf{Electrical interface:} 5~V input, 2~A max current, overcurrent protection. Allows for power to be supplied by standard USB-A port on laptop or desktop.
+    \item \textbf{Data interface:} USB 2.0 (480~Mbps), 2.4GHz 802.11 wireless LAN, Bluetooth LE 4.2. Allows for connectivity between both the development device and wireless connection to the ORBITS unit.
+    \item \textbf{Mechanical interface:} 30 mm x 65 mm board, 4 mounting holes, micro-USB power and data port. Small size allow for easy storage and manoeuvrability with development device. 
+    \item \textbf{Software interface:} Raspberry Pi OS (Linux \- Headless Configuration), USB Gadget mode for host connectivity. This allows for the system to be developed like a readily available linux based server.
 \end{itemize}
-
-With any of the devices needed to operate the ORBITS unit there are some risks that need to be considered. Shown in Table \ref{tab:ground_station_risks} are some of the risks associated with the ground station and their corresponding mitigations.
-
-\begin{table}[h]
-\centering
-\caption{Risks for the Ground Station}
-\label{tab:ground_station_risks}
-\begin{tabular}{|p{5cm}|p{2cm}|p{2cm}|p{6cm}|}
-\hline
-\textbf{Risk} & \textbf{Impact} & \textbf{Likelihood} & \textbf{Mitigation} \\ \hline
-Insufficient Device Memory & M & L & Offload memory intense tasks to development machine with static website  \\ \hline
-Supply Chain Demand & H & L & Secure a unit for prototype development \\ \hline
-
-\end{tabular}
-\end{table}
 
 \subsubsection{Summary}
 
@@ -285,23 +284,11 @@ To allow for the software and development environment to be as accessible as pos
     \label{fig:PiZero2W}
 \end{figure}
 
-As this device is a fully features single board computer it allows for the hosting of the relevant materials needed for the ORBITS system including the user generated software. The low power nature also means that when connecting to an external computer via the micro-USB port the device will have minimal effects on the battery life of the host computer. To enable the connection between the development machine and the ground station through the USB port the Raspberry Pi can be configured to operate in USB gadget mode allowing for the device to appear as a USB device when connected to a host computer. This enables the development machine to access the website being hosted on the Raspberry Pi, more details on this can be found in the Software Design section of this report, \ref{software_design}.
+As this device is a fully featured single board computer it allows for the hosting of the relevant materials needed for the ORBITS system including the user generated software. The low power nature also means that when connecting to an external computer via the micro-USB port the device will have minimal effects on the battery life of the host computer. To enable the connection between the development machine and the ground station through the USB port the Raspberry Pi can be configured to operate in USB gadget. This enables the development machine to access the website being hosted on the Raspberry Pi, more details on this can be found in the Software Design section of this report, \ref{software_design}.
 
 \subsection{On-Board Computer}
 
-The On-Board Computer (OBC) is the main processing unit for the ORBITS unit. It is responsible for managing the operations of the unit. The OBC needs to be able to handle the processing requirements of the unit while also being low power and cost effective. The selected components for the OBC are shown in Table \ref{tab:obc_selected_components}.
-\begin{table}[h]
-    \centering
-    \caption{Selected components for the On-Board Computer}
-    \label{tab:obc_selected_components}
-    \begin{tabular}{|p{4cm}|p{4cm}|p{6cm}|}
-    \hline
-    Component & Part Number & Key Specifications \\ \hline
-    OBC & ESP32-S3-N8R8-1U & Dual-core 240~MHz, 512~KB SRAM, 8~MB flash, WiFi/BLE \\ \hline
-    \end{tabular}
-\end{table}
-
-Shown below in Table \ref{tab:obc_selection_matrix} is the major component selection for the main OBC computer.
+The On-Board Computer (OBC) is the main processing device for the ORBITS unit. It is responsible for managing the operations of the ORBITS unit and ensuring the system is operating as required. The OBC needs to be able to handle the processing requirements of the unit while also being low power and cost effective. Shown in Table \ref{tab:obc_selection_matrix} is the major component selection for the main OBC computer.
 
 \begin{table}[h]
 \centering
@@ -316,82 +303,68 @@ ESP32-S3 & 6 & 8 & 7 & 10 & 9 & Selected \\ \hline
 \end{tabular}
 \end{table}
 
+The selected components for the OBC are shown in Table \ref{tab:obc_selected_components}.
+\begin{table}[h]
+    \centering
+    \caption{Selected components for the On-Board Computer}
+    \label{tab:obc_selected_components}
+    \begin{tabular}{|p{4cm}|p{4cm}|p{6cm}|}
+    \hline
+    \textbf{Component} & \textbf{Part Number} & \textbf{Key Specifications} \\ \hline
+    OBC & ESP32-S3-N8R8-1U & Dual-core 240~MHz, 512~KB SRAM, 8~MB flash, WiFi/BLE \\\hline
+    Real Time Clock & PCF8523 & \(I^2C\) Real-Time Clock based on a 32.768 kHz quartz crystal\\\hline
+    \end{tabular}
+\end{table}
+
 The ESP32-S3 was selected for the OBC due to its low cost, high performance and wide range of integrated connectivity with simple development through the Arduino IDE opening learning material to many open source libraries for components and features. 
 
 \begin{itemize}
-    \item \textbf{Electrical interface:} 3.3~V input, 500~mA max current, overcurrent protection.
-    \item \textbf{Data interface:} UART, I2C, SPI, WiFi 802.11 b/g/n, Bluetooth LE 5.0.
-    \item \textbf{Mechanical interface:} 25.4 mm x 62.74 mm board, 2 micro-USB ports, 38 GPIO pins.
+    \item \textbf{Electrical interface:} 3.3~V input, 500~mA max current, overcurrent protection. Low power with on-board buck converter for voltage conversion from 5V input to required 3.3V input.
+    \item \textbf{Data interface:} UART, I2C, SPI, WiFi 802.11 b/g/n, Bluetooth LE 5.0. These allow for different connections to be made to the microcontroller meaning many devices can be integrated into the base system along with payloads. Also allows for wireless reprogramming through a local area network connection.
+    \item \textbf{Mechanical interface:} 25.4 mm x 62.74 mm board, 38 GPIO pins. Plenty of connectivity for control of the base unit and user defined payloads all within a form factor that fits within the designed frame.
     \item \textbf{Software interface:} ESP-IDF (C/C++), Arduino IDE support, FreeRTOS-based OS, extensive peripheral libraries.
 \end{itemize}
 
-Shown in figure \ref{fig:ESP32-S3} is the technical image for the ESP32-S3~\cite{ESP32-S3_Documentation} detaailing the pin layout and features for the device. The only major difference between the microcontroller shown and the one selected, the ESP32-S3-N8R8-1U, is the lack of an antenna on the 1U variant, instead having an IPEX connector allowing for an external antenna to use with the on-board WiFi and Bluetooth.
+There are several variants of the ESP32-S3, with variants having different amounts of flash memory and Pseudo-Static RAM (PSRAM) and on board antenna. The specific variant chosen was the ESP32-S3-N8R8-1U which has 8MB of both flash memory and PSRAM. This variant also allows for the connecting of an external antenna through an IPEX connection to increase the range for the on-board WiFi and Bluetooth while reducing the size of the pcb. Shown in Figures~\ref{fig:ESP32-S3-Docs}~\cite{ESP32-S3_Documentation} and~\ref{fig:ESP32-S3-1U} is the technical image for the ESP32-S3 detailing the pin layout and features for the device and an image of the specific variant being used within the ORBITS unit.
 
 \begin{figure}
     \centering
-    \includegraphics[width=1\textwidth]{./Images/ESP32-S3_DevKitC-1_pinlayout_v1.1.jpg}
-    \caption{ESP32-S3 OBC Microcontroller}
-    \label{fig:ESP32-S3}
+    \includegraphics[width=0.8\textwidth]{./Images/ESP32-S3_DevKitC-1_pinlayout_v1.1.jpg}
+    \caption{ESP32-S3 pin specification}
+    \label{fig:ESP32-S3-Docs}
 \end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\textwidth]{./Images/ESP32-S3-WROOM-1U.jpg}
+    \caption{ESP32-S3-WROOM-1U OBC Microcontroller}
+    \label{fig:ESP32-S3-1U}
+\end{figure}
+
+In addition to the on board computer a PCF8523 breakout board is included within the system. This is to provide a highly accurate external clock signal external to that of the microcontroller using a \(32.768 kHz\) quartz crystal. The reason for this addition into the system is because of the unreliability with the application. Using the internal clock can lead to a few issues, namely inaccuracies in timing, device reset causes the epoch time to reset to zero and, finally, the timings can drift depending on temperature of the environment.
+
+To mitigate all of these issues, an external real-time clock signal can be provided, in this situation a PCF8523. This external clock is very cost effective in an ORBITS unit as it is much cheaper than the alternatives. However, at this price point the PCF8523 exhibits a drift of approximately 2 seconds per day. This drawback does not affect the operation of an ORBITS unit as operation may only last from a few seconds to a few minutes with rapid developments making this external clock very cost effective.
 
 \subsection{Communications Subsystem}\label{communications_subsystem}
 
 Communications are integral for the operations of this CubeSat system. Implemented within the system are 2 forms of inter-device communication. WiFi, being one of them, is included with both the ground station and OBC with the ground station being able to generate its own WiFi network that the OBC can connect to.
 
-However, within CubeSat development WiFi is not the best analog for space communication. To give an alternative communication method more in line with a CubeSat a wireless RF transceiver module has been included with both the ground station and ORBITS unit.
+However, within CubeSat development WiFi is not the best analogue for space communication. To give an alternative communication method more in line with a CubeSat a wireless RF transceiver module has been included with both the ground station and ORBITS unit.
 
 The NRF24L01+, shown in figure \ref{fig:NRF24L01}, is a low cost, low power RF transceiver that fits the requirements needed by the ORBITS system. 
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.5\textwidth]{./Images/NRF24L01.jpg}
-    \caption{NRF24L01 RF Transceiver Module}
+    \caption{NRF24L01+ RF Transceiver Module}
     \label{fig:NRF24L01}
 \end{figure}
-The 2.4GHz frequency band used by the module allows for easy communication without the need for a license. The NRF24L01 is able to achieve data rates of up to 2Mbps which is more than sufficient for the needs of the ORBITS system. The module also has a range of up to 100m in open space which is more than enough for a classroom environment. Due to the inexpensive nature of the module it has been widely used in the maker community and has a large ecosystem of learning materials and documentation which makes it an ideal choice for the ORBITS system.
+The 2.4GHz frequency band used by the module allows for easy communication without the need for a license. The NRF24L01+ is able to achieve data rates of up to 2Mbps which is more than sufficient for the needs of the ORBITS system. The module also has a range of up to 100m in open space which is more than enough for a classroom environment. Due to the inexpensive nature of the module it has been widely used in the maker community and has a large ecosystem of learning materials and documentation which makes it an ideal choice for the ORBITS system.
 \subsection{Power Management and Distribution Subsystem (PMAD)}
 
 \subsection{Platform Structure}
 \subsection{Attitude Determination and Control Subsystem (ADCS)}
 \subsection{Payload}
 
-\subsection{<Subsystem Name>}
-\subsubsection{Purpose and Role}
-<1--2 paragraphs describing what this subsystem does and why it is needed in ORBITS.>
-
-\subsubsection{Selected Components}
-\begin{table}[h]
-\centering
-\caption{Selected components for <Subsystem Name>}
-\label{tab:<subsystem>_selected_components}
-\begin{tabular}{|p{4cm}|p{4cm}|p{6cm}|}
-\hline
-\textbf{Component} & \textbf{Part Number} & \textbf{Key Specifications} \\ \hline
-<e.g., MCU> & <e.g., ESP32-S3-N8R8-1U> & <clock, memory, IO, voltage, power> \\ \hline
-<component 2> & <part number> & <key specs> \\ \hline
-\end{tabular}
-\end{table}
-
-\subsubsection{Trade Study and Justification}
-\begin{table}[h]
-\centering
-\caption{Trade study for <Subsystem Name>}
-\label{tab:<subsystem>_trade_study}
-\begin{tabular}{|p{3cm}|c|c|c|c|c|p{2.5cm}|}
-\hline
-\textbf{Option} & \textbf{Cost} & \textbf{Ecosystem} & \textbf{Performance} & \textbf{Avail.} & \textbf{P/P} & \textbf{Decision} \\ \hline
-<Option A> & <1--5> & <1--5> & <1--5> & <1--5> & <1--5> & <Selected/Rejected> \\ \hline
-<Option B> & <1--5> & <1--5> & <1--5> & <1--5> & <1--5> & <Selected/Rejected> \\ \hline
-<Option C> & <1--5> & <1--5> & <1--5> & <1--5> & <1--5> & <Selected/Rejected> \\ \hline
-\end{tabular}
-\end{table}
-
-\subsubsection{Interfaces and Integration}
-\begin{itemize}
-    \item \textbf{Electrical interface:} <voltage rails, max current, protection>
-    \item \textbf{Data interface:} <UART/I2C/SPI/CAN/WiFi/NRF24L01, baud/data rate>
-    \item \textbf{Mechanical interface:} <mounting, connector type, dimensions>
-    \item \textbf{Software interface:} <driver/library, protocol, API boundary>
-\end{itemize}
 
 \subsubsection{Constraints, Risks, and Mitigations}
 \begin{table}[h]
@@ -403,6 +376,21 @@ The 2.4GHz frequency band used by the module allows for easy communication witho
 \textbf{Risk} & \textbf{Impact/Likelihood} & \textbf{Mitigation} \\ \hline
 <risk 1> & <H/M/L> & <mitigation action> \\ \hline
 <risk 2> & <H/M/L> & <mitigation action> \\ \hline
+\end{tabular}
+\end{table}
+
+With any of the devices needed to operate the ORBITS unit there are some risks that need to be considered. Shown in Table \ref{tab:ground_station_risks} are some of the risks associated with the ground station and their corresponding mitigations.
+
+\begin{table}[h]
+\centering
+\caption{Risks for the Ground Station}
+\label{tab:ground_station_risks}
+\begin{tabular}{|p{5cm}|p{2cm}|p{2cm}|p{6cm}|}
+\hline
+\textbf{Risk} & \textbf{Impact} & \textbf{Likelihood} & \textbf{Mitigation} \\ \hline
+Insufficient Device Memory & M & L & Offload memory intense tasks to development machine with static website  \\ \hline
+Supply Chain Demand & H & L & Secure a unit for prototype development \\ \hline
+
 \end{tabular}
 \end{table}
 
