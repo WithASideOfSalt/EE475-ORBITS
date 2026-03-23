@@ -4,13 +4,16 @@
 \usepackage{graphicx}
 \usepackage[left=20mm,right=20mm,top=15mm,bottom=15mm]{geometry}
 \usepackage{caption}
+\usepackage{subcaption}
 \usepackage{siunitx} % For clean units formatting
-\usepackage{appendix}
 \usepackage{titlepic}
 \usepackage{ragged2e}
 \usepackage{pdflscape}
 \usepackage{hyperref}
 \usepackage{caption}
+\usepackage{pdfpages}
+\usepackage{tikz}
+\usepackage[toc, page]{appendix}
 
 \usepackage[backend=biber]{biblatex}
 \addbibresource{references.bib}
@@ -329,14 +332,14 @@ There are several variants of the ESP32-S3, with variants having different amoun
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.8\textwidth]{./Images/ESP32-S3_DevKitC-1_pinlayout_v1.1.jpg}
+    \includegraphics[width=1\textwidth]{./Images/ESP32-S3_DevKitC-1_pinlayout_v1.1.jpg}
     \caption{ESP32-S3 pin specification}
     \label{fig:ESP32-S3-Docs}
 \end{figure}
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.5\textwidth]{./Images/ESP32-S3-WROOM-1U.jpg}
+    \includegraphics[width=0.8\textwidth]{./Images/ESP32-S3-WROOM-1U.jpg}
     \caption{ESP32-S3-WROOM-1U OBC Microcontroller}
     \label{fig:ESP32-S3-1U}
 \end{figure}
@@ -349,35 +352,182 @@ To mitigate all of these issues, an external real-time clock signal can be provi
 
 Communications are integral for the operations of this CubeSat system. Implemented within the system are 2 forms of inter-device communication. WiFi, being one of them, is included with both the ground station and OBC with the ground station being able to generate its own WiFi network that the OBC can connect to.
 
+With WiFi being included in both the ground station and OBC, this allows for a simple method of communication between the two devices. The WiFi connection can be used to send commands from the ground station to the OBC and receive telemetry data back from the OBC. This allows for a seamless user experience as users can interact with the ORBITS unit from any standard laptop or desktop environment without the need for additional hardware or software.
+
 However, within CubeSat development WiFi is not the best analogue for space communication. To give an alternative communication method more in line with a CubeSat a wireless RF transceiver module has been included with both the ground station and ORBITS unit.
 
-The NRF24L01+, shown in figure \ref{fig:NRF24L01}, is a low cost, low power RF transceiver that fits the requirements needed by the ORBITS system. 
+Shown below in Table \ref{tab:comms_selection_matrix} is the component selection matrix for the communications subsystem. 
+
+%Selection matrix
+\begin{table}[h]
+\centering
+\caption{Communications Transceiver Selection Matrix}
+\label{tab:comms_selection_matrix}
+    \begin{tabular}{|p{3cm}|c|c|c|c|c|p{2.5cm}|}
+    \hline
+    \textbf{Option} & \textbf{Cost} & \textbf{Ecosystem} & \textbf{Performance} & \textbf{Avail.} & \textbf{P/P} & \textbf{Decision} \\ \hline
+    NRF24L01+ & 10 & 9 & 6 & 10 & 10 & Selected \\ \hline
+    LoRa SX1276 & 5 & 7 & 9 & 8 & 6 & Rejected \\ \hline
+    HC-12 & 8 & 7 & 5 & 8 & 7 & Rejected \\ \hline
+\end{tabular}
+\end{table}
+
+The NRF24L01+ was selected, shown in figure~\ref{fig:NRF24L01}, was selected as the RF transceiver for the ORBITS system and is a low cost, low power RF transceiver that fits the requirements needed by the ORBITS system. Even though the LoRa SX1276 has better performance in terms of data rate and range, the NRF24L01+ was selected for its low cost, large ecosystem and high price to performance ratio in comparison to the other options. The availability of the NRF24L01+ is also very high with the device being available from a wide range of retailers and distributors while being at a price point that helps minimise the overall cost of an ORBITS kit.
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.5\textwidth]{./Images/NRF24L01.jpg}
     \caption{NRF24L01+ RF Transceiver Module}
     \label{fig:NRF24L01}
 \end{figure}
-The 2.4GHz frequency band used by the module allows for easy communication without the need for a license. The NRF24L01+ is able to achieve data rates of up to 2Mbps which is more than sufficient for the needs of the ORBITS system. The module also has a range of up to 100m in open space which is more than enough for a classroom environment. Due to the inexpensive nature of the module it has been widely used in the maker community and has a large ecosystem of learning materials and documentation which makes it an ideal choice for the ORBITS system.
+The 2.4GHz frequency band used by the module allows for easy communication without the need for a licence. The NRF24L01+ is able to achieve data rates of up to 2Mbps which is more than sufficient for the needs of the ORBITS system. The module also has a range of up to 100m in open space which is more than enough for a classroom environment. Due to the inexpensive nature of the module it has been widely used in the maker community and has a large ecosystem of learning materials and documentation which makes it an ideal choice for the ORBITS system.
+
+\begin{itemize}
+    \item \textbf{Electrical interface:} 3.3~V input, 115~mA max current during transmission, low power sleep modes. This allows for the module to be powered directly from the OBC and ground station with minimal impact on the overall power consumption of the system.
+    \item \textbf{Data interface:} SPI for communication with the OBC and ground station microcontrollers. This allows for fast and efficient communication between the module and the microcontrollers.
+    \item \textbf{Mechanical interface:} 34 mm x 17 mm x 5 mm module, 8-pin header for SPI and power connections. The small size of the module allows for easy integration into the ORBITS unit and ground station.
+\end{itemize}
+
 \subsection{Power Management and Distribution Subsystem (PMAD)}
 
-\subsection{Platform Structure}
-\subsection{Attitude Determination and Control Subsystem (ADCS)}
-\subsection{Payload}
+The power management and distribution (PMAD) subsystem is responsible for managing the power within the ORBITS unit. This includes the storage of on-board power and the distribution to each subsystem within the CubeSat. The PMAD should also contain some method of monitoring the power levels within the system to provide feedback to the user in addition to allowing connectivity to solar panels for power generation. Shown in \ref{tab:pmad_selection_matrix} and \ref{tab:pmad_selected_components} are the component selection matrix for the PMAD subsystem and the selected components for the PMAD subsystem respectively.
 
-
-\subsubsection{Constraints, Risks, and Mitigations}
 \begin{table}[h]
 \centering
-\caption{Risks for <Subsystem Name>}
-\label{tab:<subsystem>_risks}
-\begin{tabular}{|p{5cm}|p{3cm}|p{6cm}|}
-\hline
-\textbf{Risk} & \textbf{Impact/Likelihood} & \textbf{Mitigation} \\ \hline
-<risk 1> & <H/M/L> & <mitigation action> \\ \hline
-<risk 2> & <H/M/L> & <mitigation action> \\ \hline
+\caption{Power Management and Distribution Selection Matrix}
+\label{tab:pmad_selection_matrix}
+    \begin{tabular}{|p{3cm}|c|c|c|c|c|p{2.5cm}|}
+    \hline
+    \textbf{Option} & \textbf{Cost} & \textbf{Ecosystem} & \textbf{Performance} & \textbf{Avail.} & \textbf{P/P} & \textbf{Decision} \\ \hline
+    \href{https://thepihut.com/products/solar-power-management-module-for-6v-24v-solar-panel?variant=37524980465859&country=GB&currency=GBP&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic&srsltid=AfmBOoqKErduEqfV-viUScRfMIB14IlWnHJ8EjOfCFT3v4lE8v2kyoEYXkg}{Solar Power Management Module}  & 5 & 4 & 4 & 6 & 6 & Rejected \\ \hline
+    \href{https://thepihut.com/products/adafruit-bq25185-usb-dc-solar-charger-with-5v-boost-board?variant=53804937380225&country=GB&currency=GBP&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic&gad_source=1&gad_campaignid=22549809780&gbraid=0AAAAADfQ4GGdW01TyGti4t28OOvyRXYFX&gclid=Cj0KCQiAxJXJBhD_ARIsAH_JGjhJ6IEux0L2B3_UonaO9HtROG6hU5RIyDxHo7yaWzlZb0gZYsK6vxwaAn6zEALw_wcB}{Adafruit bq25185 with 5V Boost} & 5 & 7 & 7 & 6 & 5 & Rejected \\ \hline
+    \href{https://thepihut.com/products/adafruit-bq25185-usb-dc-solar-lithium-ion-polymer-charger?variant=53681613865345&country=GB&currency=GBP&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic&gad_source=1&gad_campaignid=22549809780&gbraid=0AAAAADfQ4GGdW01TyGti4t28OOvyRXYFX&gclid=Cj0KCQiAxJXJBhD_ARIsAH_JGjihNwZPk51saaZYi8oCH0lRl8aci7kfyVzS7y10IoEZMfSrrBmSm4AaAnmFEALw_wcB}{Adafruit bq25185} & 6 & 7 & 7 & 6 & 9 & Selected \\ \hline
 \end{tabular}
 \end{table}
+
+The selected components for the PMAD subsystem are shown in Table \ref{tab:pmad_selected_components}.
+\begin{table}[h]
+    \centering
+    \caption{Selected components for the Power Management and Distribution Subsystem}
+    \label{tab:pmad_selected_components}
+    \begin{tabular}{|p{4cm}|p{4cm}|p{6cm}|}
+    \hline
+    \textbf{Component} & \textbf{Part Number} & \textbf{Key Specifications} \\ \hline
+    Power Management Module & Adafruit bq25185 & 1.2~V to 5.5~V input, 500~mA max charge current, USB and solar charging support \\ \hline
+    Battery & 2 18650 cells & 3.7~V nominal voltage, 4000~mAh capacity \\ \hline
+    Power Monitoring & INA260 DC Power Monitor & I2C, 36 V max voltage 15 A max current. 0.15\% System Gain Error\\ \hline
+    \end{tabular}
+\end{table}
+
+The Adafruit bq25185 was selected for the PMAD system due to its low cost and high performance. The module provides support for both USB-C and solar charging which allows for flexibility in how the ORBITS unit can be charged. This is particularly relevant as the classroom environment may not have the necessary equipment to charge the ORBITS unit through solar panels. Shown in Figure~\ref{fig:bq25185} is the bq25185.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{./Images/bq25185.jpg}
+    \caption{Adafruit bq25185 Power Management Module}
+    \label{fig:bq25185}
+\end{figure}
+
+\begin{itemize}
+    \item \textbf{Electrical interface:} 1.2~V to 5.5~V input voltage range, 500~mA maximum charge current, supports USB-C and solar panel input simultaneously. The wide input voltage range allows for flexible charging from both USB and solar sources, with the module regulating the charge current to protect the battery cells.
+    \item \textbf{Data interface:} Has 2 status outputs used to determine faults and monitor charging status, readable from simple GPIO pins on pins S1 and S2
+    \item \textbf{Mechanical interface:} 31.75mm x 25.4mm Adafruit breakout board with castellated mounting holes. 
+\end{itemize}
+
+In addition to the power management module, a power monitoring INA260 module is included within the system. This allows for the monitoring of the power levels within the system and provides feedback to the user through telemetry data. This is particularly important for the learning experience as it allows users to understand the power consumption of their system and how different components affect the overall power usage when creating their own payloads. Shown in Figure~\ref{fig:INA260} is the INA260 power monitoring module.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{./Images/INA260.jpg}
+    \caption{Adafruit INA260 Power Monitoring Module \cite{Adafruit}}
+    \label{fig:INA260}
+\end{figure}
+
+\begin{itemize}
+    \item \textbf{Electrical interface:} 2.7~V to 5.5~V supply voltage, 36~V maximum bus voltage, 15~A maximum current measurement range with 0.15\% system gain error. Powered directly from the 3.3~V OBC supply with in-line current sensing requiring no additional shunt resistor.
+    \item \textbf{Data interface:} I\textsuperscript{2}C with configurable device address. Provides current, voltage and power registers readable directly by the OBC.
+    \item \textbf{Mechanical interface:} 22.86~mm x 17.78~mm Adafruit breakout board with two terminal block connections for in-line current measurement. The terminal block connections allow for straightforward integration into the power distribution wiring of the ORBITS unit.
+    \item \textbf{Software interface:} Supported by the Adafruit INA260 Arduino library, providing a high level interface for reading current, voltage and power measurements. Data is accessible via the OBC and passed to the telemetry pipeline, allowing students to observe real-time power consumption of their payloads through the ground station web application.
+\end{itemize}
+
+\subsection{Platform Structure}
+
+The platform structure is responsible for providing the physical support for the ORBITS unit. This is mainly covered by the frame of the ORBITS unit and the pcbs used to connect the different components together. The structure needs to be able to support the components within the ORBITS unit while also being lightweight, cost effective, easy to manufacture and assemble all while conforming to the 1U CubeSat form factor. The most simple method to create this frame is through 3D printing which allows for a low cost, lightweight and easily manufacturable solution. Shown in Figure \ref{fig:frame_pieces} are the 2 types of connecting pieces used within the frame, the side pieces and the top/bottom pieces. 
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}{0.4\linewidth}
+        \centering
+        \includegraphics[width=0.5\linewidth]{./Images/Frame-Side.png}
+        \caption{Frame side pieces}
+        \label{fig:side_piece}
+    \end{subfigure}
+    \begin{subfigure}{0.4\linewidth}
+        \centering
+        \includegraphics[width=0.5\linewidth]{./Images/Frame-Top-Bottom.png}
+        \caption{Top/Bottom piece}
+        \label{fig:top_bottom_piece}
+    \end{subfigure}
+    \caption{Connecting pieces for the ORBITS frame}
+    \label{fig:frame_pieces}
+\end{figure}
+
+To construct a frame for the ORBITS unit, 2 side pieces and 2 top/bottom pieces are needed. The side pieces are used to connect the top and bottom pieces together to create the frame for the ORBITS unit. By designing the frame in this way allows for the system to be easily assembled and disassembled for maintenance, repair and experimentation. The top and bottom pieces are designed to have mounting points for threaded inserts which allows pcbs to be easily attached to the frame. Shown in Figure \ref{fig:frame_assembled} is the assembled frame for the ORBITS unit components. 
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\textwidth]{./Images/Assembled-Frame.png}
+    \caption{Assembled frame for the ORBITS unit}
+    \label{fig:frame_assembled}
+\end{figure}
+
+%need to give some detail about the pcbs in this section.
+
+\subsection{Attitude Determination and Control Subsystem (ADCS)}
+
+The attitude determination and control subsystem (ADCS) is responsible for determining the orientation of the ORBITS unit and providing control to adjust the orientation as needed. This is particularly important for CubeSats as they need to orient themselves to optimise the power gain from the solar panels or provide the required orientation for data collection from the payload. The ADCS subsystem needs to be able to provide accurate attitude determination and control while also being low power and cost effective. 
+
+Rather than implementing a full ADCS system with reaction wheels and magnetorquers, the ORBITS unit looks to focus on the determination aspect of the ADCS subsystem as to reduce the number of components needed within the system and to allow for a more cost effective solution while giving electronics representative to those within a typical CubeSat. The attitude determination can be achieved through the use of an inertial measurement unit (IMU), a type of composite sensor comprised of accelerometers, gyroscopes and magnetometers.
+
+Shown in Table \ref{tab:ADCS-selection-matrix} is the selection matrix for the ADCS IMU.
+
+\begin{table}[h]
+    \centering
+    \caption{Selection Matrix for ADCS Subsystem}
+    \label{tab:ADCS-selection-matrix}
+    \begin{tabular}{|p{3cm}|c|c|c|c|c|p{2.5cm}|}
+    \hline
+    \textbf{Option} & \textbf{Cost} & \textbf{Ecosystem} & \textbf{Performance} & \textbf{Avail.} & \textbf{P/P} & \textbf{Decision} \\ \hline
+    \href{https://www.digikey.co.uk/en/products/detail/adafruit-industries-llc/4554/17039173}{Adafruit ICM-20948 Breakout Board}& 5 & 8 & 9 & 7 & 8 & Selected \\\hline
+    \href{https://thepihut.com/products/adafruit-lsm6ds3tr-c-6-dof-accel-gyro-imu-stemma-qt-qwiic}{Adafruit LSM6DS3TR Breakout Board}& 4 & 8 & 5 & 8 & 5 & Rejected \\\hline
+    \href{https://thepihut.com/products/adafruit-lsm6ds3tr-c-6-dof-accel-gyro-imu-stemma-qt-qwiic}{Adafruit LSM6DSOX Breakout Board}& 5 & 8 & 5 & 8 & 6 & Rejected \\\hline
+    \end{tabular}
+\end{table}
+
+The IMU chosen for the system was the ICM-20948, a low cost 9-axis IMU. At the price point for the ORBITS system it is typical to find components that aren't as feature dense as more expensive counterparts. In this case, IMU's typically reduce down to 3 or 6 axis variants, with only accelerometers or gyroscopes, for instance the LSM6DS3TR only has 6-axis, 3 for acceleration and 3 for the gyroscope. The ICM-20948, for the same price manages to contain a magnetometer in addition to the accelerometer and gyroscope.
+
+This addition is particularly useful within space applications. Without a magnetometer, the only method that can determine the orientation of the satellite is through the gyroscope. However gyroscopes run into an issue when running for longer periods of time, this being drift. Small uncertainties within the readings build up over time causing the output to be untrustworthy. Unlike the readings from the gyroscope, the magnetometer has an external reference. In the case of typical CubeSats, this is the Earth. By reading the magnetic fields produced by the Earth the sensor is able to calibrate itself relative to North which can be used to correct the drift from the gyroscope and provide a more accurate reading of the orientation of the satellite. 
+
+%Shown in Figure~\ref{fig:ICM-20948} is the ICM-20948 IMU.
+
+%\begin{figure}[h]
+%    \centering
+%    \includegraphics[width=0.5\textwidth]{./Images/ICM-20948.jpg}
+%    \caption{Adafruit ICM-20948 9-axis IMU}
+%    \label{fig:ICM-20948}
+%\end{figure}
+
+\begin{itemize}
+    \item \textbf{Electrical interface:} 3V to 5V input, with on board regulator.
+    \item \textbf{Data interface:} Both I2C and SPI interface available for communication with the OBC. Configurable I2C address. Conditional interrupt output pin for motion detection and data ready signals.
+    \item \textbf{Mechanical interface:}  25.7mm x 17.7mm Adafruit breakout board. Compact size allows for easy integration.
+    \item \textbf{Software interface:} Arduino library support with high level functions for reading acceleration, angular velocity and magnetic field data. 
+\end{itemize}
+
+\subsection{Payload}
+
+The payload subsystem is responsible for providing the user with the ability to create their own experiments and projects within the ORBITS unit. Rather than providing a specific payload for the system, the ORBITS unit is designed to be a flexible platform to enable users to create their own payloads.
+
+\subsubsection{Constraints, Risks, and Mitigations}
 
 With any of the devices needed to operate the ORBITS unit there are some risks that need to be considered. Shown in Table \ref{tab:ground_station_risks} are some of the risks associated with the ground station and their corresponding mitigations.
 
@@ -416,5 +566,17 @@ Maybe an appendix with the learning materials and instructions for use of the sy
 \section{Bill of Materials}
 Can probably be put in an appendix
 \section{Software Documentation}
-\printbibliography
+\printbibliography[heading=bibintoc]
+\newpage
+\appendix
+\chapter{Appendices}
+\begin{landscape}
+    \includepdf[pages=-, 
+    width=1.5\textwidth,
+    landscape = true,
+    pagecommand={   \section{ORBITS Frame} \label{app:orbits_frame},
+                    \thispagestyle{empty} }
+  ]{./Appendices/ORBITS Frame.pdf}
+\end{landscape}
+
 \end{document}
