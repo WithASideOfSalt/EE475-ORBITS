@@ -103,7 +103,7 @@ Where applicable SysML diagrams have been used to represent the design of the OR
 
 \chapter{Introduction}
 
-The Space industry around Scotland looks to increase the number of employees to \(20,000\) and targeting \pounds 4 billion in global market share by 2030 \cite{govScot}. To meet this growth within the industry high quality educational materials are needed to introduce young individuals to what they may be working on within the industry.
+The Space industry around Scotland looks to increase the number of employees to \(20,000\) and targeting \pounds 4 billion in global market share by 2030~\cite{govScot}. To meet this growth within the industry high quality educational materials are needed to introduce young individuals to what they may be working on within the industry.
 
 ORBITS, the Outreach and Research Build for Interactively Teaching Satellites, is a developmental tool for students to learn about satellite systems and their operation through physical experimentation and learning. The particular type of satellite being emulated by this device is a 1U CubeSat, a standardised type of nanosatellite that is becoming increasingly popular for its low cost and accessibility for companies and educational institutions to develop and launch their own satellites.
 
@@ -137,6 +137,8 @@ Products that look at the commercial and educational markets do exist on the mar
 Another example is the Australian made RASCube~\cite{RASCube}, a 1U CubeSat that provides field tested hardware within the design. The RASCube provides extensive learning materials and functionality but due to the nature of being designed from the ground up with completely custom PCBs the cost of a unit including all of the learning materials is around \pounds 1000 for a singular kit which may not be accessible for many educational institutions and individuals looking to learn about satellite systems. Despite this price point, the feature set and demand for high quality learning has driven more than 1400 kits sold \cite{RASCube}.
 
 These products highlight a clear gap within the market: an affordable, ground-station linked CubeSat kit accessible to those with little to no prior experience, including first year undergraduates. ORBITS looks to provide an interactive teaching experience particularly focused on those with less experience to inspire and educate around the space industry.
+
+Additional projects within space education do exist, such as the open source ISS Mimic~\cite{ISS-Mimic}, a project that looks to mimic the telemetry data from the International Space Station (ISS), using a 3D printed scale model, on board microcontroller and motors to provide a physical representation of the ISS. The data used to create this model is from a subset of the real ISS telemetry data and is publicly available through \href{https://lightstreamer.com/}{Lightstreamer}, an event broken used to deliver real time data to customers. 
 
 \chapter{Design}
 The ORBITS system has been developed using a top down approach starting with the high level requirements and breaking these down into smaller, more specific system requirements. The process first began by consulting the teaching staff most likely to be interacting with these systems within a classroom environment and seeing common sticking points with integrating new projects within the class, like time for set-up, ease of use during learning and both debugging of hardware and software related issues.
@@ -199,7 +201,7 @@ Throughout the design of the ORBITS system the use of the Systems Modelling Lang
     \label{fig:ORBITS_BDD}
 \end{figure}
 
-Each of these subsystems are used to represent what is actually needed for the system to function. In the case of the ground station, each subsystem may not be a physical component but rather a software component for instance the database hosted on the ground station device.
+Each of these subsystems are used to represent what is actually needed for the system to function. In the case of the ground station, each subsystem may not be a physical component but rather a software component for instance the hosted database for operating data of the ORBITS unit.
 
 Shown below in Figure \ref{fig:ORBITS_IBD} is the internal block diagram for the ORBITS unit showing the physical connections between the different subsystems. The ground station is not included within this diagram as it is a separate device that connects to the ORBITS unit through wireless communication.
 \begin{figure}[h]
@@ -319,7 +321,7 @@ The selected components for the OBC are shown in Table \ref{tab:obc_selected_com
     \end{tabular}
 \end{table}
 
-The ESP32-S3 was selected for the OBC due to its low cost, high performance and wide range of integrated connectivity with simple development through the Arduino IDE opening learning material to many open source libraries for components and features. 
+The ESP32-S3 was selected for the OBC due to its low cost, high performance and wide range of integrated connectivity with simple development through the Arduino Integrated Development Environment (IDE) opening learning material to many open source libraries for components and features. 
 
 \begin{itemize}
     \item \textbf{Electrical interface:} 3.3~V input, 500~mA max current, overcurrent protection. Low power with on-board buck converter for voltage conversion from 5V input to required 3.3V input.
@@ -343,6 +345,8 @@ There are several variants of the ESP32-S3, with variants having different amoun
     \caption{ESP32-S3-WROOM-1U OBC Microcontroller}
     \label{fig:ESP32-S3-1U}
 \end{figure}
+
+Of particular note with this microcontroller is the addition of 2 I2C busses. I2C is a popular synchronous 2 wire communication protocol that can allow for several devices to be controlled through minimal pins connected to the controller. Each device connected to the bus has an address defined by the manufacturer that can be used to interact with the components registers, usually to access the data contained within a sensor or to set component characteristics. By having 2 of these I2C busses included within the device it can allow for internal communications to be handled by one while the other is purely used for communications to the user defined payload.
 
 In addition to the on board computer a PCF8523 breakout board is included within the system. This is to provide a highly accurate external clock signal external to that of the microcontroller using a \(32.768 kHz\) quartz crystal. The reason for this addition into the system is because of the unreliability with the application. Using the internal clock can lead to a few issues, namely inaccuracies in timing, device reset causes the epoch time to reset to zero and, finally, the timings can drift depending on temperature of the environment.
 
@@ -525,11 +529,15 @@ This addition is particularly useful within space applications. Without a magnet
 
 \subsection{Payload}
 
-The payload subsystem is responsible for providing the user with the ability to create their own experiments and projects within the ORBITS unit. Rather than providing a specific payload for the system, the ORBITS unit is designed to be a flexible platform to enable users to create their own payloads.
+The payload subsystem is responsible for providing the user with the ability to create their own experiments and projects to integrate into the ORBITS unit. Rather than providing a specific payload for the system, the ORBITS unit is designed to be a flexible platform to enable users to create their own payloads.
+
+The rapid prototyping of electronics is already a solved through the use of breadboards and perfboards. The payload subsystem provides a top layer development area for users to create their own payloads using these prototyping methods. The payload integrates a standard half-size breadboard and a set of headers connected to the OBC.
+
+To allow for flexibility and enable creativity, a wide range of communication methods have been made available to use in communicating with the payload. General Purpose Input-Output pins is the most basic category, typically used for wiring up LEDs and transistors but they don't have an explicit purpose. I2C and SPI on the other hand are purpose made communication protocols. I2C focuses on reducing the number of pins required to communicate between a controller device and several peripherals through an address based system. 
 
 \subsubsection{Constraints, Risks, and Mitigations}
 
-With any of the devices needed to operate the ORBITS unit there are some risks that need to be considered. Shown in Table \ref{tab:ground_station_risks} are some of the risks associated with the ground station and their corresponding mitigations.
+With any of the devices needed to operate the ORBITS unit there are some risks that need to be considered. Shown in Table~\ref{tab:ground_station_risks} are some of the risks associated with the ground station and their corresponding mitigations.
 
 \begin{table}[h]
 \centering
@@ -557,15 +565,97 @@ T-<sub>-02 & <what must be proven> & <bench/simulation/field test> & <quantitati
 \end{tabular}
 \end{table}
 
-\subsubsection{Summary}
-<Short paragraph linking this subsystem back to system-level requirements.>
+\subsection{Bill of Materials}
+%Needs to get fleshed out more before putting into the report. 
 
 \section{Software Overview} \label{software_design}
+The software developed for the ORBITS system can be broken into 2 main components, the software for the ground station and the software for the ORBITS unit. The software for the ground station is responsible for providing a user interface for users to interact with the ORBITS unit and develop their own code while the software for the ORBITS unit is concerned with providing functionality to the components within the stock implementation without any payloads that user defined code integrates into.
+
+%Add general system architecture here with both the ground station software and the orbits unit
+
+\subsection{Ground Station}
+%Need to talk about the development of the software on the raspberry pi and add in software structure UML high level architecture probably
+The ground station needs to facilitate multiple of the requirements needed for the system to be successful with particular focus on the educational element. The ground station is required to provide the link from a standard laptop or desktop environment to be able to develop 
+
+The Raspberry Pi Zero 2W is a versatile single board computer that can have a wide range of different applications, in this case acting as the link between the users' development device and the ORBITS unit. With the versatility of such a device a wide range of different approaches can be taken to solve the ground station as many different design methodologies, frameworks and technologies that exist that can come together with differing results.
+
+Commonly, Application Programming Interfaces (APIs) are used as a method for allowing different software components to interact with each other and is used within the ground station to allow for the frontend and backend to communicate with each other but there are several approaches that can be taken to implement an API in a greater tech stack.
+
+%Add in a diagram showing each tech stack approaches
+For instance, the MEAN framework (MongoDB, Express.js, Angular and Node.js) is an open source JavaScript framework that is mainly used for cloud based web applications~\cite{MEAN}. This is a highly scalable and flexible framework that can be used to create applications that serve many users at the same time. However, this framework may be overkill for the needs of the ORBITS system as it is designed for larger scale applications and may not be the best fit for a small scale project like this looking to individually serve users from the Raspberry Pi rather than a cloud based application.
+
+In addition, a common tech stack used by hobbyists with the Raspberry Pi ecosystem of devices is LAMP, which stands for Linux, Apache, MySQL and Php or Python~\cite{LAMP}. This is a popular tech stack for web development and can be used to create a web application that serves the needs of the ORBITS system. The LAMP stack can be a good fit for the ORBITS system as it is designed for smaller scale applications and can be easily set up on the Raspberry Pi even with the limited resources available. However, this approach may not provide more modern features 
+
+Finally, the approach taken for the ORBITS system, a more modern approach to web development is using a Flask backend with a React or AntDesign frontend. This approach allows for a more modern and responsive user interface while still being able to run on the Raspberry Pi. Flask is a lightweight web framework that can be used to create a RESTful API~\cite{REST_API} for the ground station while React or AntDesign can be used to create a user interface that interacts with the API. This approach requires more development time and resources but can provide a better user experience for users interacting with the ORBITS system and can allow the system to be more easily expanded in the future with additional features and functionality.
+
+%at the bottom of this section add in a full diagram showing the implemented software architecture in more detail than the one above.
+
+\subsubsection{Backend}
+%WebSockets, SocketIO, Flask, ground station to unit comms thing you used, apache reverse proxy
+%Need to first go into descriptions of each of the technologies used and then go into the architecture of how they all fit together.
+The backend architecture for the ground station is built using several components with Flask being the main web framework used to create a RESTful API for the ground station.
+\begin{itemize}
+    \item \textbf{Flask:} Flask is a lightweight web framework for Python that allows for the creation of web applications and APIs. It is designed to be simple and easy to use, making it a good choice for small to medium sized projects. Flask provides a simple way to define routes and handle HTTP requests, making it easy to create a RESTful API for the ground station.
+    \item \textbf{SocketIO:} SocketIO is a library that enables real-time, bidirectional communication between the client and the server. It is built on top of WebSockets and provides a simple API for handling real-time events.
+    \item \textbf{Apache Reverse Proxy:} Apache is a widely used web server that can be configured to act as a reverse proxy. This allows for the backend Flask application to be served through the Apache web server, providing additional features such as load balancing and security. This is particularly useful to allow for the backend to be accessed from the local area network without needing to directly access the Raspberry Pi, which can be more difficult for users who are not familiar with networking and server administration.
+    \item \textbf{MQTT:} MQTT is a lightweight messaging protocol that is designed for use in low bandwidth and high latency environments. It is often used in IoT applications and can be used to facilitate communication between the ground station and the ORBITS unit through a WiFi connection.
+    \item \textbf{Arduino CLI:} This is a command line interface for the Arduino platform that allows for the compilation and uploading of code to Arduino compatible microcontrollers. This is used to compile the user defined code for the payload and upload it to the OBC microcontroller on the ORBITS unit through a feature called Over The Air (OTA) updates, which allows for the code to be uploaded wirelessly through the WiFi connection between the ground station and the ORBITS unit.
+\end{itemize}
+
+\subsubsection{Frontend}
+%SocketIO, AntDesign, Blockly, Monaco Editor, React 
+The frontend architecture for the ground station is build using React as the main framework for building the user interface. React provides a component-based architecture that allows for the creation of reusable UI components, making it easier to manage the complexity of the user interface. In addition to React, several libraries and frameworks are used to enhance the functionality of the frontend.
+\begin{itemize}
+    \item \textbf{AntDesign:} AntDesign is a popular React UI library that provides a wide range of pre-built components and styles. It allows for the creation of a modern and responsive user interface with minimal effort.
+    \item \textbf{Blockly:} Blockly is a library for building visual programming editors. It allows users to create code by dragging and dropping blocks that represent different programming constructs. This can be particularly useful for users who are new to programming or prefer a visual approach to coding.
+    \item \textbf{Monaco Editor:} Monaco Editor is a code editor that is used in Visual Studio Code. In this case it is used to provide the code being generated by the Blockly editor in a text format that can be used for debugging and to bridge the gap between the visual programming and traditional text based programming.
+    \item \textbf{SocketIO:} SocketIO is used in the frontend to enable real-time communication with the backend Flask application. This allows for real-time updates to the user interface based on events that occur in the backend, such as receiving telemetry data from the ORBITS unit or sending commands to the unit.
+\end{itemize}
+%Need to describe how these fit together to create each of the pages within the web application.
+\subsubsection{Database}
+%Mimicking actual telemetry data from the ISS mainly from formatting and include schema for the database and phpmyadmin. 
+The database within the ground station is used to store general system operations and telemetry from the ORBITS unit, rather than storing it on board. The database contains 3 separate tables:
+\begin{itemize}
+    \item \textbf{System Events:} General operations of the device, for instance changing operating mode, charging state or error.
+    \item \textbf{Telemetry Updates:} Recurring data coming from the onboard sensors, Not as frequent as that of the ADCS. For instance, voltage and current draw or Payload readings.
+    \item \textbf{ADCS Data:} Used to store frequent readings from the Attitude Determination and Control system 
+\end{itemize}
+
+These tables follow a similar structure to that of the telemetry data from the ISS. A subset of this data is available through both the ISS Mimic~\cite{ISS-Mimic} project and \href{https://lightstreamer.com/}{Lightstreamer}, and this informed the design of the database.
+
+The system events tables are structured as such:
+\begin{itemize}
+    \item \textbf{ID:} Standard automatic incrementing integer primary key.
+    \item \textbf{Mission ID:} Unique Identifier to distinguish user variants with different code implementations within the structure.
+    \item \textbf{Event Type:} General category in which an operation has occurred like payload operation.
+    \item \textbf{Description:} Short description of the operation occurred.
+    \item \textbf{Timestamp:} Time at which the operation occurred from on board real-time clock.
+\end{itemize}
+
+Finally, the ADCS updates has its own table structured differently. This is to service high request volumes in comparison to the other tables.
+
+\begin{itemize}
+    \item \textbf{ID:} Standard auto increment primary key.
+    \item \textbf{Mission ID:} Unique Identifier to distinguish different code implementations.
+    \item \textbf{Acceleration:} 3 components each corresponding to the acceleration in each axis.
+    \item \textbf{Gyroscope:} 3 components representing the Roll, Pitch, and Yaw of the ORBITS unit at a given time.
+    \item \textbf{Magnetometer:} 3 components representing the magnetic field strength in each of the 3 axis.
+    \item \textbf{Timestamp:} The corresponding time measured by the on board real-time clock.
+\end{itemize}
+
+\subsection{ORBITS Unit Firmware}
+%Using standard libraries for the components to make development as simple as possible.
+The base software used for the ORBITS unit provides the necessary functionality to operate the components within the system and provide a platform for users to integrate their own code for their payloads. After the user has created their own code for their payload, the code is sent to the ground station for compiling using the Arduino CLI and wirelessly transmitted to the ORBITS unit through the WiFi connection. The code is then flashed onto the OBC microcontroller and can subsequently be executed on launch of the ORBITS unit. 
+
+The software within the orbits unit makes use of the Arduino framework and libraries for the components used within the system. This allows for a more user friendly experience as users can make use of the existing documentation and learning materials for these components when creating their own payloads. The software is structured in a way to allow for easy integration of user defined code for payloads while still providing the necessary functionality to operate the system.
+
+\subsection{Educational Programming}
+
 \section{Learning Material}
 Maybe an appendix with the learning materials and instructions for use of the system
-\section{Bill of Materials}
 Can probably be put in an appendix
-\section{Software Documentation}
+\section{Reflection}
+\section{Future Work}
 \printbibliography[heading=bibintoc]
 \newpage
 \appendix
