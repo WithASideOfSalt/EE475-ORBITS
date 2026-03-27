@@ -5,12 +5,17 @@
 #include <PubSubClient.h>
 #include <ArduinoJson.h>
 #include <WiFi.h>
-
+#include <ArduinoOTA.h>
+#include <Adafruit_NeoPixel.h>
 //Wifi Credentials
 
 const char* ssid = "ORBITSground";
 const char* password = "ORBITSLaunch";
 const char* hostname = "ORBITSUnit00";
+const int network_led_pin = 38;
+const int network_led_count = 1;
+
+Adafruit_NeoPixel networkLed(network_led_count, network_led_pin, NEO_GRB + NEO_KHZ800);
 
 //Internal I2C Bus for sensor communications
 TwoWire internalI2CBus = TwoWire(0);
@@ -23,11 +28,15 @@ PubSubClient mqtt(espClient);
 const char* mqtt_server = "orbitsground.local";
 const int mqtt_port = 1883;
 
+uint32_t last_ota_time = 0;
+unsigned long lastMqttReconnectAttempt = 0;
 
 Adafruit_LSM6DSOX sox;
 
 void reconnect_mqtt();
+void mqtt_callback(char* topic, byte* payload, unsigned int length);
 void send_imu_data();
+void set_network_led(bool connected);
 
 void setup(void) {
   Serial.begin(115200);
@@ -36,6 +45,10 @@ void setup(void) {
     delay(10);  // Makes sure the serial monitor has been configured and ready
 
   Serial.println("Begin Operations...");
+
+  networkLed.begin();
+  networkLed.setBrightness(40);
+  set_network_led(false);
 
   internalI2CBus.begin(2,1, 100000);
 
@@ -47,12 +60,16 @@ void setup(void) {
 
   //Configure Wifi and connect to ground station hotspot
   WiFi.mode(WIFI_STA);
+  WiFi.setHostname(hostname);
   WiFi.begin(ssid, password);
   Serial.print("Connecting to WiFi...");
   while (WiFi.status() != WL_CONNECTED) {
-    delay(100);
+    delay(250);
+    Serial.print(".");
+    set_network_led(false);
   }
-  WiFi.setHostname(hostname);
+  Serial.println();
+  set_network_led(true);
 
   //Display connection info
   Serial.print("\nESP32 IP Address: ");
@@ -63,12 +80,30 @@ void setup(void) {
   Serial.println(WiFi.RSSI());
 
   mqtt.setServer(mqtt_server, mqtt_port);
+  mqtt.setCallback(mqtt_callback);
 
   //Just Use Default Sensor Settings for now, can be changed as needed
   reconnect_mqtt();
+
+  // ArduinoOTA setup
+  ArduinoOTA.setHostname(hostname);
+  ArduinoOTA.begin();
+  Serial.println("ArduinoOTA ready");
 }
 
 void loop() {
+  ArduinoOTA.handle();
+
+  set_network_led(WiFi.status() == WL_CONNECTED);
+
+  if (WiFi.status() == WL_CONNECTED) {
+    if (!mqtt.connected() && millis() - lastMqttReconnectAttempt > 2000) {
+      lastMqttReconnectAttempt = millis();
+      reconnect_mqtt();
+    }
+    mqtt.loop();
+  }
+
   //get MPU data and send it to the ground station
   unsigned long currentMillis = millis();
   if(currentMillis - lastTime >= 200) {
@@ -78,18 +113,25 @@ void loop() {
 }
 
 void reconnect_mqtt(){
-  while(!mqtt.connected()){
+  if (!mqtt.connected()) {
     Serial.print("Connecting to MQTT...");
-    if(mqtt.connect(hostname)) {
+    if (mqtt.connect(hostname)) {
       Serial.println("connected");
-    } 
-    else {
+    } else {
       Serial.print("failed with state ");
       Serial.print(mqtt.state());
       Serial.print("\n");
-      delay(2000);
     }
   }
+}
+
+void set_network_led(bool connected) {
+  if (connected) {
+    networkLed.setPixelColor(0, networkLed.Color(0, 40, 0));
+  } else {
+    networkLed.setPixelColor(0, networkLed.Color(0, 0, 0));
+  }
+  networkLed.show();
 }
 
 void mqtt_callback(char* topic, byte* payload, unsigned int length){
@@ -131,6 +173,9 @@ void send_imu_data(){
   //send the JSON document to the MQTT broker
   if(!mqtt.connected()){
     reconnect_mqtt();
+    if (!mqtt.connected()) {
+      return;
+    }
   }
   char buffer[256];
   serializeJson(doc, buffer);
