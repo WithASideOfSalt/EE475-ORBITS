@@ -484,7 +484,7 @@ To construct a frame for the ORBITS unit, 2 side pieces and 2 top/bottom pieces 
     \label{fig:frame_assembled}
 \end{figure}
 
-%need to give some detail about the pcbs in this section.
+To mitigate the costs and complexity of manufacturing a custom PCB for the ORBITS unit, the system is designed to use standard double sided perfboard for the internal connections between components. This allows for a low cost and 
 
 \subsection{Attitude Determination and Control Subsystem (ADCS)}
 
@@ -588,7 +588,13 @@ In addition, a common tech stack used by hobbyists with the Raspberry Pi ecosyst
 
 Finally, the approach taken for the ORBITS system, a more modern approach to web development is using a Flask backend with a React and AntDesign frontend. This approach allows for a more modern and responsive user interface while still being able to run on the Raspberry Pi. Flask is a lightweight web framework that can be used to create a RESTful API~\cite{REST_API} for the ground station while React or AntDesign can be used to create a user interface that interacts with the API. This approach requires more development time and resources but can provide a better user experience for users interacting with the ORBITS system and can allow the system to be more easily expanded in the future with additional features and functionality.
 
-%at the bottom of this section add in a full diagram showing the implemented software architecture in more detail than the one above.
+Shown in Figure~\ref{fig:ground_station_architecture} is the high level architecture for the ORBITS system software.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{./Images/ORBITS_Software.png}
+    \caption{High level architecture for the ground station software}
+    \label{fig:ground_station_architecture}
+\end{figure}
 
 \subsubsection{Backend}
 %WebSockets, SocketIO, Flask, ground station to unit comms thing you used, apache reverse proxy
@@ -599,22 +605,50 @@ SocketIO is a library that enables real-time, bidirectional communication betwee
 
 Similarly to how SocketIO allows for real-time communication between the frontend and backend, Message Queuing Telemetry Transport (MQTT) is used for communications between the ground station and the ORBITS unit. MQTT is a lightweight messaging protocol that is designed for the use in low bandwidth and high latency environments. In this case it is used to connect the two devices through a wireless hotspot created by the ground station. This allows for the ground station to send commands to the ORBITS unit and receive telemetry data back from the unit in real-time, providing a seamless user experience when interacting with the ORBITS system. The use of MQTT requires another service to be running on the Raspberry Pi to handle the MQTT messages, in this case the Mosquitto MQTT broker~\cite{Mosquitto} is used to handle the MQTT messages between the ground station and the ORBITS unit.
 
-In addition to the MQTT broker, to facilitate a communication method more in line with that of a CubeSat, a driver for the NRF24L01+ RF transceiver is included within the backend. This allows for the ground station to communicate with the ORBITS unit through the NRF24L01+ in addition to the WiFi connection. This provides a more authentic experience for users as they can interact with the ORBITS unit through a method that is more similar to that of a CubeSat. 
+In addition to the MQTT broker, to facilitate a communication method more in line with that of a CubeSat, a driver for the NRF24L01+ RF transceiver is included within the backend. This allows for the ground station to communicate with the ORBITS unit through the NRF24L01+ module in addition to the WiFi connection. This provides a more authentic experience for users as they can interact with the ORBITS unit through a method that is more similar to that of a true CubeSat.
+
+By having both the MQTT broker and the NRF24L01+ driver within the backend architecture, this allows for the ground station to have multiple methods of communication with the ORBITS unit. This can provide a more robust and reliable communication system as if one method fails, the other can still be used to communicate with the ORBITS unit. Additionally, this allows for users to choose which method they want to use to communicate with the ORBITS unit, providing more flexibility in how they interact with the system.
 
 In both cases of the MQTT broker and the NRF24L01+ driver, a message protocol needs to be defined to allow for the communication between the ground station and the ORBITS unit to be structured and organised. ArduinoJson is a library that allows for the serialization and deserialization of JSON data in Arduino compatible microcontrollers. This is used to create a message protocol based on the database schema for the telemetry data and system events. This allows for the messages sent between the ground station and the ORBITS unit to be structured in a way that can be easily parsed and stored in the database, providing a seamless integration between the communication methods and the database.
 
 Another major component of the backend architecture is the use of PlatformIO, an open source embedded software development platform that can be run from the command line. This is used to compile and upload the user defined code for the payload to the OBC microcontroller on the ORBITS unit through a feature called Over The Air (OTA) updates, which allows for the code to be uploaded wirelessly through the WiFi connection between the ground station and the ORBITS unit. This allows for users to easily upload their code to the ORBITS unit without needing to physically connect to the device, providing a more seamless user experience when developing their own payloads for the ORBITS system. An alternative to this would be to use the Arduino CLI which provides similar functionality but is not as fully featured as PlatformIO and may require more manual configuration to get working with the ORBITS system including the need to set up an OTA update mechanism manually rather than having it built into the platform.
 
+%Diagram showing more detailed architecture of the backend and how each of the components fit together. ibd diagram.
+
 \subsubsection{Frontend}
 %SocketIO, AntDesign, Blockly, Monaco Editor, React 
 The frontend architecture for the ground station is built using React as the main framework for building the user interface. React provides a component-based architecture that allows for the creation of reusable UI components, making it easier to manage the complexity of the user interface. In addition to React, several libraries and frameworks are used to enhance the functionality of the frontend.
 
-AntDesign is one such React UI library that provides a wide range of pre-built components and styles. It allows for the creation of a modern responsive user interface with simple extensibility. It allows for the rapid prototyping of the user interface to allow for more iterative development to occur.
+AntDesign is one such React UI library that provides a wide range of pre-built components and styles. It allows for the creation of a modern responsive user interface with simple extensibility. It allows for the rapid prototyping of the user interface to allow for more iterative development to occur. But this is mainly to provide a better user experience for users interacting with the ORBITS system. Without an engaging and intuitive user interface, users may not be as inclined to interact with the system and potentially not reach the intended learning outcomes. 
 
-For the education programming of the ORBITS system, Blockly \cite{Blockly} is used to provide a block based development environment for users to create their own code to interact with the ORBITS unit. Blockly allows for users to create code by dragging and dropping blocks that represent different pre-defined programming elements. This can be particularly useful for users who are new to programming or prefer a visual approach to coding. However Blockly is only the visual programming environment and doesn't provide a way for users to see the code being generated by the blocks. To bridge this gap, the Monaco Editor is used to provide a code editor that displays the code being generated by the Blockly editor. This allows users to see the code being generated by the blocks in a text format that can be used for debugging and to bridge the gap between the visual programming and traditional text based programming.
+For the education programming of the ORBITS system this is also an important factor. Without an engaging and intuitive development environment users may find it difficult to actively learn about the concepts. To make the system as intuitive as possible, Blockly \cite{Blockly} is used to provide a block based development environment for users to create their own code to interact with the ORBITS unit. Blockly allows for users to create code by dragging and dropping blocks that represent different pre-defined programming elements. This can be particularly useful for users who are new to programming or prefer a visual approach to coding. However Blockly is only the visual programming environment and doesn't provide a way for users to see the code being generated by the blocks. To bridge this gap, the Monaco Editor is used to provide a code editor that displays the code being generated by the Blockly editor. This allows users to see the code being generated by the blocks in a text format that can be used for debugging and to bridge the gap between the visual programming and traditional text based programming. Shown in Figure~\ref{fig:blockly_monaco} is the Blockly visual programming environment with the Monaco code editor displaying the generated code.
 
-However, a standard Blockly implementation has one problem when it comes to the development of the ORBITS system, and that is the non-deterministic nature of the code generation. The blocks in Blockly can be arranged in any order causing the generated code to be different for the same blocks arranged in a different way. This is particularly problematic as the generated code is in C++, as function calls need to be defined before they are called. To solve this problem, a custom code generator is implemented for the Blockly editor that generates the code in a deterministic way regardless of the arrangement of the blocks. The user is given 2 standard functions, setup and loop, that are used to generate the code for the ORBITS unit, following the standard structure of an Arduino sketch. 
+As this is an educational system, it is important to provide users with the ability to perform some form of analysis on the telemetry data received from the ORBITS unit. This allows users to gain insights into the performance of their payloads and understand how different components of the system interact with each other. Two methods are used to provide this functionality, the first being through the use of ChartJs, a JavaScript library that allows for the creation of interactive charts and graphs. This is used during runtime of an ORBITS unit mission to provide real-time visualisation of the telemetry data being received from the unit. The other method is through allowing the export of the telemetry data in a CSV format that can be used for offline analysis. This allows users to perform more in depth analysis on the telemetry data using tools like Excel or Python, providing a more comprehensive learning experience when interacting with the ORBITS system.
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{./Images/Blockly-Monaco.png}
+    \caption{Blockly visual programming environment with Monaco code editor}
+    \label{fig:blockly_monaco}
+\end{figure}
+
+However, a standard Blockly implementation has one problem when it comes to the development of the ORBITS system, and that is the non-deterministic nature of the code generation. The blocks in Blockly can be arranged in any order causing the generated code to be different for the same blocks arranged in a different way.
+
+%Add figure showing the same blocks arranged in different ways generating different code.
+
+This is particularly problematic as the generated code is in C++, as function calls need to be defined before they are called. To solve this problem, a custom code generator is implemented for the Blockly editor that generates the code in a deterministic way regardless of the arrangement of the blocks. 
+
+The user is given 2 standard functions, setup and loop, that are used to generate the code for the ORBITS unit, following the standard structure of an Arduino sketch shown in Figure~\ref{fig:arduino_sketch}.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{./Images/Arduino-Sketch.png}
+    \caption{Standard structure of an Arduino sketch}
+    \label{fig:arduino_sketch}
+\end{figure} 
+
+In addition the user is able to define their own functions using Blockly and the custom code generator ensures that these functions are defined before they are called in the generated code. This allows for users to create more complex code for their payloads while still being able to use the visual programming environment provided by Blockly, helping expand the depth of educational material that can be covered through the ORBITS system.
+
+% can maybe add this in if I need to or can go in future work. An alternative approach to the educational programming would be to use Microsoft's MakeCode
 %Need to describe how these fit together to create each of the pages within the web application.
 \subsubsection{Database}
 %Mimicking actual telemetry data from the ISS mainly from formatting and include schema for the database and phpmyadmin. 
@@ -625,15 +659,25 @@ The database within the ground station is used to store general system operation
     \item \textbf{ADCS Data:} Used to store frequent readings from the Attitude Determination and Control system 
 \end{itemize}
 
-These tables follow a similar structure to that of the telemetry data from the ISS. A subset of this data is available through both the ISS Mimic~\cite{ISS-Mimic} project and \href{https://lightstreamer.com/}{Lightstreamer}, and this informed the design of the database.
+These tables follow a similar structure to that of the telemetry data from the ISS. A subset of this data is available through both the ISS Mimic~\cite{ISS-Mimic} project and \href{https://lightstreamer.com/}{Lightstreamer}, and this informed the design of the database schema for the ORBITS system to provide a better analogue to the data that would be received from a real CubeSat. 
 
-The system events tables are structured as such:
+The system events tables is structured as such:
 \begin{itemize}
     \item \textbf{ID:} Standard automatic incrementing integer primary key.
     \item \textbf{Mission ID:} Unique Identifier to distinguish user variants with different code implementations within the structure.
     \item \textbf{Event Type:} General category in which an operation has occurred like payload operation.
     \item \textbf{Description:} Short description of the operation occurred.
     \item \textbf{Timestamp:} Time at which the operation occurred from on board real-time clock.
+\end{itemize}
+
+The telemetry updates table is structured as such:
+\begin{itemize}
+    \item \textbf{ID:} Standard auto increment primary key.
+    \item \textbf{Mission ID:} Unique Identifier to distinguish different code implementations.
+    \item \textbf{Voltage:} The voltage of the system at a given time.
+    \item \textbf{Current:} The current draw of the system at a given time.
+    \item \textbf{Power:} The power consumption of the system at a given time.
+    \item \textbf{Timestamp:} The corresponding time measured by the on board real-time clock.
 \end{itemize}
 
 Finally, the ADCS updates has its own table structured differently. This is to service high request volumes in comparison to the other tables.
@@ -651,13 +695,47 @@ Finally, the ADCS updates has its own table structured differently. This is to s
 %Using standard libraries for the components to make development as simple as possible.
 The base software used for the ORBITS unit provides the necessary functionality to operate the components within the system and provide a platform for users to integrate their own code for their payloads. After the user has created their own code for their payload, the code is sent to the ground station for compiling using the PlatformIO and wirelessly transmitted to the ORBITS unit through the WiFi connection. The code is then flashed onto the OBC microcontroller and can subsequently be executed on launch of the ORBITS unit. 
 
-The software within the orbits unit makes use of the Arduino framework and libraries for the components used within the system. This allows for a more user friendly experience as users can make use of the existing documentation and learning materials for these components when creating their own payloads. The software is structured in a way to allow for easy integration of user defined code for payloads while still providing the necessary functionality to operate the system.
+The ESP-32 microcontroller uses the FreeROTS real-time operating system (RTOS) to manage the different tasks and processes running on the device. This allows for the efficient use of resources and provides a more responsive experience when interacting with the ORBITS unit. The RTOS allows for the scheduling of tasks and provides mechanisms for inter-task communication, allowing for the different components within the system to work together seamlessly.
 
-\section{Learning Material}
-Maybe an appendix with the learning materials and instructions for use of the system
-Can probably be put in an appendix
-\section{Reflection}
+The software within the ORBITS unit makes use of the Arduino framework and libraries for the components used within the system. This allows for a more user friendly experience as users can make use of the existing documentation and learning materials for these components when creating their own payloads. The software is structured in a way to allow for easy integration of user defined code for payloads while still providing the necessary functionality to operate the system.
+
+Each of the components within the system, if available, have an open source library available for the Arduino framework which allows for a more straightforward development process. For instance, the ICM-20948 IMU has a library provided by Adafruit that allows for easy access to the sensor data and configuration of the sensor. This allows for users to easily integrate the sensor data into their payloads without needing to worry about the low level details of how to communicate with the sensor. Shown in Table~\ref{tab:libraries} is a summary of the libraries used for each of the components within the ORBITS unit.
+
+\begin{table}[h]
+\centering
+\caption{Summary of libraries used for ORBITS unit firmware}
+\label{tab:libraries}
+\begin{tabular}{|p{3cm}|p{5cm}|p{8cm}|}
+\hline
+\textbf{Component} & \textbf{Library} & \textbf{Description} \\ \hline
+ICM-20948 IMU & Adafruit ICM-20948 Library~\cite{Adafruit-ICM20X} & Provides functions for reading acceleration, angular velocity and magnetic field data from the ICM-20948 sensor. \\ \hline
+INA260 Power Monitor & Adafruit INA260 Library~\cite{Adafruit-INA260} & Provides functions for reading current, voltage and power measurements from the INA260 sensor. \\ \hline
+NRF24L01+ RF Transceiver & nRF24 RF24 Library~\cite{nrf24-RF24} & Provides functions for communicating with the NRF24L01+ module, allowing for wireless communication between the ORBITS unit and the ground station without the use of WiFi. \\ \hline
+PCF8523 Real-Time Clock & Adafruit PCF8523 Library~\cite{Adafruit-PCF8523} & Provides functions for reading and setting the time on the PCF8523 real-time clock, allowing for accurate timestamping of telemetry data and system events. \\ \hline
+BQ25185 Power Management IC & No Official Library & The BQ25185 does not have an official library available, but several pins on the board are available for reading the charging state and any faults that may occur during charging. These pins can be read using standard GPIO functions within the Arduino framework to provide information about the charging state of the ORBITS unit. \\ \hline
+\end{tabular}
+\end{table}
+
 \section{Future Work}
+
+Due to the scope of the project, there are several areas that could be expanded upon in the future to further enhance the ORBITS system as in some areas the design and implementation of the system is focused on providing a minimum viable product to meet the requirements of the project. Some areas that could be expanded upon in the future include:
+\begin{itemize}
+    \item \textbf{Attitude Control:} The current design of the ORBITS unit focuses on the attitude determination aspect of the ADCS subsystem. In the future, this could be expanded to include attitude control through the use of reaction wheels or magnetorquers to provide a more complete ADCS system.
+    \item \textbf{Ground Station Software:} The current design of the ground station software provides a basic user interface for interacting with the ORBITS unit. In the future, this could be expanded to include additional features such as data visualization tools, more advanced telemetry analysis and support for multiple users interacting with the system simultaneously.
+    \item \textbf{Solar Panels:} The current design of the ORBITS unit includes support for solar charging through the power management module, but does not include actual solar panels. In the future, solar panels could be added to the design to allow for more authentic charging of the ORBITS unit and to provide a more complete experience for users.
+    \item \textbf{Improved Dashboard:} The current design of the dashboard provides a basic interface for users to interact with the ORBITS unit and view telemetry data. In the future, the dashboard could also be used as a control interface for users to send commands defined by the user to the ORBITS unit to control the system and interact with their payloads in real-time, providing a more engaging and interactive experience for users.
+    \item \textbf{ORBITS Unit Firmware Optimisation:} The current design of the ORBITS unit firmware provides the necessary functionality to operate the system but heavily relies on the use of libraries for the components within the system with possible repeat functionality across the different libraries for instance, the ICM-20948 library and the INA260 library both have some method of reading data from each individual sensor on the I2C bus, while a more general approach can allow each sensor to be addressed and read in a more efficient way, reducing the overhead of the firmware and allowing for more resources to be available for user defined code for payloads.
+    \item \textbf{Complete NRF24L01+ OTA:} The current design of the ORBITS unit allows for OTA updates through the WiFi connection but does not currently support OTA updates through the NRF24L01+ module. In the future, this could be implemented to allow for users to upload their code to the ORBITS unit through a more authentic communication method, providing a more complete experience for users.
+\end{itemize}
+
+What can also be taken from this project is the potential for future iterations of the ORBITS system. The design and implementation of the current ORBITS system provide a solid foundation that can be built further upon to widen the scope of teaching available through the system. For instance, the current design of the ORBITS unit is focused on providing a platform for users to learn about programming within the context of a CubeSat, but future iterations of the system could expand to cover other aspects of CubeSat design and operation such as thermal management or satellite communication systems. This would allow for a more comprehensive learning experience for users and provide a more complete understanding of the different subsystems that make up a CubeSat.
+
+The implementation of the ORBITS system also provides a platform for other emulatory devices to be developed in the future. For instance, keeping within the space theme, a similar system could be developed to emulate the operations of a Mars rover or a lunar lander, as many of the systems constructed for the ORBITS unit could be repurposed for these types of systems. This would allow for a wider range of educational material to be covered with the same underlying principles of providing a platform for users to learn about programming and system design within the context of space exploration.
+
+\section{Reflection}
+
+As it currently stands, the ORBITS system provides a solid foundation for users to learn about programming within the context of a CubeSat. The design and implementation of the system meet the requirements set out at the beginning of the project and provide a platform for users to create their own payloads and interact with the ORBITS system in a meaningful way. 
+
 \printbibliography[heading=bibintoc]
 \newpage
 \appendix
