@@ -33,7 +33,7 @@ export default function BlocklyEditor({ onCodeChange }: BlocklyEditorProps) {
         workspaceRef.current = Blockly.inject(blocklyDiv.current, {
             toolbox,
             theme: OrbitsTheme,
-            renderer: "zelos",          // rounded PXT-like shapes
+            renderer: "zelos",
             grid: {
                 spacing: 20,
                 length: 3,
@@ -71,21 +71,31 @@ export default function BlocklyEditor({ onCodeChange }: BlocklyEditorProps) {
             }
         }
 
-        // If no saved workspace, create default setup and loop blocks
+        // If no saved workspace, create default top-level section blocks
         if (!workspaceLoaded) {
+            const includesBlock = workspaceRef.current.newBlock("esp32_includes");
+            includesBlock.initSvg();
+            includesBlock.render();
+            includesBlock.moveBy(20, 20);
+
+            const globalsBlock = workspaceRef.current.newBlock("esp32_globals");
+            globalsBlock.initSvg();
+            globalsBlock.render();
+            globalsBlock.moveBy(20, 140);
+
             const setupBlock = workspaceRef.current.newBlock("esp32_setup");
             setupBlock.initSvg();
             setupBlock.render();
-            setupBlock.moveBy(20, 20);
+            setupBlock.moveBy(20, 260);
 
             const loopBlock = workspaceRef.current.newBlock("esp32_loop");
             loopBlock.initSvg();
             loopBlock.render();
-            loopBlock.moveBy(20, 200);
+            loopBlock.moveBy(20, 440);
         }
 
 
-        const SINGLETON_BLOCKS = ["esp32_setup", "esp32_loop"];
+        const SINGLETON_BLOCKS = ["esp32_includes", "esp32_globals", "esp32_setup", "esp32_loop"];
 
         workspaceRef.current.addChangeListener((event) => {
             // Only care about blocks being added

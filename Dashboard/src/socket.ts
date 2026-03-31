@@ -2,7 +2,7 @@ import { io } from 'socket.io-client';
 
 const URL = import.meta.env.DEV 
     ? 'http://orbitsground.local:8000' 
-    : 'http://orbitsground.local/';
+    : 'http://orbitsground.local:8000/';
 
 console.log('Socket.IO URL:', URL);
 console.log('Environment:', import.meta.env.MODE);
@@ -14,7 +14,7 @@ export const socket = io(URL, {
     reconnectionDelay: 1000,
     reconnectionDelayMax: 5000,
     reconnectionAttempts: 5,
-    autoConnect: true
+    autoConnect: true,
 });
 
 socket.on('connect', () => console.log('✅ Socket connected'));

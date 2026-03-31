@@ -41,7 +41,7 @@ const items: MenuItem[] = [
   getItem('Help', '3', <QuestionCircleOutlined />),
 ];
 
-const renderContent = (activeMenu: string, code: string, setCode: React.Dispatch<React.SetStateAction<string>>) => {
+const renderContent = (activeMenu: string) => {
   switch (activeMenu) {
     case '1':
       return <Dashboard />;
@@ -57,7 +57,6 @@ const renderContent = (activeMenu: string, code: string, setCode: React.Dispatch
 const App = () => {
   const [collapsed, setCollapsed] = useState(true);
   const [activeMenu, setActiveMenu] = useState('1');
-  const [code, setCode] = useState<string>('#include <Arduino.h>\n\nvoid setup() {\n  \n}\n\nvoid loop() {\n  \n}\n');
 
   const handleMenuClick: MenuProps['onClick'] = (e) => {
     setActiveMenu(e.key as string);
@@ -80,7 +79,7 @@ const App = () => {
               <Typography.Title level={1} id='title'>O<span className="titleDots">.</span>R<span className="titleDots">.</span>B<span className="titleDots">.</span>I<span className="titleDots">.</span>T<span className="titleDots">.</span>S<span className="titleDots">.</span></Typography.Title>
             </Header>
             <Content style={{ flex: 1}}>
-              {renderContent(activeMenu, code, setCode)}
+              {renderContent(activeMenu)}
             </Content>
             <Footer style={{textAlign: 'center', height : '40px', padding: '10px 50px', background: '#252526', color: '#fff'}}>
               ORBITS @{new Date().getFullYear()} CREATED BY SCOTT MCBRIDE

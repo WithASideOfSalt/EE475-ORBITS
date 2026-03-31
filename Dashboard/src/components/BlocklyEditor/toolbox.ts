@@ -7,13 +7,13 @@ export const toolbox = {
             name: "ESP32",
             styleName: "esp32_category",
             contents: [
-                //{ kind: "block", type: "esp32_setup" },
-                //{ kind: "block", type: "esp32_loop" },
+                { kind: "block", type: "esp32_include" },
                 { kind: "block", type: "esp32_pinmode" },
                 { kind: "block", type: "esp32_digitalwrite" },
                 { kind: "block", type: "esp32_digitalread" },
                 { kind: "block", type: "esp32_analogread" },
                 { kind: "block", type: "esp32_delay" },
+                { kind: "block", type: "esp32_comment" },
             ]
         },
         {
@@ -68,6 +68,7 @@ export const toolbox = {
             name: "Variables",
             styleName: "math_category",
             contents: [
+                { kind: "block", type: "esp32_global_var_declare" },
                 { kind: "block", type: "esp32_var_declare" },
                 { kind: "block", type: "esp32_var_set" },
                 { kind: "block", type: "esp32_var_change" },

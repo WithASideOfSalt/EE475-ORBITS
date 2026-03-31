@@ -35,6 +35,8 @@ function buildFunctionPrototype(block) {
 export function generateSketch(workspace) {
     const functionBlocks = workspace.getBlocksByType("function_definition", false);
 
+    const includesBlocks = workspace.getBlocksByType("esp32_includes", false);
+    const globalsBlocks = workspace.getBlocksByType("esp32_globals", false);
     const seenPrototypes = new Set();
     const functionPrototypes = functionBlocks
         .map((block) => buildFunctionPrototype(block))
@@ -47,6 +49,14 @@ export function generateSketch(workspace) {
         })
         .join("\n");
 
+        const includesCode = includesBlocks.length > 0
+            ? CppGenerator.blockToCode(includesBlocks[0]).trim()
+            : "";
+
+        const globalsCode = globalsBlocks.length > 0
+            ? CppGenerator.blockToCode(globalsBlocks[0]).trim()
+            : "";
+
     const functionCode = functionBlocks
         .map((block) => CppGenerator.blockToCode(block))
         .join("\n");
@@ -57,16 +67,25 @@ export function generateSketch(workspace) {
 
     const setupCode = setupBlocks.length > 0
         ? CppGenerator.blockToCode(setupBlocks[0])
-        : "void setup() {\n}\n";
+        : "void setup() {\nORBITS_Setup();\n}\n";
 
     const loopCode = loopBlocks.length > 0
         ? CppGenerator.blockToCode(loopBlocks[0])
-        : "void loop() {\n}\n";
+        : "void loop() {\nORBITS_Loop();\n}\n";
 
-    const prototypeSection = functionPrototypes.length > 0
+        const includeSection = includesCode.length > 0
+            ? `${includesCode}\n\n`
+            : "";
+
+        const globalsSection = globalsCode.length > 0
+            ? `${globalsCode}\n\n`
+            : "";
+
+        const prototypeSection = functionPrototypes.length > 0
         ? `${functionPrototypes}\n\n`
         : "";
 
     // Generate prototypes first so function calls are always declared before use.
-    return `${prototypeSection}${setupCode}\n${loopCode}\n${functionCode}`;
+        // Keep includes/globals in dedicated top-level sections before executable code.
+        return `${includeSection}${globalsSection}${prototypeSection}${setupCode}\n${loopCode}\n${functionCode}`;
 }

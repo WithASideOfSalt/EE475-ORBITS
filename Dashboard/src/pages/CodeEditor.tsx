@@ -1,5 +1,5 @@
 // src/pages/EditorPage.jsx
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback} from "react";
 import BlocklyEditor from "../components/BlocklyEditor";
 import MonacoPanel from "../components/MonacoEditor";
 

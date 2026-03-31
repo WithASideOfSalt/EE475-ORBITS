@@ -6,6 +6,28 @@ Blockly.fieldRegistry.register("field_multilineinput", FieldMultilineInput);
 
 export function defineEsp32Blocks() {
 
+    Blockly.Blocks["esp32_includes"] = {
+        init: function () {
+            this.appendDummyInput()
+                .appendField("Includes");
+            this.appendStatementInput("BODY")
+                .setCheck("INCLUDE");
+            this.setColour(230);
+            this.setTooltip("Top-level include directives");
+        }
+    };
+
+    Blockly.Blocks["esp32_globals"] = {
+        init: function () {
+            this.appendDummyInput()
+                .appendField("Global Variables");
+            this.appendStatementInput("BODY")
+                .setCheck("GLOBAL");
+            this.setColour(330);
+            this.setTooltip("Top-level global variable declarations");
+        }
+    };
+
     // Setup block (maps to setup())
     Blockly.Blocks["esp32_setup"] = {
         init: function () {
@@ -94,6 +116,55 @@ export function defineEsp32Blocks() {
             this.setTooltip("Read analog value (0-4095) from a pin");
         }
     };
+
+    // Include
+    Blockly.Blocks["esp32_include"] = {
+        init: function () {
+            this.appendDummyInput()
+                .appendField("Include")
+                .appendField(new Blockly.FieldTextInput("<Arduino.h>"), "HEADER");
+            this.setPreviousStatement(true, "INCLUDE");
+            this.setNextStatement(true, "INCLUDE");
+            this.setColour(230);
+            this.setTooltip("Include a header file");
+        }
+    };
+
+    Blockly.Blocks["esp32_global_var_declare"] = {
+        init: function () {
+            this.appendDummyInput()
+                .appendField("Global")
+                .appendField(new Blockly.FieldDropdown([
+                    ["int", "int"],
+                    ["float", "float"],
+                    ["bool", "bool"],
+                    ["String", "String"],
+                    ["const char*", "const char*"],
+                ]), "TYPE")
+                .appendField(new Blockly.FieldTextInput("myGlobal"), "NAME")
+                .appendField("=");
+            this.appendValueInput("VALUE")
+                .setCheck(null);
+            this.setPreviousStatement(true, "GLOBAL");
+            this.setNextStatement(true, "GLOBAL");
+            this.setColour(330);
+            this.setTooltip("Declare a global variable");
+        }
+    };
+
+    // Comment
+    Blockly.Blocks["esp32_comment"] = {
+        init: function () {
+            this.appendDummyInput()
+                .appendField("Comment")
+                .appendField(new Blockly.FieldTextInput("Enter comment..."), "TEXT");
+            this.setPreviousStatement(true, null);
+            this.setNextStatement(true, null);
+            this.setColour(230);
+            this.setTooltip("Add a comment");
+        }
+    };
+
 
     // Delay
     Blockly.Blocks["esp32_delay"] = {

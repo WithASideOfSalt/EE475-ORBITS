@@ -6,7 +6,7 @@ import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement
 import { socket } from '../socket.ts'
 import { RotatingCube } from '../components/RotatingCube'
 import '../Styleing/Dashboard.css'
-import { Statistic, Badge, Progress, Divider } from 'antd/es';
+import { Statistic, Badge, Divider } from 'antd/es';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Filler, Title, Tooltip, Legend);
 
@@ -17,6 +17,9 @@ interface IMUDataPoint {
   gyro_x: number;
   gyro_y: number;
   gyro_z: number;
+  mag_x: number;
+  mag_y: number;
+  mag_z: number;
   timestamp: number;
 }
 
@@ -62,13 +65,13 @@ export default function Dashboard() {
     socket.on('connect', onConnect)
     socket.on('disconnect', onDisconnect)
     socket.on('time_update', timeUpdate)
-    socket.on('imu_data', handleImuData)
+    socket.on('adcs_update', handleImuData)
 
     return () => {
       socket.off('connect', onConnect)
       socket.off('disconnect',onDisconnect)
       socket.off('time_update', timeUpdate)
-      socket.off('imu_data', handleImuData)
+      socket.off('adcs_update', handleImuData)
     }
   },[]);
 
@@ -145,6 +148,25 @@ export default function Dashboard() {
                   </Col>
   </>
   ),
+  Magnetometer: (<>
+  <Col xs={24} sm={12} md={8}>
+                    <Card title="Magnetometer X" size="small">
+                      <Line data={createChartData('mag_x', 'Mag X', 'rgb(255, 99, 132)')} options={chartOptions} />
+                    </Card>
+                  </Col>
+                  <Col xs={24} sm={12} md={8}>
+                    <Card title="Magnetometer Y" size="small">
+                      <Line data={createChartData('mag_y', 'Mag Y', 'rgb(54, 162, 235)')} options={chartOptions} />
+                    </Card>
+                  </Col>
+                  <Col xs={24} sm={12} md={8}>
+                    <Card title="Magnetometer Z" size="small">
+                      <Line data={createChartData('mag_z', 'Mag Z', 'rgb(75, 192, 75)')} options={chartOptions} />
+                    </Card>
+                  </Col>
+  </>
+  ),
+
   };
 
   const tabList = [
@@ -155,6 +177,10 @@ export default function Dashboard() {
     {
       key: 'Gyroscope',
       tab: 'Gyroscope',
+    },
+    {
+      key: 'Magnetometer',
+      tab: 'Magnetometer',
     }
   ];
 
@@ -179,7 +205,7 @@ export default function Dashboard() {
 
     return {
       uptimeSeconds,
-      lastStateChange: 'TRACKING → SAFE (2026-03-03 14:22:10)',
+      lastStateChange: 'UPDATE_ME', // Placeholder - would need backend support to track state changes
       groundStationActive,
       orbitsUnitActive,
     };

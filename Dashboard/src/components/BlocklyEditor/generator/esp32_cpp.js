@@ -11,14 +11,24 @@ function toIdentifier(name) {
 
 export function registerEsp32Generators() {
 
+    CppGenerator.forBlock["esp32_includes"] = function (block, generator) {
+        const body = generator.statementToCode(block, "BODY");
+        return body.replace(/^  /gm, "");
+    };
+
+    CppGenerator.forBlock["esp32_globals"] = function (block, generator) {
+        const body = generator.statementToCode(block, "BODY");
+        return body.replace(/^  /gm, "");
+    };
+
     CppGenerator.forBlock["esp32_setup"] = function (block, generator) {
         const body = generator.statementToCode(block, "BODY");
-        return `void setup() {\n${body}}\n`;
+        return `void setup() {\n\tORBITS_Setup();\n${body}}\n`;
     };
 
     CppGenerator.forBlock["esp32_loop"] = function (block, generator) {
         const body = generator.statementToCode(block, "BODY");
-        return `void loop() {\n${body}}\n`;
+        return `void loop() {\n\tORBITS_Loop();\n${body}}\n`;
     };
 
     CppGenerator.forBlock["esp32_pinmode"] = function (block, generator) {
@@ -74,6 +84,20 @@ export function registerEsp32Generators() {
         return `  ${type} ${name} = ${value};\n`;
     };
 
+    CppGenerator.forBlock["esp32_global_var_declare"] = function (block, generator) {
+        const type = block.getFieldValue("TYPE") || "int";
+        const name = toIdentifier(block.getFieldValue("NAME"));
+        const defaults = {
+            int: "0",
+            float: "0.0",
+            bool: "false",
+            String: '""',
+            "const char*": '""',
+        };
+        const value = generator.valueToCode(block, "VALUE", CppGenerator.ORDER_ATOMIC) || defaults[type] || "0";
+        return `${type} ${name} = ${value};\n`;
+    };
+
     CppGenerator.forBlock["esp32_var_set"] = function (block, generator) {
         const name = toIdentifier(block.getFieldValue("NAME"));
         const value = generator.valueToCode(block, "VALUE", CppGenerator.ORDER_ATOMIC) || "0";
@@ -104,16 +128,19 @@ export function registerEsp32Generators() {
     };
 
     //These can be implemented in future, What I need as an MVP is a block for the user to completely add their own lines of code
-/*     CppGenerator.forBlock["esp32_comment"] = function (block, generator) {
+    CppGenerator.forBlock["esp32_comment"] = function (block, generator) {
         const comment = block.getFieldValue("COMMENT");
         return `  // ${comment}\n`;
     };
 
-    CppGenerator.forBlock["esp32_include"] = function (block, generator) {
-        const header = block.getFieldValue("HEADER");
-        return `#include <${header}>\n`;
+    CppGenerator.forBlock["esp32_include"] = function (block) {
+        const rawHeader = (block.getFieldValue("HEADER") || "Arduino.h").trim();
+        const header = rawHeader.startsWith("<") || rawHeader.startsWith('"')
+            ? rawHeader
+            : `<${rawHeader}>`;
+        return `#include ${header}\n`;
     };
-
+    /*
     CppGenerator.forBlock["esp32_function_define"] = function (block, generator) {
         const name = toIdentifier(block.getFieldValue("NAME"));
         const params = block.getFieldValue("PARAMS").split(",").map(p => toIdentifier(p.trim())).filter(p => p);
@@ -213,5 +240,5 @@ export function registerEsp32Generators() {
 
 // Helper to wrap generated code in a full ESP32 Arduino sketch
 export function wrapInSketch(code) {
-    return `#include <Arduino.h>\n\n${code}`;
+    return `#include "ORBITS.h"\n\n${code}`;
 }
