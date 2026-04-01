@@ -17,4 +17,5 @@ void mqtt_callback(char* topic, byte* payload, unsigned int length);
 void send_imu_data();
 void ORBITS_Setup(void);
 void ORBITS_Loop(void);
+void send_telemetry_data();
 #endif // ORBITS_H

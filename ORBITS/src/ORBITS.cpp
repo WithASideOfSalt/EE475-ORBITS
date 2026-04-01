@@ -16,6 +16,7 @@
 //Internal I2C Bus for sensor communications
 TwoWire internalI2CBus = TwoWire(0);
 unsigned long lastTime = 0;
+unsigned long lastTelemetrySend = 0;
 
 //Wifi and MQTT credentials
 WiFiClient espClient;
@@ -31,7 +32,7 @@ uint32_t last_ota_time = 0;
 unsigned long lastMqttReconnectAttempt = 0;
 
 // LED Pin
-Adafruit_NeoPixel strip(1, 38, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel ORBITS_strip(1, 38, NEO_GRB + NEO_KHZ800);
 
 
 void ORBITS_Setup(void) {
@@ -72,9 +73,9 @@ void ORBITS_Setup(void) {
     //WiFi.begin(ssid, password);
   }
   Serial.println();
-  strip.begin();
-  strip.setPixelColor(0, strip.Color(0, 1, 0));
-  strip.show();
+  ORBITS_strip.begin();
+  ORBITS_strip.setPixelColor(0, ORBITS_strip.Color(0, 1, 0));
+  ORBITS_strip.show();
 
   //Display connection info
   Serial.print("\nESP32 IP Address: ");
@@ -115,6 +116,15 @@ void ORBITS_Loop() {
     lastTime = currentMillis;
     send_imu_data();
   }
+
+  unsigned long currentTelemetryMillis = millis();
+  if(currentTelemetryMillis - lastTelemetrySend >= 1000) {
+    lastTelemetrySend = currentTelemetryMillis;
+    //send other telemetry data such as voltage, current, temperature, etc.
+    send_telemetry_data();
+
+  }
+
 }
 
 void reconnect_mqtt(){
@@ -147,6 +157,45 @@ void mqtt_callback(char* topic, byte* payload, unsigned int length){
   }
 }
 
+void send_telemetry_data(){
+  // Get telemetry data from ICM + INA260 and send it to the ground station.
+  JsonDocument doc;
+
+  sensors_event_t accel;
+  sensors_event_t gyro;
+  sensors_event_t mag;
+  sensors_event_t temp;
+  icm.getEvent(&accel, &gyro, &temp, &mag);
+
+  doc["mission_id"] = hostname;
+  doc["bus_voltage_v"] = ina260.readBusVoltage() / 1000.0;
+  doc["current_ma"] = ina260.readCurrent();
+  doc["power_mw"] = ina260.readPower();
+
+  // Print the JSON document to serial for debugging.
+  serializeJson(doc, Serial);
+  Serial.println();
+
+  // Send the JSON document to the MQTT broker.
+  if(!mqtt.connected()){
+    reconnect_mqtt();
+    if (!mqtt.connected()) {
+      return;
+    }
+  }
+
+  char buffer[256];
+  size_t len = serializeJson(doc, buffer, sizeof(buffer));
+  if (len == 0) {
+    Serial.println("Failed to serialize telemetry payload");
+    return;
+  }
+
+  if (!mqtt.publish("orbits/telemetry", buffer)) {
+    Serial.println("Failed to publish telemetry");
+  }
+}
+
 void send_imu_data(){
   JsonDocument doc;
 
@@ -154,7 +203,7 @@ void send_imu_data(){
   sensors_event_t gyro;
   sensors_event_t mag;
   sensors_event_t temp;
-  icm.getEvent(&accel, &gyro, &mag, &temp);
+  icm.getEvent(&accel, &gyro, &temp, &mag);
 
   doc["mission_id"] = hostname;
   doc["accel_x"] = accel.acceleration.x;
