@@ -88,9 +88,21 @@
     \hline
     \textbf{Acronym}&\textbf{Meaning}\\
     ADCS & Attitude Determination and Control Subsystem \\
+    API & Application Programming Interface \\
     BDD & Block Definition Diagram \\
+    BLE & Bluetooth Low Energy \\
+    COTS & Commercial Off The Shelf \\
+    GPIO & General Purpose Input/Output \\
+    I2C & Inter-Integrated Circuit \\
+    IMU & Inertial Measurement Unit \\
     OBC & On-Board Computer \\
+    PCB & Printed Circuit Board \\
     PMAD & Power Management and Distribution Subsystem \\
+    RF & Radio Frequency \\
+    SPI & Serial Peripheral Interface \\
+    SysML & Systems Modelling Language \\
+    UART & Universal Asynchronous Receiver-Transmitter \\
+    UML & Unified Modeling Language \\
     \hline
     \end{tabular}
 \end{table}
@@ -810,7 +822,7 @@ Power &  0 & \(mW\) \\ \hline
 \label{tab:ina260_test}
 \end{table}
 
-For the communications subsystem, the NRF24L01+ module was able to be integrated into the OBC layer of the prototype and be verified as integrated into the system over SPI but was not able to be successfully tested for communicating with the ground station. To ensure that communication was established between the ground station and the ORBITS unit, the WiFi connection was used to send MQTT messages from the ORBITS unit to the ground station and messages were successfully received and stored in the database on the ground station. This limitation with the NRF24L01+ module resulted in the lack of a more authentic communication method for the ORBITS unit, but the successful implementation of the WiFi communication method allowed for the necessary communication between the ground station and the ORBITS unit to be established, allowing for the development of the rest of the system to continue without being blocked by this issue.
+For the communications subsystem, the NRF24L01+ module was able to be integrated into the OBC layer of the prototype and be verified as integrated into the system over SPI but was not able to be successfully tested for communicating with the ground station. This was due to time constraints in developing the relevant service for the Raspberry Pi to support the NRF24L01+ module. As a result, to ensure that communication was established between the ground station and the ORBITS unit, the WiFi connection was used to send MQTT messages from the ORBITS unit to the ground station and messages were successfully received and stored in the database on the ground station. This limitation with the NRF24L01+ module resulted in the lack of a more authentic communication method for the ORBITS unit, but the successful implementation of the WiFi communication method allowed for the necessary communication between the ground station and the ORBITS unit to be established, allowing for the development of the rest of the system to continue without being blocked by this issue. However, without the NRF24L01+ module being successfully tested, the communication methods for the ORBITS system are limited to that of WiFi, which is not as authentic as the intended RF communication method.
 
 The Raspberry Pi Zero 2W implemented as the ground station was able to successfully run the backend and frontend software for the ground station, allowing for the necessary user interface to be established for users to interact with the ORBITS system. However, the current implementation of the ground station software does not have the necessary functionality to communicate with the ORBITS unit through the NRF24L01+ module, which limits the communication methods available for users to interact with the ORBITS unit as addressed previously.
 
@@ -853,8 +865,9 @@ As it currently stands, the ORBITS system only meets some of the project objecti
 
 Due to the scope of the project, there are several areas that could be expanded upon in the future to further enhance the ORBITS system as in some areas the design and implementation of the system is focused on providing a minimum viable product to meet the requirements of the project. Some areas that could be expanded upon in the future include:
 \begin{itemize}
+    \item \textbf{Finalise Initial Requirements:} The initial objectives for the ORBITS system were defined at the beginning of the project, but some of these requirements were not fully met in the current design and implementation of the system. For instance, the pilot learning materials have been ommitted from the current design of the system, but this can be developed in the future with revisions of the ORBITS system to provide a more comprehensive learning experience for users interacting with the system.
     \item \textbf{Attitude Control:} The current design of the ORBITS unit focuses on the attitude determination aspect of the ADCS subsystem. In the future, this could be expanded to include attitude control through the use of reaction wheels or magnetorquers to provide a more complete ADCS system.
-    \item \textbf{Ground Station Software:} The current design of the ground station software provides a basic user interface for interacting with the ORBITS unit. In the future, this could be expanded to include additional features such as data visualization tools, more advanced telemetry analysis and support for multiple users interacting with the system simultaneously.
+    \item \textbf{Ground Station Software:} The current design of the ground station software provides a basic user interface for interacting with the ORBITS unit. In the future, this could be expanded to include additional features such as data visualization tools, more advanced telemetry analysis and support for multiple users interacting with the system simultaneously. Additionally the compilation process through the frontend of the ground station software could be optimised to provide a better user experience when developing their own payloads for the ORBITS system.
     \item \textbf{Solar Panels:} The current design of the ORBITS unit includes support for solar charging through the power management module, but does not include actual solar panels. In the future, solar panels could be added to the design to allow for more authentic charging of the ORBITS unit and to provide a more complete experience for users.
     \item \textbf{Improved Dashboard:} The current design of the dashboard provides a basic interface for users to interact with the ORBITS unit and view telemetry data. In the future, the dashboard could also be used as a control interface for users to send commands defined by the user to the ORBITS unit to control the system and interact with their payloads in real-time, providing a more engaging and interactive experience for users.
     \item \textbf{ORBITS Unit Firmware Optimisation:} The current design of the ORBITS unit firmware provides the necessary functionality to operate the system but heavily relies on the use of libraries for the components within the system with possible repeat functionality across the different libraries for instance, the ICM-20948 library and the INA260 library both have some method of reading data from each individual sensor on the I2C bus, while a more general approach can allow each sensor to be addressed and read in a more efficient way, reducing the overhead of the firmware and allowing for more resources to be available for user defined code for payloads.
