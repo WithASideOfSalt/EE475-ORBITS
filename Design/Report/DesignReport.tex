@@ -111,7 +111,7 @@ ORBITS provides both the software and hardware learning solutions to best prepar
 
 The system provides a seamless user experience from any standard laptop or desktop environment through a ground station that links to the ORBITS unit mimicking a real-world remote satellite communication network. This provides both a software development environment and a source for the learning materials for the system.
 
-This report looks to cover a review of related work, requirement definition, hardware design, software design and prototype evaluation.
+This report covers a review of related work, requirement definition, hardware design, software design and prototype evaluation.
 
 \chapter{Review of Related Work}
 
@@ -383,7 +383,7 @@ The NRF24L01+ was selected, shown in figure~\ref{fig:NRF24L01}, was selected as 
     \caption{NRF24L01+ RF Transceiver Module}
     \label{fig:NRF24L01}
 \end{figure}
-The 2.4GHz frequency band used by the module allows for easy communication without the need for a licence. The NRF24L01+ is able to achieve data rates of up to 2Mbps which is more than sufficient for the needs of the ORBITS system. The module also has a range of up to 100m in open space which is more than enough for a classroom environment. Due to the inexpensive nature of the module it has been widely used in the maker community and has a large ecosystem of learning materials and documentation which makes it an ideal choice for the ORBITS system.
+The 2.4GHz frequency band used by the module allows for easy communication without the need for a license. The NRF24L01+ is able to achieve data rates of up to 2Mbps which is more than sufficient for the needs of the ORBITS system. The module also has a range of up to 100m in open space which is more than enough for a classroom environment. Due to the inexpensive nature of the module it has been widely used in the maker community and has a large ecosystem of learning materials and documentation which makes it an ideal choice for the ORBITS system.
 
 \begin{itemize}
     \item \textbf{Electrical interface:} 3.3~V input, 115~mA max current during transmission, low power sleep modes. This allows for the module to be powered directly from the OBC and ground station with minimal impact on the overall power consumption of the system.
@@ -484,7 +484,7 @@ To construct a frame for the ORBITS unit, 2 side pieces and 2 top/bottom pieces 
     \label{fig:frame_assembled}
 \end{figure}
 
-To mitigate the costs and complexity of manufacturing a custom PCB for the ORBITS unit, the system is designed to use standard double sided perfboard for the internal connections between components. This allows for a low cost and 
+The frame is designed to be lightweight and simple to manufacture through 3D printing and fits within the 1U CubeSat form factor. The frame is designed to be compact while providing enough space for the required components and leaves room for user defined payloads. The frame provide mounting points for threaded inserts which allows for the 7cm x 9cm pcbs to be simply attached to the frame using brass or nylon standoffs. 
 
 \subsection{Attitude Determination and Control Subsystem (ADCS)}
 
@@ -511,14 +511,14 @@ The IMU chosen for the system was the ICM-20948, a low cost 9-axis IMU. At the p
 
 This addition is particularly useful within space applications. Without a magnetometer, the only method that can determine the orientation of the satellite is through the gyroscope. However gyroscopes run into an issue when running for longer periods of time, this being drift. Small uncertainties within the readings build up over time causing the output to be untrustworthy. Unlike the readings from the gyroscope, the magnetometer has an external reference. In the case of typical CubeSats, this is the Earth. By reading the magnetic fields produced by the Earth the sensor is able to calibrate itself relative to North which can be used to correct the drift from the gyroscope and provide a more accurate reading of the orientation of the satellite. 
 
-%Shown in Figure~\ref{fig:ICM-20948} is the ICM-20948 IMU.
+Shown in Figure~\ref{fig:ICM-20948} is the ICM-20948 IMU.
 
-%\begin{figure}[h]
-%    \centering
-%    \includegraphics[width=0.5\textwidth]{./Images/ICM-20948.jpg}
-%    \caption{Adafruit ICM-20948 9-axis IMU}
-%    \label{fig:ICM-20948}
-%\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{./Images/ICM-20948.png}
+    \caption{Adafruit ICM-20948 9-axis IMU \cite{Adafruit}}
+    \label{fig:ICM-20948}
+\end{figure}
 
 \begin{itemize}
     \item \textbf{Electrical interface:} 3V to 5V input, with on board regulator.
@@ -531,42 +531,10 @@ This addition is particularly useful within space applications. Without a magnet
 
 The payload subsystem is responsible for providing the user with the ability to create their own experiments and projects to integrate into the ORBITS unit. Rather than providing a specific payload for the system, the ORBITS unit is designed to be a flexible platform to enable users to create their own payloads.
 
-The rapid prototyping of electronics is already a solved through the use of breadboards and perfboards. The payload subsystem provides a top layer development area for users to create their own payloads using these prototyping methods. The payload integrates a standard half-size breadboard and a set of headers connected to the OBC.
+The rapid prototyping of electronics is already a solved through the use of breadboards and perfboards. The payload subsystem provides a top layer development area for users to create their own payloads using a standard 400 pin count breadboard integrated into the top-most layer. This allows for users to create their own circuits and allow for their own creativity to be expressed within the system rather than giving them explicit instructions on how to create a specific payload.
 
-To allow for flexibility and enable creativity, a wide range of communication methods have been made available to use in communicating with the payload. General Purpose Input-Output pins is the most basic category, typically used for wiring up LEDs and transistors but they don't have an explicit purpose. I2C and SPI on the other hand are purpose made communication protocols. I2C focuses on reducing the number of pins required to communicate between a controller device and several peripherals through an address based system. 
+To allow for flexibility and enable creativity, a wide range of communication methods have been made available to use in communicating with the payload. General Purpose Input-Output pins is the most basic category, typically used for wiring up LEDs and transistors but they don't have an explicit purpose. I2C and SPI on the other hand are purpose made communication protocols. I2C focuses on reducing the number of pins required to communicate between a controller device and several peripherals through an address based system while SPI focuses on providing a high speed communication method between a controller and several peripherals through the use of dedicated pins for each device.
 
-\subsubsection{Constraints, Risks, and Mitigations}
-
-With any of the devices needed to operate the ORBITS unit there are some risks that need to be considered. Shown in Table~\ref{tab:ground_station_risks} are some of the risks associated with the ground station and their corresponding mitigations.
-
-\begin{table}[h]
-\centering
-\caption{Risks for the Ground Station}
-\label{tab:ground_station_risks}
-\begin{tabular}{|p{5cm}|p{2cm}|p{2cm}|p{6cm}|}
-\hline
-\textbf{Risk} & \textbf{Impact} & \textbf{Likelihood} & \textbf{Mitigation} \\ \hline
-Insufficient Device Memory & M & L & Offload memory intense tasks to development machine with static website  \\ \hline
-Supply Chain Demand & H & L & Secure a unit for prototype development \\ \hline
-
-\end{tabular}
-\end{table}
-
-\subsubsection{Verification and Validation Plan}
-\begin{table}[h]
-\centering
-\caption{Verification plan for <Subsystem Name>}
-\label{tab:<subsystem>_verification}
-\begin{tabular}{|p{2cm}|p{5cm}|p{4cm}|p{3cm}|}
-\hline
-\textbf{Test ID} & \textbf{Requirement/Objective} & \textbf{Method} & \textbf{Pass Criteria} \\ \hline
-T-<sub>-01 & <what must be proven> & <bench/simulation/field test> & <quantitative threshold> \\ \hline
-T-<sub>-02 & <what must be proven> & <bench/simulation/field test> & <quantitative threshold> \\ \hline
-\end{tabular}
-\end{table}
-
-\subsection{Bill of Materials}
-%Needs to get fleshed out more before putting into the report. 
 
 \section{Software Overview} \label{software_design}
 The software developed for the ORBITS system can be broken into 2 main components, the software for the ground station and the software for the ORBITS unit. The software for the ground station is responsible for providing a user interface for users to interact with the ORBITS unit and develop their own code while the software for the ORBITS unit is concerned with providing functionality to the components within the stock implementation without any payloads that user defined code integrates into.
@@ -638,7 +606,7 @@ However, a standard Blockly implementation has one problem when it comes to the 
 
 This is particularly problematic as the generated code is in C++, as function calls need to be defined before they are called. To solve this problem, a custom code generator is implemented for the Blockly editor that generates the code in a deterministic way regardless of the arrangement of the blocks. 
 
-The user is given 2 standard functions, setup and loop, that are used to generate the code for the ORBITS unit, following the standard structure of an Arduino sketch shown in Figure~\ref{fig:arduino_sketch}.
+The user is given 4 standard blocks to create their code, Setup, Loop, Includes and Global Variables, following the standard structure of an Arduino sketch shown in Figure~\ref{fig:arduino_sketch}.
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.5\textwidth]{./Images/Arduino-Sketch.png}
@@ -648,8 +616,6 @@ The user is given 2 standard functions, setup and loop, that are used to generat
 
 In addition the user is able to define their own functions using Blockly and the custom code generator ensures that these functions are defined before they are called in the generated code. This allows for users to create more complex code for their payloads while still being able to use the visual programming environment provided by Blockly, helping expand the depth of educational material that can be covered through the ORBITS system.
 
-% can maybe add this in if I need to or can go in future work. An alternative approach to the educational programming would be to use Microsoft's MakeCode
-%Need to describe how these fit together to create each of the pages within the web application.
 \subsubsection{Database}
 %Mimicking actual telemetry data from the ISS mainly from formatting and include schema for the database and phpmyadmin. 
 The database within the ground station is used to store general system operations and telemetry from the ORBITS unit, rather than storing it on board. The database contains 3 separate tables:
@@ -731,9 +697,47 @@ Within the ORBITS\_setup function the internal and external communications are s
 
 For the telemetry data to be sent to the ground station, the data is read from the sensors and then formatted into a JSON object using the ArduinoJson library. This allows for the data to be structured in a way that can be easily parsed and stored in the database on the ground station. The JSON object is then sent to the MQTT broker through the WiFi connection and subsequently handled by the backend. 
 
+\chapter{Prototype Implementation and Integration}
+
+To ensure the successful implementation of the ORBITS system, a prototype of the system was developed to test the different components and their integration. The prototype was developed using the same components as the final design of the ORBITS unit and ground station, allowing for a more accurate representation of the final system.
+
+\section{Prototype}
+
+The prototype of the ORBITS system was split into three stackable layers to allow for the hardware to fit within the 1U CubeSat. The first layer contains the PMAD and the battery, the second layer contains the OBC, sensors for the ADCS subsystem and communications module while the third layer contains the breadboard for the payload development. This allows for a compact and efficient design that can fit within the constraints of a 1U CubeSat while still providing all of the necessary functionality for the ORBITS system. The layers make use of stackable headers to allow for easy integration and disassembly of the various layers, providing a more modular design that can be modified and expanded upon in future revisions.
+
+Shown in Figure~\ref{fig:prototype-power}, \ref{fig:prototype-OBC} and \ref{fig:prototype-Payload} are each respective layer of the ORBITS prototype.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{./Images/Power-Board.jpg}
+    \caption{First layer of the ORBITS prototype containing the PMAD and battery}
+    \label{fig:prototype-power}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{./Images/OBC-Board.jpg}
+    \caption{Second layer of the ORBITS prototype containing the OBC, ADCS sensor and communications module}
+    \label{fig:prototype-OBC}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{./Images/OBC-Board.jpg}
+    \caption{Third layer of the ORBITS prototype containing the OBC and ADCS sensors}
+    \label{fig:prototype-Payload}
+\end{figure}
+
+The process for constructing the prototype involved several steps, beginning with placement of the components on the respective layers and routing the necessary connections between the components. Particular focus was placed on the OBC layer, to ensure that the components of the first two layers were entirely routed to a single side of the board to allow for the stackable header to the payload layer to have full access to seventeen GPIO pins for users to use in their payloads. Additionally, the placement of the components was designed to allow for the use of the stackable headers to connect the layers together.
+
+To ensure the system was functional,
+
+\section{Bill of Materials}
+The complete prototype bill of materials is provided in Appendix~\ref{app:prototype_bom}.
+
 %The setup function is used for any initialization code that needs to be run once at the start of the program, while the loop function is used for any code that needs to be run repeatedly during the execution of the program. By following this structure, users can easily integrate their own code into the ORBITS unit while still being able to make use of the existing functionality provided by the base software. This base software is included through the ORBITS.cpp and ORBITS.h files which are accessed by the ORBITS\_setup and ORBITS\_loop functions that are called within the user defined setup and loop functions. This allows for the base software to run alongside the user defined code for the payloads, providing a seamless integration between the two. an example of this structure can be seen in Figure~\ref{fig:Example_Basic_Sketch}.
 
-
+\section{Limitations}
 
 \newpage
 \section{Future Work}
@@ -761,13 +765,55 @@ As it currently stands, the ORBITS system provides a solid foundation for users 
 \newpage
 \appendix
 \chapter{Appendices}
+\section{Prototype Bill of Materials}\label{app:prototype_bom}
+\begin{landscape}
+    \thispagestyle{empty}
+    \begin{table}[p]
+    \centering
+    \caption{Prototype Bill of Materials}
+    \setlength{\tabcolsep}{3pt}
+    \renewcommand{\arraystretch}{1.0}
+    \resizebox{\linewidth}{!}{%
+    \begin{tabular}{|l|c|l|l|l|l|r|r|}
+    \hline
+    \textbf{Item \#} & \textbf{Qty} & \textbf{Category} & \textbf{Manufacturer} & \textbf{Part Number} & \textbf{Description} & \textbf{Unit Price} & \textbf{Sub Total} \\ \hline
+    Ground Station.1 & 1 & Ground Station & Raspberry Pi & SC1146 & Raspberry Pi Zero 2 W & \pounds11.26 & \pounds11.26 \\ \hline
+    Ground Station.2 & 1 & Ground Station & SOLDERED & 101219 & RF Modules NRF24L01+, MODULE, 2.4GHz, RF & \pounds3.18 & \pounds3.18 \\ \hline
+    Ground Station.3 & 1 & Ground Station & University of Strathclyde & 3DRPiHousing & 3D Printed Ground Station housing & \pounds0.11 & \pounds0.11 \\ \hline
+    Ground Station.4 & 1 & Ground Station & Cvilux USA & DH-20M50057 & CABLE USB AM TO MICRO 2.0 0.49' & \pounds0.84 & \pounds0.84 \\ \hline
+    Ground Station.5 & 1 & Ground Station & SanDisk & SDSQUA4-032G-GN6MA & 32 GB MicroSDHC microSD, UHS Speed Class U1 & \pounds8.32 & \pounds8.32 \\ \hline
+    OBC.1 & 1 & OBC & Espressif Systems & ESP32-S3-DevKitC-1U-N8R8 & ESP32-S3-WROOM-1-N8R8 & \pounds9.93 & \pounds9.93 \\ \hline
+    OBC.2 & 1 & OBC & Adafruit Industries & 3295 & Adafruit PCF8523 RTC Breakout Board & \pounds5.22 & \pounds5.22 \\ \hline
+    OBC.3 & 1 & OBC & Panasonic & CR-1220/BN & Button Battery, 3 V, 12.5 mm Diameter & \pounds1.07 & \pounds1.07 \\ \hline
+    PMAD.1 & 1 & PMAD & Adafruit Industries & 6091 & bq25185 USB / DC / Solar Lithium Ion/Polymer charger & \pounds5.22 & \pounds5.22 \\ \hline
+    PMAD.2 & 1 & PMAD & RS Pro & 304-24-490 & 3.7 V, Lithium-ion 18.9 mm Rechargeable Battery, 2.6 Ah & \pounds8.19 & \pounds8.19 \\ \hline
+    PMAD.3 & 1 & PMAD & Keystone Electronics & 1043P & BATTERY HOLDER 18650 PC PIN & \pounds2.52 & \pounds2.52 \\ \hline
+    PMAD.4 & 1 & PMAD & Adafruit Industries & 4226 & Adafruit INA260 High or Low Side Voltage Current Power Sensor & \pounds7.47 & \pounds7.47 \\ \hline
+    Comms.1 & 1 & Comms & SOLDERED & 101219 & RF Modules NRF24L01+, MODULE, 2.4GHz, RF & \pounds3.18 & \pounds3.18 \\ \hline
+    PS.1 & 2 & PS & University of Strathclyde & 3DFrameType1 & Upper and Lower 3D printed Frame Section & \pounds0.35 & \pounds0.70 \\ \hline
+    PS.2 & 2 & PS & University of Strathclyde & 3DFrameType2 & 3D Printed Side frames & \pounds0.24 & \pounds0.48 \\ \hline
+    ADCS.1 & 1 & ADCS & Adafruit Industries & 4554 & Adafruit ICM-20948 DOF IMU & \pounds14.95 & \pounds14.95 \\ \hline
+    MISC.1 & 1 & MISC & Cvilux USA & DH-20M50054 & USB 2.0 Cable A Male to C Male 0.49' (150.0 mm) Shielded & \pounds0.94 & \pounds0.94 \\ \hline
+    MISC.2 & 1 & MISC & The Pi Hut & 105833 & Proto PCB 10-Pack 7x9 cm & \pounds5.70 & \pounds5.70 \\ \hline
+    MISC.3 & 4 & MISC & Sin & MSIB-M2-400 & M2 4 mm Threaded Insert & \pounds0.19 & \pounds0.76 \\ \hline
+    MISC.4 & 1 & MISC & DRFROBOT & FIT0146 & Stackable Female Pin Header 8 pin x10 & \pounds2.63 & \pounds2.63 \\ \hline
+    MISC.5 & 5 & MISC & Harwin & M20-7820542 & Vertical Female Header 10 pin & \pounds0.79 & \pounds3.95 \\ \hline
+    MISC.6 & 1 & MISC & The Pi Hut & 100058 & Half Size Breadboard, 400 count & \pounds3.00 & \pounds3.00 \\ \hline
+    MISC.7 & 1 & MISC & The Pi Hut & 104335 & M2.5 Nylon Standoff 6 mm Male-Female x10 & \pounds0.70 & \pounds0.70 \\ \hline
+    MISC.8 & 1 & MISC & The Pi Hut & 104333 & M2.5 Nylon Standoff 12 mm Male-Female x10 & \pounds0.70 & \pounds0.70 \\ \hline
+    \multicolumn{7}{|r|}{\textbf{Total}} & \textbf{\pounds101.02} \\ \hline
+    \end{tabular}%
+    }
+    \end{table}
+\end{landscape}
+
 \begin{landscape}
     \includepdf[pages=-, 
     width=1.5\textwidth,
     landscape = true,
     pagecommand={   \section{ORBITS Frame} \label{app:orbits_frame},
                     \thispagestyle{empty} }
-  ]{./Appendices/ORBITS Frame.pdf}
+  ]{./Appendices/ORBITS-Frame.pdf}
 \end{landscape}
 
 \end{document}

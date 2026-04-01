@@ -15,7 +15,7 @@ socketio = SocketIO(app, cors_allowed_origins="*", async_mode="gevent")
 
 # Define paths for PlatformIO project and environment variables
 REPO_ROOT = Path(__file__).resolve().parents[2]
-PIO_PROJECT_DIR = Path(os.getenv("PIO_PROJECT_DIR", str(REPO_ROOT / "ORBITS"))).resolve()
+PIO_PROJECT_DIR = Path(os.getenv("PIO_PROJECT_DIR", str(REPO_ROOT / "ORBITS" / "pio"))).resolve()
 PIO_MAIN_CPP = PIO_PROJECT_DIR / "src" / "main.cpp"
 ENV_FILE = Path(__file__).resolve().parent / ".env"
 
@@ -282,10 +282,11 @@ def on_mqtt_message(client, userdata, msg):
 def process_code():
     body = request.get_json(silent=True) or {}
     code = body.get('code')
-
+    print(f"Received code for processing: {code[:100]}...")  # Log the first 100 characters for debugging
     if not isinstance(code, str) or not code.strip():
         return jsonify({'ok': False, 'error': 'Request must include a non-empty code string.'}), 400
 
+    print(f"Checking for PlatformIO project at {PIO_PROJECT_DIR} and main.cpp at {PIO_MAIN_CPP}")
     if not PIO_PROJECT_DIR.exists() or not PIO_MAIN_CPP.exists():
         return (
             jsonify(
