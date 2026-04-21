@@ -174,7 +174,7 @@ Another example is the Australian made RASCube~\cite{RASCube}, a 1U CubeSat that
 
 These products highlight a clear gap within the market: an affordable, ground-station linked CubeSat kit accessible to those with little to no prior experience, including first year undergraduates. ORBITS looks to provide an interactive teaching experience particularly focused on those with less experience to inspire and educate around the space industry.
 
-Additional projects within space education do exist, such as the open source ISS Mimic~\cite{ISS-Mimic}, a project that looks to mimic the telemetry data from the International Space Station (ISS), using a 3D printed scale model, on board microcontroller and motors to provide a physical representation of the ISS. The data used to create this model is from a subset of the real ISS telemetry data and is publicly available through \href{https://lightstreamer.com/}{Lightstreamer}, an event broker used to deliver real time data to customers. 
+Additional projects within space education do exist, such as the open source ISS Mimic~\cite{ISS-Mimic}, a project that looks to mimic the telemetry data from the International Space Station (ISS), using a 3D printed scale model, on-board microcontroller and motors to provide a physical representation of the ISS. The data used to create this model is from a subset of the real ISS telemetry data and is publicly available through \href{https://lightstreamer.com/}{Lightstreamer}, an event broker used to deliver real-time data to customers. 
 
 \chapter{Design}
 The ORBITS system has been developed using a top down approach starting with the high level requirements and breaking these down into smaller, more specific system requirements. The process first began by consulting the teaching staff most likely to be interacting with these systems within a classroom environment and seeing common sticking points with integrating new projects within the class, like time for set-up, ease of use during learning and both debugging of hardware and software related issues.
@@ -288,7 +288,7 @@ Orange Pi Zero 2 W & 7 & 6 & 6 & 7 & 7 & Rejected \\ \hline
 \end{tabular}
 \end{table}
 
-Shown below in Table \ref{tab:ground_station_selected_components} are the selected components for the ground station subsystem. These components include the Raspberry Pi Zero 2W, a small single-board computer containing an ARM Cortex-A53 clocked at 1GHz with on board Wifi and Bluetooth, acting as the main ground station computer. To support the wireless connectivity already on board and give an analogue for the communication technology on a mission ready CubeSat, the NRF24L01+ module has been included. This 2.4 GHz transceiver is used purely as the connection between the ground station and ORBITS unit during a mission. 
+Shown below in Table \ref{tab:ground_station_selected_components} are the selected components for the ground station subsystem. These components include the Raspberry Pi Zero 2W, a small single-board computer containing an ARM Cortex-A53 clocked at 1GHz with on-board Wifi and Bluetooth, acting as the main ground station computer. To support the wireless connectivity already on-board and give an analogue for the communication technology on a mission ready CubeSat, the NRF24L01+ module has been included. This 2.4 GHz transceiver is used purely as the connection between the ground station and ORBITS unit during a mission. 
 \begin{table}[h]
     \centering
     \caption{Selected components for the Ground Station}
@@ -353,7 +353,7 @@ The selected components for the OBC are shown in Table \ref{tab:obc_selected_com
     \hline
     \textbf{Component} & \textbf{Part Number} & \textbf{Key Specifications} \\ \hline
     OBC & ESP32-S3-N8R8-1U & Dual-core 240~MHz, 512~KB SRAM, 8~MB flash, WiFi/BLE \\\hline
-    Real Time Clock & PCF8523 & \(I^2C\) Real-Time Clock based on a 32.768 kHz quartz crystal\\\hline
+    Real-Time Clock & PCF8523 & \(I^2C\) Real-Time Clock based on a 32.768 kHz quartz crystal\\\hline
     \end{tabular}
 \end{table}
 
@@ -366,7 +366,7 @@ The ESP32-S3 was selected for the OBC due to its low cost, high performance and 
     \item \textbf{Software interface:} ESP-IDF (C/C++), Arduino IDE support, PlatformIO support, FreeRTOS-based OS, extensive peripheral libraries.
 \end{itemize}
 
-There are several variants of the ESP32-S3, with variants having different amounts of flash memory and Pseudo-Static RAM (PSRAM) and on board antenna. The specific variant chosen was the ESP32-S3-N8R8-1U which has 8MB of both flash memory and PSRAM. This variant also allows for the connecting of an external antenna through an IPEX connection to increase the range for the on-board WiFi and Bluetooth while reducing the size of the pcb. Shown in Figures~\ref{fig:ESP32-S3-Docs}~\cite{ESP32-S3_Documentation} and~\ref{fig:ESP32-S3-1U} is the technical image for the ESP32-S3 detailing the pin layout and features for the device and an image of the specific variant being used within the ORBITS unit.
+There are several variants of the ESP32-S3, with variants having different amounts of flash memory and Pseudo-Static RAM (PSRAM) and on-board antenna. The specific variant chosen was the ESP32-S3-N8R8-1U which has 8MB of both flash memory and PSRAM. This variant also allows for the connecting of an external antenna through an IPEX connection to increase the range for the on-board WiFi and Bluetooth while reducing the size of the pcb. Shown in Figures~\ref{fig:ESP32-S3-Docs}~\cite{ESP32-S3_Documentation} and~\ref{fig:ESP32-S3-1U} is the technical image for the ESP32-S3 detailing the pin layout and features for the device and an image of the specific variant being used within the ORBITS unit.
 
 \begin{figure}
     \centering
@@ -384,13 +384,13 @@ There are several variants of the ESP32-S3, with variants having different amoun
 
 Of particular note with this microcontroller is the addition of 2 I2C buses. I2C is a popular synchronous 2 wire communication protocol that can allow for several devices to be controlled through minimal pins connected to the controller. Each device connected to the bus has an address defined by the manufacturer that can be used to interact with the components registers, usually to access the data contained within a sensor or to set component characteristics. By having 2 of these I2C buses included within the device it can allow for internal communications to be handled by one while the other is purely used for communications to the user defined payload.
 
-In addition to the on board computer a PCF8523 breakout board is included within the system. This is to provide a highly accurate external clock signal external to that of the microcontroller using a \(32.768 kHz\) quartz crystal. The reason for this addition into the system is because of the unreliability with the application. Using the internal clock can lead to a few issues, namely inaccuracies in timing, device reset causes the epoch time to reset to zero and, finally, the timings can drift depending on temperature of the environment.
+In addition to the on-board computer a PCF8523 breakout board is included within the system. This is to provide a highly accurate external clock signal external to that of the microcontroller using a \(32.768 kHz\) quartz crystal. The reason for this addition into the system is because of the unreliability with the application. Using the internal clock can lead to a few issues, namely inaccuracies in timing, device reset causes the epoch time to reset to zero and, finally, the timings can drift depending on temperature of the environment.
 
 To mitigate all of these issues, an external real-time clock signal can be provided, in this situation a PCF8523. This external clock is very cost effective in an ORBITS unit as it is much cheaper than the alternatives. However, at this price point the PCF8523 exhibits a drift of approximately 2 seconds per day. This drawback does not affect the operation of an ORBITS unit as operation may only last from a few seconds to a few minutes with rapid developments making this external clock very cost effective. Shown in Figure~\ref{fig:PCF8523} is the PCF8523 breakout board used within the ORBITS unit.
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.5\textwidth]{./Images/PCF8523.jpg}
-    \caption{PCF8523 Real Time Clock Breakout Board}
+    \caption{PCF8523 Real-Time Clock Breakout Board}
     \label{fig:PCF8523}
 \end{figure}
 
@@ -565,7 +565,7 @@ Shown in Figure~\ref{fig:ICM-20948} is the ICM-20948 IMU.
 \end{figure}
 
 \begin{itemize}
-    \item \textbf{Electrical interface:} 3V to 5V input, with on board regulator.
+    \item \textbf{Electrical interface:} 3V to 5V input, with on-board regulator.
     \item \textbf{Data interface:} Both I2C and SPI interface available for communication with the OBC. Configurable I2C address. Conditional interrupt output pin for motion detection and data ready signals.
     \item \textbf{Mechanical interface:}  25.7mm x 17.7mm Adafruit breakout board. Compact size allows for easy integration.
     \item \textbf{Software interface:} Arduino library support with high level functions for reading acceleration, angular velocity and magnetic field data. 
@@ -662,7 +662,7 @@ In addition the user is able to define their own functions using Blockly and the
 
 \subsubsection{Database}
 %Mimicking actual telemetry data from the ISS mainly from formatting and include schema for the database and phpmyadmin. 
-The database within the ground station is used to store general system operations and telemetry from the ORBITS unit, rather than storing it on board. The database contains 3 separate tables:
+The database within the ground station is used to store general system operations and telemetry from the ORBITS unit, rather than storing it on-board. The database contains 3 separate tables:
 \begin{itemize}
     \item \textbf{System Events:} General operations of the device, for instance changing operating mode, charging state or error.
     \item \textbf{Telemetry Updates:} Recurring data coming from the onboard sensors, Not as frequent as that of the ADCS. For instance, voltage and current draw or Payload readings.
@@ -677,7 +677,7 @@ The system events tables is structured as such:
     \item \textbf{Mission ID:} Unique Identifier to distinguish user variants with different code implementations within the structure.
     \item \textbf{Event Type:} General category in which an operation has occurred like payload operation.
     \item \textbf{Description:} Short description of the operation occurred.
-    \item \textbf{Timestamp:} Time at which the operation occurred from on board real-time clock.
+    \item \textbf{Timestamp:} Time at which the operation occurred from on-board real-time clock.
 \end{itemize}
 
 The telemetry updates table is structured as such:
@@ -687,7 +687,7 @@ The telemetry updates table is structured as such:
     \item \textbf{Voltage:} The voltage of the system at a given time.
     \item \textbf{Current:} The current draw of the system at a given time.
     \item \textbf{Power:} The power consumption of the system at a given time.
-    \item \textbf{Timestamp:} The corresponding time measured by the on board real-time clock.
+    \item \textbf{Timestamp:} The corresponding time measured by the on-board real-time clock.
 \end{itemize}
 
 Finally, the ADCS updates has its own table structured differently. This is to service high request volumes in comparison to the other tables.
@@ -698,7 +698,7 @@ Finally, the ADCS updates has its own table structured differently. This is to s
     \item \textbf{Acceleration:} 3 components each corresponding to the acceleration in each axis.
     \item \textbf{Gyroscope:} 3 components representing the Roll, Pitch, and Yaw of the ORBITS unit at a given time.
     \item \textbf{Magnetometer:} 3 components representing the magnetic field strength in each of the 3 axis.
-    \item \textbf{Timestamp:} The corresponding time measured by the on board real-time clock.
+    \item \textbf{Timestamp:} The corresponding time measured by the on-board real-time clock.
 \end{itemize}
 
 \subsection{ORBITS Unit Firmware}
@@ -822,7 +822,11 @@ Power &  0 & \(mW\) \\ \hline
 \label{tab:ina260_test}
 \end{table}
 
+A corrected test for this system would be to integrate the communications subsystem allowing for the data to be read from the sensor and sent to the ground station database while the system is being powered through the PMAD. This then allows for the current to flow in the correct direction through the sensor and provide more accurate readings for the current and power consumption of the system. This would allow for a more accurate validation of the functionality of the INA260 power monitor within the ORBITS system.
+
 For the communications subsystem, the NRF24L01+ module was able to be integrated into the OBC layer of the prototype and be verified as integrated into the system over SPI but was not able to be successfully tested for communicating with the ground station. This was due to time constraints in developing the relevant service for the Raspberry Pi to support the NRF24L01+ module. As a result, to ensure that communication was established between the ground station and the ORBITS unit, the WiFi connection was used to send MQTT messages from the ORBITS unit to the ground station and messages were successfully received and stored in the database on the ground station. This limitation with the NRF24L01+ module resulted in the lack of a more authentic communication method for the ORBITS unit, but the successful implementation of the WiFi communication method allowed for the necessary communication between the ground station and the ORBITS unit to be established, allowing for the development of the rest of the system to continue without being blocked by this issue. However, without the NRF24L01+ module being successfully tested, the communication methods for the ORBITS system are limited to that of WiFi, which is not as authentic as the intended RF communication method.
+
+Retrospectively, looking back at the original selection of the NRF24L01+ module, it may have been more beneficial to select a different RF communication module that has better support for the Raspberry Pi. 
 
 The Raspberry Pi Zero 2W implemented as the ground station was able to successfully run the backend and frontend software for the ground station, allowing for the necessary user interface to be established for users to interact with the ORBITS system. However, the current implementation of the ground station software does not have the necessary functionality to communicate with the ORBITS unit through the NRF24L01+ module, which limits the communication methods available for users to interact with the ORBITS unit as addressed previously.
 
@@ -855,24 +859,45 @@ While Blockly code transfer to the backend was demonstrated, fully integrated fr
 Subsystem bring-up and functional checks were completed for key components, but extended-duration and stress testing were outside the available project window. As a result, reliability under longer mission-like operation and repeated update cycles has not yet been comprehensively characterized.
 
 \item \textbf{Scope-driven simplification of ADCS capability:}  
-The implemented ADCS prototype focuses on attitude determination sensing rather than closed-loop attitude control. This was a deliberate scope decision to prioritize a working educational platform within time and resource constraints. The trade-off is that the current prototype does not yet emulate full ADCS actuation behaviour found in higher-fidelity CubeSat systems.
+The implemented ADCS prototype focuses on attitude determination sensing rather than closed-loop attitude control. This was a deliberate scope decision to prioritize a working educational platform within time and resource constraints. The trade-off is that the current prototype does not yet emulate full ADCS actuation behaviour found in higher-fidelity CubeSat systems. As a result, the learning experience around attitude control is currently limited to theoretical concepts rather than hands-on interaction with control hardware.
 \end{itemize}
 
 As it currently stands, the ORBITS system only meets some of the project objectives and requirements, with the limitations outlined being the main factors that contribute to the incomplete nature of the system. However, the successful implementation of the different components within the system and their integration provides a solid foundation for future development to address these limitations and further enhance the ORBITS system to meet all of the project objectives and requirements.
+
+Table~\ref{tab:objective_achievement} summarises whether each objective from Table~\ref{tab:project_objectives} has been achieved at this stage of the project.
+
+\begin{table}[h]
+\centering
+\caption{Objective Achievement Status}
+\label{tab:objective_achievement}
+\begin{tabular}{|p{9cm}|c|p{5cm}|}
+\hline
+\textbf{Project Objective} & \textbf{Achieved}& \textbf{Rationale} \\ \hline
+Provide a prototype ORBITS unit composed of Commercial Off the Shelf (COTS) components where possible. & Yes & Both ground station and ORBITS unit constructed of COTS components\\ \hline
+Provide pilot demonstrations that shall showcase the functionality and purpose of the satellites that ORBITS has been made to emulate. Use understanding of EE105 learning outcomes to aid in project aims and objectives. & No & As there is not a fully implemented solution, learning material would be extremely limited in scope \\ \hline
+Provide ``Base Station'', a way of communicating between a standard electronic device and the ORBITS unit. & Partial & The ground station bridges the gap between the ORBITS unit and the development device but requires further development to \\ \hline
+Provide relevant software to reduce the barrier of entry to use the product. & Partial & Blockly can successfully be used to create simple programs for the ORBITS unit but lacks more specific features and blocks \\ \hline
+Develop and design both software and hardware architecture for systems and decompose into relevant subsystems. & Yes & The ORBITS system was successfully decomposed down to relevant subsystems\\ \hline
+Provide product documentation to allow ease of future work based upon this project. & No & No concrete documentation has been provided at this stage \\ \hline
+Provide ``Hot Swappable'' modules each with a payload with functionality related to the space industry. & No & The user defines their own payload rather than using pre-defined hot-swappable modules\\ \hline
+Provide additional, more complicated modules to aid in the experimentation of different concepts. & No & Users develop their own payload\\ \hline
+Provide a viability study into how a product like this could break out into market, creating a financial incentive for future work. & No & A viable product needs to be made first\\ \hline
+\end{tabular}
+\end{table}
 
 \newpage
 \section{Future Work}
 
 Due to the scope of the project, there are several areas that could be expanded upon in the future to further enhance the ORBITS system as in some areas the design and implementation of the system is focused on providing a minimum viable product to meet the requirements of the project. Some areas that could be expanded upon in the future include:
 \begin{itemize}
-    \item \textbf{Finalise Initial Requirements:} The initial objectives for the ORBITS system were defined at the beginning of the project, but some of these requirements were not fully met in the current design and implementation of the system. For instance, the pilot learning materials have been ommitted from the current design of the system, but this can be developed in the future with revisions of the ORBITS system to provide a more comprehensive learning experience for users interacting with the system.
+    \item \textbf{Finalise Initial Requirements:} The initial objectives for the ORBITS system were defined at the beginning of the project, but some of these requirements were not fully met in the current design and implementation of the system. For instance, the pilot learning materials have been omitted from the current design of the system, but this can be developed in the future with revisions of the ORBITS system to provide a more comprehensive learning experience for users interacting with the system.
     \item \textbf{Attitude Control:} The current design of the ORBITS unit focuses on the attitude determination aspect of the ADCS subsystem. In the future, this could be expanded to include attitude control through the use of reaction wheels or magnetorquers to provide a more complete ADCS system.
     \item \textbf{Ground Station Software:} The current design of the ground station software provides a basic user interface for interacting with the ORBITS unit. In the future, this could be expanded to include additional features such as data visualization tools, more advanced telemetry analysis and support for multiple users interacting with the system simultaneously. Additionally the compilation process through the frontend of the ground station software could be optimised to provide a better user experience when developing their own payloads for the ORBITS system.
     \item \textbf{Solar Panels:} The current design of the ORBITS unit includes support for solar charging through the power management module, but does not include actual solar panels. In the future, solar panels could be added to the design to allow for more authentic charging of the ORBITS unit and to provide a more complete experience for users.
     \item \textbf{Improved Dashboard:} The current design of the dashboard provides a basic interface for users to interact with the ORBITS unit and view telemetry data. In the future, the dashboard could also be used as a control interface for users to send commands defined by the user to the ORBITS unit to control the system and interact with their payloads in real-time, providing a more engaging and interactive experience for users.
     \item \textbf{ORBITS Unit Firmware Optimisation:} The current design of the ORBITS unit firmware provides the necessary functionality to operate the system but heavily relies on the use of libraries for the components within the system with possible repeat functionality across the different libraries for instance, the ICM-20948 library and the INA260 library both have some method of reading data from each individual sensor on the I2C bus, while a more general approach can allow each sensor to be addressed and read in a more efficient way, reducing the overhead of the firmware and allowing for more resources to be available for user defined code for payloads.
     \item \textbf{Complete NRF24L01+ OTA:} The current design of the ORBITS unit allows for OTA updates through the WiFi connection but does not currently support OTA updates through the NRF24L01+ module. In the future, this could be implemented to allow for users to upload their code to the ORBITS unit through a more authentic communication method, providing a more complete experience for users.
-    \item \textbf{Enhance Educational Programming:} Additional blocks can be added to the Blockly editor to allow for more complex code to be generated for user defined payloads, allowing for a wider range of educational material to be covered through the ORBITS system. For instance, blocks that interact with specific payloads could be added to allow for users to easilty integrate new payloads and make it more accessible for users to create their own payloads without needing to worry about the low level details of how to interact with the components within the ORBITS unit.
+    \item \textbf{Enhance Educational Programming:} Additional blocks can be added to the Blockly editor to allow for more complex code to be generated for user defined payloads, allowing for a wider range of educational material to be covered through the ORBITS system. For instance, blocks that interact with specific payloads could be added to allow for users to easily integrate new payloads and make it more accessible for users to create their own payloads without needing to worry about the low level details of how to interact with the components within the ORBITS unit.
 \end{itemize}
 
 What can also be taken from this project is the potential for future iterations of the ORBITS system. The design and implementation of the current ORBITS system provide a solid foundation that can be further developed to widen the scope of teaching available through the system. For instance, the current design of the ORBITS unit is focused on providing a platform for users to learn about programming within the context of a CubeSat, but future iterations of the system could expand to cover other aspects of CubeSat design and operation such as thermal management or satellite communication systems. This would allow for a more comprehensive learning experience for users and provide a more complete understanding of the different subsystems that make up a CubeSat.
@@ -881,12 +906,18 @@ The implementation of the ORBITS system also provides a platform for other emula
 
 \section{Reflection}
 
-As it currently stands, the ORBITS system provides a solid foundation for users to learn about programming within the context of a CubeSat. The design and implementation of the system meet the requirements set out at the beginning of the project and provide a platform for users to create their own payloads and interact with the ORBITS system in a meaningful way. 
+The ORBITS project has demonstrated that an accessible, low-cost CubeSat emulator can be implemented using a modular architecture and commercial off-the-shelf components. The delivered prototype integrates the core hardware subsystems and a working ground-station software stack, and therefore establishes a credible technical baseline for educational use. At the same time, the objective review in Table~\ref{tab:objective_achievement} shows that this submission is best described as a partial completion of the full project vision, with key gaps remaining in end-to-end RF communications, frontend build/deployment maturity, and breadth of validation.
+
+From an engineering perspective, the most significant lesson from this project was the importance of integration-first development and early risk reduction. Several late-stage issues were not caused by individual subsystem failures, but by interface and workflow constraints between subsystems. This reinforced the value of validating critical pathways earlier, particularly communications and deployment pipelines, while maintaining clear traceability between objectives, implementation decisions, and test evidence.
+
+Overall, the current ORBITS implementation provides a strong foundation for future iterations rather than a finalised educational product. The system is already capable of supporting meaningful learning and experimentation, and the limitations identified in this report define a clear and actionable path to improve usability, technical fidelity, and classroom readiness in subsequent development cycles.
 
 \printbibliography[heading=bibintoc]
 \newpage
 \appendix
 \chapter{Appendices}
+\section{GitHub Repository}
+As part of the project, a GitHub repository was created to host all of the elements of the project including the design documents, code for the ORBITS unit firmware and ground station software, found here \url{https://github.com/WithASideOfSalt/EE475-ORBITS}
 \section{Prototype Bill of Materials}\label{app:prototype_bom}
 \begin{landscape}
     \thispagestyle{empty}

@@ -1,5 +1,5 @@
 // src/pages/EditorPage.jsx
-import { useState, useCallback} from "react";
+import { useCallback, useState } from "react";
 import BlocklyEditor from "../components/BlocklyEditor";
 import MonacoPanel from "../components/MonacoEditor";
 
@@ -20,11 +20,15 @@ export default function EditorPage() {
     }, []);
 
     const handleSendToBackend = async () => {
-        await fetch("/api/process", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ code: cppCode })
-        });
+        try {
+            await fetch("/api/process", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ code: cppCode })
+            });
+        } catch (error) {
+            console.error('Failed to send code to backend:', error);
+        }
     };
 
     return (

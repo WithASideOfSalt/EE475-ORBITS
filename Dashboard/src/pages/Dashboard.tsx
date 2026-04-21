@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from 'react';
-import { Col, Layout, Row, Typography, Card, Input } from 'antd';
+import { Col, Layout, Row, Typography, Card, Input, Button } from 'antd';
 import { Content, Header } from 'antd/es/layout/layout';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';
@@ -23,6 +23,14 @@ interface IMUDataPoint {
   timestamp: number;
 }
 
+interface TelemetryDataPoint {
+  mission_id?: string;
+  bus_voltage_v?: number;
+  current_ma?: number;
+  power_mw?: number;
+  timestamp?: number;
+}
+
 interface TimeUpdateData{
   timestamp: number;
 }
@@ -39,6 +47,7 @@ export default function Dashboard() {
   const [rollingTime, setRollingTime] = useState(0);
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [imuData, setImuData] = useState<IMUDataPoint[]>([]);
+  const [telemetryData, setTelemetryData] = useState<TelemetryDataPoint | null>(null);
   const maxDataPoints = 30;
 
 
@@ -62,18 +71,32 @@ export default function Dashboard() {
       });
     }
 
+    function handleTelemetryData(value: TelemetryDataPoint) {
+      setTelemetryData(value);
+    }
+
     socket.on('connect', onConnect)
     socket.on('disconnect', onDisconnect)
     socket.on('time_update', timeUpdate)
     socket.on('adcs_update', handleImuData)
+    socket.on('telemetry_update', handleTelemetryData)
 
     return () => {
       socket.off('connect', onConnect)
       socket.off('disconnect',onDisconnect)
       socket.off('time_update', timeUpdate)
       socket.off('adcs_update', handleImuData)
+      socket.off('telemetry_update', handleTelemetryData)
     }
   },[]);
+
+  const formatTelemetryValue = (value: number | undefined, decimals: number, unit: string) => {
+    if (typeof value !== 'number' || Number.isNaN(value)) {
+      return 'N/A';
+    }
+
+    return `${value.toFixed(decimals)} ${unit}`;
+  };
 
   const createChartData = (dataKey: keyof IMUDataPoint, label: string, borderColor: string) => {
     return {
@@ -211,6 +234,31 @@ export default function Dashboard() {
     };
   }, [rollingTime, isConnected, imuData]);
 
+  const downloadCsv = async (endpoint: string, fallbackName: string) => {
+    try {
+      const response = await fetch(endpoint);
+      if (!response.ok) {
+        throw new Error(`Download failed with status ${response.status}`);
+      }
+
+      const blob = await response.blob();
+      const contentDisposition = response.headers.get('content-disposition') || '';
+      const match = contentDisposition.match(/filename=([^;]+)/i);
+      const filename = match ? match[1].replace(/"/g, '') : fallbackName;
+
+      const downloadUrl = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = downloadUrl;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(downloadUrl);
+    } catch (error) {
+      console.error('CSV download failed:', error);
+    }
+  };
+
   return (
     <>
       <Layout style={{height: '100%', overflow: 'hidden'}}>
@@ -274,8 +322,26 @@ export default function Dashboard() {
             </Col>
             {/* Data Visualisation with 6 Charts */}
             <Col xs={24} style={{display:'flex'}}>
-              <Card style={{flex: '0 0 18%', maxWidth: '18%'}}>
-                Historical Data Downloads
+              <Card style={{flex: '0 0 18%', maxWidth: '18%'}} title="Historical Data Downloads">
+                <Row gutter={[8, 8]}>
+                  <Col xs={24}>
+                    <Button
+                      type="primary"
+                      block
+                      onClick={() => downloadCsv('/api/download/telemetry/recent', 'telemetry_recent_100.csv')}
+                    >
+                      Download Telemetry (Last 100)
+                    </Button>
+                  </Col>
+                  <Col xs={24}>
+                    <Button
+                      block
+                      onClick={() => downloadCsv('/api/download/adcs/recent', 'adcs_recent_100.csv')}
+                    >
+                      Download ADCS (Last 100)
+                    </Button>
+                  </Col>
+                </Row>
               </Card>
               <Card title="Data Visualisation - IMU Sensors" tabList={tabList} activeTabKey={activeTabKey} onTabChange={onTabChange} style={{flex: '0 0 64%', maxWidth: '64%', padding: '4px'}}>
                 <Row gutter={[16, 16]}>
@@ -283,8 +349,27 @@ export default function Dashboard() {
                 </Row>
               </Card>
               {/* Third Col */}
-              <Card style={{flex: '0 0 18%', maxWidth: '18%'}}>
-                Battery Diagnostics
+              <Card style={{flex: '0 0 18%', maxWidth: '18%'}} title="Battery Diagnostics">
+                <Row gutter={[12, 12]}>
+                  <Col xs={24}>
+                    <Statistic
+                      title="Voltage"
+                      value={formatTelemetryValue(telemetryData?.bus_voltage_v, 2, 'V')}
+                    />
+                  </Col>
+                  <Col xs={24}>
+                    <Statistic
+                      title="Current"
+                      value={formatTelemetryValue(telemetryData?.current_ma, 0, 'mA')}
+                    />
+                  </Col>
+                  <Col xs={24}>
+                    <Statistic
+                      title="Power"
+                      value={formatTelemetryValue(telemetryData?.power_mw, 0, 'mW')}
+                    />
+                  </Col>
+                </Row>
               </Card>
             </Col>
           </Row>
