@@ -1,5 +1,5 @@
 // src/components/BlocklyEditor/index.tsx
-import { useEffect, useRef } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
 import * as Blockly from "blockly";
 import { defineEsp32Blocks } from "./blocks/esp32.js";
 import { defineFunctionBlocks } from "./blocks/functions.js";
@@ -22,10 +22,70 @@ interface BlocklyEditorProps {
     onCodeChange?: (code: string) => void;
 }
 
-export default function BlocklyEditor({ onCodeChange }: BlocklyEditorProps) {
+export interface BlocklyEditorHandle {
+    exportWorkspace: () => string;
+    importWorkspace: (workspaceXml: string) => void;
+}
+
+function BlocklyEditor(
+    { onCodeChange }: BlocklyEditorProps,
+    ref: React.ForwardedRef<BlocklyEditorHandle>
+) {
     const blocklyDiv = useRef<HTMLDivElement>(null);
     const workspaceRef = useRef<Blockly.WorkspaceSvg | null>(null);
     const isLoadingRef = useRef(false);
+
+    const emitGeneratedCode = () => {
+        if (!workspaceRef.current) {
+            return;
+        }
+
+        const raw = generateSketch(workspaceRef.current);
+        const full = wrapInSketch(raw);
+        onCodeChange?.(full);
+    };
+
+    const persistWorkspace = () => {
+        if (!workspaceRef.current) {
+            return;
+        }
+
+        try {
+            const state = Blockly.serialization.workspaces.save(workspaceRef.current);
+            localStorage.setItem(WORKSPACE_STORAGE_KEY, JSON.stringify(state));
+        } catch (error) {
+            console.error("Failed to save workspace:", error);
+        }
+    };
+
+    const replaceWorkspace = (workspaceXml: string) => {
+        if (!workspaceRef.current) {
+            throw new Error("Blockly workspace is not ready yet.");
+        }
+
+        const xmlDom = Blockly.utils.xml.textToDom(workspaceXml);
+
+        isLoadingRef.current = true;
+        try {
+            Blockly.Xml.clearWorkspaceAndLoadFromXml(xmlDom, workspaceRef.current);
+            persistWorkspace();
+            emitGeneratedCode();
+        } finally {
+            isLoadingRef.current = false;
+        }
+    };
+
+    useImperativeHandle(ref, () => ({
+        exportWorkspace: () => {
+            if (!workspaceRef.current) {
+                return "";
+            }
+
+            const xml = Blockly.Xml.workspaceToDom(workspaceRef.current);
+            return Blockly.Xml.domToPrettyText(xml);
+        },
+        importWorkspace: replaceWorkspace,
+    }));
 
     useEffect(() => {
         if (workspaceRef.current || !blocklyDiv.current) return; // already initialised
@@ -136,25 +196,12 @@ export default function BlocklyEditor({ onCodeChange }: BlocklyEditorProps) {
 
             //console.log("Blockly event:", event.type, event);
             
-            // Save workspace state to localStorage
-            try {
-                const state = Blockly.serialization.workspaces.save(workspaceRef.current!);
-                localStorage.setItem(WORKSPACE_STORAGE_KEY, JSON.stringify(state));
-            } catch (error) {
-                console.error("Failed to save workspace:", error);
-            }
-
-            // Generate C++ code
-            const raw =     generateSketch(workspaceRef.current!);
-            const full = wrapInSketch(raw);
-            //console.log("Generated code:", full);
-            onCodeChange?.(full);
+            persistWorkspace();
+            emitGeneratedCode();
         });
 
         // Generate initial code after workspace is loaded/created
-        const initialRaw = generateSketch(workspaceRef.current);
-        const initialCode = wrapInSketch(initialRaw);
-        onCodeChange?.(initialCode);
+        emitGeneratedCode();
 
         // Handle resize
         const observer = new ResizeObserver(() => {
@@ -187,3 +234,5 @@ export default function BlocklyEditor({ onCodeChange }: BlocklyEditorProps) {
         />
     );
 }
+
+export default forwardRef(BlocklyEditor);
