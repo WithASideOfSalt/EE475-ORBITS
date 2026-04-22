@@ -144,6 +144,25 @@ export function defineFunctionBlocks() {
         }
     };
 
+    Blockly.Blocks["function_mqtt_handler_definition"] = {
+        init: function () {
+            this.appendDummyInput("HEADER")
+                .appendField("MQTT Handler")
+                .appendField(new Blockly.FieldTextInput("onDashboardCommand"), "FUNC_NAME")
+                .appendField("topic")
+                .appendField(new Blockly.FieldTextInput("orbits/command/user"), "MQTT_TOPIC");
+
+            this.appendStatementInput("BODY")
+                .setCheck(null)
+                .appendField("do");
+
+            this.setColour(290);
+            this.setTooltip("Define a user function callable from dashboard MQTT topic");
+            this.setDeletable(true);
+            this.setMovable(true);
+        }
+    };
+
     // Function call block (unchanged from before)
     Blockly.Blocks["function_call"] = {
         init: function () {

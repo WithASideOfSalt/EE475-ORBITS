@@ -23,7 +23,9 @@ export function registerEsp32Generators() {
 
     CppGenerator.forBlock["esp32_setup"] = function (block, generator) {
         const body = generator.statementToCode(block, "BODY");
-        return `void setup() {\n\tORBITS_Setup();\n${body}}\n`;
+        const hasMqttHandlers = block.workspace?.getBlocksByType("function_mqtt_handler_definition", false).length > 0;
+        const setupCall ="\tORBITS_Setup(orbits_mqtt_routes, sizeof(orbits_mqtt_routes) / sizeof(MQTTRoute));"
+        return `void setup() {\n${setupCall}\n${body}}\n`;
     };
 
     CppGenerator.forBlock["esp32_loop"] = function (block, generator) {
@@ -216,7 +218,8 @@ export function registerEsp32Generators() {
     };
 
     CppGenerator.forBlock["controls_for"] = function (block, generator) {
-        const variable = block.getFieldValue("VAR");
+        const variableField = block.getField("VAR");
+        const variable = toIdentifier(variableField?.getText?.() || block.getFieldValue("VAR") || "i");
         const from = generator.valueToCode(block, "FROM", CppGenerator.ORDER_NONE) || "0";
         const to = generator.valueToCode(block, "TO", CppGenerator.ORDER_NONE) || "10";
         const by = generator.valueToCode(block, "BY", CppGenerator.ORDER_NONE) || "1";

@@ -24,9 +24,12 @@ CppGenerator.scrub_ = function (block, code, thisOnly) {
 };
 
 function buildFunctionPrototype(block) {
-    const returnType = block.getFieldValue("RETURN_TYPE") || "void";
+    const isMqttHandler = block.type === "function_mqtt_handler_definition";
+    const returnType = isMqttHandler
+        ? "void"
+        : (block.getFieldValue("RETURN_TYPE") || "void");
     const funcName = block.getFieldValue("FUNC_NAME") || "myFunction";
-    const params = block.params_ || [];
+    const params = isMqttHandler ? [] : (block.params_ || []);
     const paramStr = params.map((p) => `${p.type} ${p.name}`).join(", ");
     return `${returnType} ${funcName}(${paramStr});`;
 }
@@ -34,11 +37,12 @@ function buildFunctionPrototype(block) {
 // generators/cpp.js - override workspaceToCode
 export function generateSketch(workspace) {
     const functionBlocks = workspace.getBlocksByType("function_definition", false);
+    const mqttHandlerBlocks = workspace.getBlocksByType("function_mqtt_handler_definition", false);
 
     const includesBlocks = workspace.getBlocksByType("esp32_includes", false);
     const globalsBlocks = workspace.getBlocksByType("esp32_globals", false);
     const seenPrototypes = new Set();
-    const functionPrototypes = functionBlocks
+    const functionPrototypes = [...functionBlocks, ...mqttHandlerBlocks]
         .map((block) => buildFunctionPrototype(block))
         .filter((prototype) => {
             if (seenPrototypes.has(prototype)) {
@@ -60,6 +64,19 @@ export function generateSketch(workspace) {
     const functionCode = functionBlocks
         .map((block) => CppGenerator.blockToCode(block))
         .join("\n");
+
+    const mqttHandlerCode = mqttHandlerBlocks
+        .map((block) => CppGenerator.blockToCode(block))
+        .join("\n");
+
+    const mqttRoutes = mqttHandlerBlocks
+        .map((block) => {
+            const topic = block.getFieldValue("MQTT_TOPIC") || "orbits/command/user";
+            const handlerName = block.getFieldValue("FUNC_NAME") || "onDashboardCommand";
+            const escapedTopic = topic.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+            return `  {"${escapedTopic}", ${handlerName}}`;
+        })
+        .join(",\n");
 
     // Explicitly find each singleton block by type
     const setupBlocks = workspace.getBlocksByType("esp32_setup", false);
@@ -85,7 +102,9 @@ export function generateSketch(workspace) {
         ? `${functionPrototypes}\n\n`
         : "";
 
+        const mqttRouteSection = `MQTTRoute orbits_mqtt_routes[] = {\n${mqttRoutes}\n};\n\n`;
+
     // Generate prototypes first so function calls are always declared before use.
         // Keep includes/globals in dedicated top-level sections before executable code.
-        return `${includeSection}${globalsSection}${prototypeSection}${setupCode}\n${loopCode}\n${functionCode}`;
+        return `${includeSection}${globalsSection}${prototypeSection}${mqttRouteSection}${setupCode}\n${loopCode}\n${functionCode}\n${mqttHandlerCode}`;
 }

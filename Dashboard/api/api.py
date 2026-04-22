@@ -452,6 +452,38 @@ def download_recent_adcs():
     finally:
         conn.close()
 
+
+@app.route('/api/command', methods=['POST'])
+def publish_dashboard_command():
+    body = request.get_json(silent=True) or {}
+    topic = body.get('topic', 'orbits/command/user')
+    params = body.get('params', {})
+
+    if not isinstance(topic, str) or not topic.strip():
+        return jsonify({'ok': False, 'error': 'topic must be a non-empty string.'}), 400
+
+    if not isinstance(params, dict):
+        return jsonify({'ok': False, 'error': 'params must be a JSON object.'}), 400
+
+    payload = {
+        'mission_id': body.get('mission_id', 'dashboard'),
+        'params': params,
+        'timestamp': time.time(),
+    }
+
+    publish_result = mqtt_client.publish(topic.strip(), json.dumps(payload))
+    if publish_result.rc != mqtt.MQTT_ERR_SUCCESS:
+        error_message = f'MQTT publish failed with code {publish_result.rc}'
+        return jsonify({'ok': False, 'error': error_message}), 500
+
+    response = {
+        'ok': True,
+        'topic': topic.strip(),
+        'payload': payload,
+    }
+    socketio.emit('command_dispatched', response)
+    return jsonify(response), 200
+
 # MQTT Client Setup to communicate with ESP32
 mqtt_client = mqtt.Client()
 

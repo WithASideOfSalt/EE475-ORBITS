@@ -3,6 +3,8 @@
 
 #include "ORBITS.h"
 
+MQTTRoute mqtt_routes[] = {};
+
 void setup(void) {
   ORBITS_Setup();
 }

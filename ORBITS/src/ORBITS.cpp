@@ -22,6 +22,10 @@ unsigned long lastTelemetrySend = 0;
 WiFiClient espClient;
 PubSubClient mqtt(espClient);
 
+//MQTT Function Router, gets pulled from the main code and allows for user defined functions to be called based on the topic of the incoming MQTT message. This allows for more modular code and easier handling of incoming MQTT messages without having to write a large if-else statement in the mqtt_callback function.
+
+MQTTRoute *mqtt_routes;
+int NUM_ROUTES;
 //Sensors
 Adafruit_ICM20948 icm;
 Adafruit_INA260 ina260;
@@ -35,8 +39,11 @@ unsigned long lastMqttReconnectAttempt = 0;
 Adafruit_NeoPixel ORBITS_strip(1, 38, NEO_GRB + NEO_KHZ800);
 
 
-void ORBITS_Setup(void) {
+void ORBITS_Setup(MQTTRoute *routes, int num_routes) {
   Serial.begin(115200);
+
+  mqtt_routes = routes;
+  NUM_ROUTES = num_routes;
 
   while (!Serial)
     delay(10);  // Makes sure the serial monitor has been configured and ready
@@ -132,6 +139,13 @@ void reconnect_mqtt(){
     Serial.print("Connecting to MQTT...");
     if (mqtt.connect(hostname)) {
       Serial.println("connected");
+
+      for (int i = 0; i < NUM_ROUTES; i++) {
+        mqtt.subscribe(mqtt_routes[i].topic);
+        Serial.print("Subscribed to: ");
+        Serial.println(mqtt_routes[i].topic);
+      }
+
     } else {
       Serial.print("failed with state ");
       Serial.print(mqtt.state());
@@ -140,21 +154,24 @@ void reconnect_mqtt(){
   }
 }
 
-void mqtt_callback(char* topic, byte* payload, unsigned int length){
-  //Handle incoming MQTT messages here.
-  Serial.print("Message arrived in topic: ");
-  Serial.println(topic);
+void mqtt_callback(char* topic, byte* payload, unsigned int length) {
+    Serial.print("Message arrived on topic: ");
+    Serial.println(topic);
 
-  JsonDocument doc;
-  DeserializationError error = deserializeJson(doc, payload, length);
+    JsonDocument doc;
+    DeserializationError error = deserializeJson(doc, payload, length);
 
-  String command = doc["command"];
-  if(command == "Blink"){
-    //Start sending data
-  }
-  else if(command == "Something"){
-    //Stop sending data
-  }
+    for (int i = 0; i < NUM_ROUTES; i++) {
+        if (strcmp(topic, mqtt_routes[i].topic) == 0) {
+            if (error) {
+                Serial.printf("JSON parse failed for topic %s: %s\n", topic, error.c_str());
+                return;
+            }
+            mqtt_routes[i].handler();
+            return;
+        }
+    }
+    Serial.printf("No handler found for topic: %s\n", topic);
 }
 
 void send_telemetry_data(){
@@ -230,4 +247,8 @@ void send_imu_data(){
   char buffer[256];
   serializeJson(doc, buffer);
   mqtt.publish("orbits/imu", buffer);
+}
+
+void print_to_serial(const char* message){
+  Serial.println(message);
 }

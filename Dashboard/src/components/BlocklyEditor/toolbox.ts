@@ -100,6 +100,7 @@ export const toolbox = {
             name: "Functions",
             styleName: "logic_category",
             contents: [
+                { kind: "block", type: "function_mqtt_handler_definition" },
                 { kind: "block", type: "function_definition" },
                 { kind: "block", type: "function_call" },
                 { kind: "block", type: "function_return" }

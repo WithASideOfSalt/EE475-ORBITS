@@ -7,6 +7,7 @@ import { socket } from '../socket.ts'
 import { RotatingCube } from '../components/RotatingCube'
 import '../Styleing/Dashboard.css'
 import { Statistic, Badge, Divider } from 'antd/es';
+import { message } from 'antd';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Filler, Title, Tooltip, Legend);
 
@@ -44,10 +45,14 @@ function formatDuration(totalSeconds: number) {
 }
 
 export default function Dashboard() {
+  const [messageApi, messageContextHolder] = message.useMessage();
   const [rollingTime, setRollingTime] = useState(0);
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [imuData, setImuData] = useState<IMUDataPoint[]>([]);
   const [telemetryData, setTelemetryData] = useState<TelemetryDataPoint | null>(null);
+  const [commandTopic, setCommandTopic] = useState('');
+  const [commandParams, setCommandParams] = useState('');
+  const [isSendingCommand, setIsSendingCommand] = useState(false);
   const maxDataPoints = 30;
 
 
@@ -259,8 +264,46 @@ export default function Dashboard() {
     }
   };
 
+  const sendDashboardCommand = async () => {
+    let params: Record<string, unknown> = {};
+
+    try {
+      params = commandParams.trim() ? JSON.parse(commandParams) : {};
+      if (typeof params !== 'object' || params === null || Array.isArray(params)) {
+        throw new Error('Parameters must be a JSON object.');
+      }
+    } catch (error) {
+      messageApi.error(error instanceof Error ? error.message : 'Invalid JSON parameters.');
+      return;
+    }
+
+    setIsSendingCommand(true);
+    try {
+      const response = await fetch('/api/command', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          topic: commandTopic,
+          params,
+        }),
+      });
+
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok || !payload?.ok) {
+        throw new Error(payload?.error || `Failed to publish command (${response.status}).`);
+      }
+
+      messageApi.success(`Topic published: ${commandTopic}`);
+    } catch (error) {
+      messageApi.error(error instanceof Error ? error.message : 'Failed to send dashboard command.');
+    } finally {
+      setIsSendingCommand(false);
+    }
+  };
+
   return (
     <>
+      {messageContextHolder}
       <Layout style={{height: '100%', overflow: 'hidden'}}>
         <Header style={{textAlign: 'left'}}>
           <Typography.Title level={2} className='DashboardTitle'>
@@ -272,8 +315,36 @@ export default function Dashboard() {
           <Row gutter={[2,2]} style={{flex:1, width: '100%'}}>
             {/* First Col */}
             <Col xs={24} sm={6} md={6} style={{display:'flex'}}>
-              <Card style={{width:'100%'}}>
-                Command Centre
+              <Card style={{width:'100%'}} title="Command Centre">
+                <Row gutter={[8, 8]}>
+                  <Col xs={24}>
+                    <Typography.Text type="secondary">MQTT Topic</Typography.Text>
+                    <Input
+                      value={commandTopic}
+                      onChange={(event) => setCommandTopic(event.target.value)}
+                      placeholder="orbits/command/user"
+                    />
+                  </Col>
+                  <Col xs={24}>
+                    <Typography.Text type="secondary">Params JSON</Typography.Text>
+                    <Input.TextArea
+                      value={commandParams}
+                      onChange={(event) => setCommandParams(event.target.value)}
+                      placeholder='{"state": true}'
+                      autoSize={{ minRows: 3, maxRows: 6 }}
+                    />
+                  </Col>
+                  <Col xs={24}>
+                    <Button
+                      type="primary"
+                      block
+                      loading={isSendingCommand}
+                      onClick={sendDashboardCommand}
+                    >
+                      Trigger User Function
+                    </Button>
+                  </Col>
+                </Row>
               </Card>
             </Col>
             <Col xs={24} sm={12} md={12} style={{display:'flex'}}>

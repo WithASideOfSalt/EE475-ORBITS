@@ -16,6 +16,12 @@ export function registerFunctionGenerators() {
         return `${returnType} ${funcName}(${paramStr}) {\n${body}}\n`;
     };
 
+    CppGenerator.forBlock["function_mqtt_handler_definition"] = function (block, generator) {
+        const funcName = block.getFieldValue("FUNC_NAME") || "onDashboardCommand";
+        const body = generator.statementToCode(block, "BODY");
+        return `void ${funcName}() {\n${body}}\n`;
+    };
+
     CppGenerator.forBlock["function_call"] = function (block, generator) {
         const funcName = block.getFieldValue("FUNC_NAME");
         const params = block.params_ || [];
